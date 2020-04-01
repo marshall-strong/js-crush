@@ -1,30 +1,40 @@
-var img_array = [];
+let img_array = [];
 
 function lookupLetter(num) {
-    var letterArr = ["a","b","c","d","e","f","g","h"];
-    return letterArr[--num];
+  const arrColLetters = [`a`, `b`, `c`, `d`, `e`, `f`, `g`, `h`];
+  return arrColLetters[--num];
 }
 
+function genBoardHtml() {
+  const divClass = `class='p-2 align-self-center'`;
+  const divStyle = `style='margin:-10px;'`
+  const tableClass = `class='tableBorder'`;
 
-function colorTable() {
-    var tableInfo = "<div class='p-2 align-self-center' style='margin:-10px;'><table class='tableBorder'>";
-    for(var row = 0; row < DEFAULT_BOARD_SIZE; row++){
-        tableInfo += "<tr class='tableBorder'>";
-            for(var col = 0; col < DEFAULT_BOARD_SIZE; col++) {
-                var colName = lookupLetter(col+1);
-                var colorBack =  board.getGemAt(row, col);
-                var textColor = "white";
-                if( colorBack == "yellow") {
-                    textColor = "#505050";
-                }
-                tableInfo += "<td class='tableBorder padCell text-center' style='background-color:" + colorBack +";color:" 
-                                + textColor +"'>" + colName + (row+1)   +"</td>";
-                // console.log(tableInfo);
-                // console.log("         ");                
-            }
-        tableInfo += "</tr>";    
-        // console.log(tableInfo);
+  let htmlTable = `<div ${divClass} ${divStyle}><table ${tableClass}>`;
+
+  for (let row = 0; row < DEFAULT_BOARD_SIZE; row++) {
+    let htmlRow = `<tr class='tableBorder'>`;
+
+    for (let col = 0; col < DEFAULT_BOARD_SIZE; col++) {
+      const colLetter = lookupLetter(col+1);
+      const bgColor =  board.getGemAt(row, col);
+      let txtColor = `white`;
+      if (bgColor == `yellow`) {
+          txtColor = `#505050`;
+      }
+
+      const cellClass = `class='tableBorder padCell text-center'`;
+      const cellStyle = `style='background-color:${bgColor};color:${txtColor}'`;
+      const cellContents = `${colLetter}${row + 1}`;
+      
+      const htmlCell = `<td ${cellClass} ${cellStyle}>${cellContents}</td>`;
+      htmlRow += htmlCell;
     }
-    tableInfo += "</table></div>";  
-    return tableInfo;
+
+    htmlRow += `</tr>`;   
+    htmlTable += htmlRow; 
+  }
+  
+  htmlTable += `</table></div>`;  
+  return htmlTable;
 };

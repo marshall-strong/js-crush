@@ -9,15 +9,15 @@
 <link rel="stylesheet" href=
   "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.css">
 
-<link rel="stylesheet" href="mainLayout.css">
+<link rel="stylesheet" href="layout.css">
 
 
 <meta name="viewport" content=
   "width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
 <script src=
-  "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
 <script src=
   "https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.2/seedrandom.js">
 </script>
@@ -25,22 +25,22 @@
 <script src="board.js"></script>
 <script src="rules.js"></script>
 <script src="table.js"></script>
+<script src="game.js"></script>
+
 <script>
 
 // Seed RNG to generate initial board
 Math.seedrandom(0);
 
-
 // A short jQuery extension to read query parameters from the URL.
 $.extend({
   getUrlVars: function() {
-    var vars = [], pair;
-    var pairs = window.location.search.substr(1).split('&');
-    for (var i = 0; i < pairs.length; i++) {
+    let vars = [], pair;
+    const pairs = window.location.search.substr(1).split('&');
+    for (let i = 0; i < pairs.length; i++) {
       pair = pairs[i].split('=');
       vars.push(pair[0]);
-      vars[pair[0]] = pair[1] &&
-          decodeURIComponent(pair[1].replace(/\+/g, ' '));
+      vars[pair[0]] = pair[1] && decodeURIComponent(pair[1].replace(/\+/g, ' '));
     }
     return vars;
   },
@@ -50,12 +50,12 @@ $.extend({
 });
 
 // constants
-var DEFAULT_BOARD_SIZE = 8;
+const DEFAULT_BOARD_SIZE = 8;
 
 // data model at global scope for easier debugging
-var board;
+const col_array = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+let board;
 var rules;
-var col_array = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
 var inputBoxInfo;
 var validInput = false;
 var image_array;
@@ -76,18 +76,17 @@ if ($.getUrlVar('size') && $.getUrlVar('size') >= 3) {
 rules = new Rules(board);
 
 // move a gem on the board
-$(board).on('scoreUpdate', function(e, info)
-{
+$(board).on('scoreUpdate', function(e, info) {
   $("#score").html(board.getScore());
 });
 
 // keyboard events arrive here
-$(document).on('keydown', function(evt) {
+$(document).on('keydown', function(event) {
   // Your code here.
 });
 
 // Button Events
-$(document).on('click', "#newGame", function(evt)
+$(document).on('click', "#newGame", function(event)
 {
   rules.cleanBoard();
   rules.prepareNewGame();
@@ -96,8 +95,8 @@ $(document).on('click', "#newGame", function(evt)
 });
 
 
-$(document).keypress(function(evt){
-  if(evt.which == 13){
+$(document).keypress(function(event){
+  if(event.which == 13){
     checkInput();
   }
 });
@@ -141,22 +140,22 @@ function checkInput(){
 }
 
 
-$(document).on('click', "#up", function(evt){
+$(document).on('click', "#up", function(event){
   if(validInput) 
     checkMove('up');
 });
 
-$(document).on('click', "#left", function(evt){
+$(document).on('click', "#left", function(event){
   if(validInput) 
     checkMove('left');
 });
 
-$(document).on('click', "#right", function(evt){
+$(document).on('click', "#right", function(event){
   if(validInput) 
     checkMove('right');
 });
 
-$(document).on('click', "#down", function(evt){
+$(document).on('click', "#down", function(event){
   if(validInput) 
     checkMove('down');
 });
@@ -284,7 +283,7 @@ function checkMove(dir){
 
 function flipAndDraw(currGem, dir){
   // console.log(currGem);
-    board.flipCandies(currGem, board.getGemInDirection(currGem, dir));
+    board.flipGems(currGem, board.getGemInDirection(currGem, dir));
   
     // ctxt.clearRect(0, 0, canvas.width, canvas.height);
     $("#mainColumn").html(drawBoard());
@@ -358,7 +357,7 @@ function crushcrush(){
     rules.removeCrushes(listRemove);
 
     $("#mainColumn").html(drawBoard());
-    rules.moveCandiesDown();
+    rules.moveGemsDown();
 
     $("#mainColumn").html(drawBoard());
 
@@ -382,11 +381,11 @@ function crushcrush(){
 
 }
 function getAllGem(crushList){
-  var candies = [];
+  var gems = [];
   // console.log(crushList);
   for(var i=0; i<crushList.length; i++){
         for(var j=0; j<crushList[i].length; j++){
-          // console.log(candies);
+          // console.log(gems);
         }
   }
 }
@@ -445,7 +444,7 @@ function drawGem(row, col, size, color){
 }
 
 
-$(document).on('click', "#helpBtn", function(evt){
+$(document).on('click', "#helpBtn", function(event){
   var helpMove = rules.getRandomValidMove();
   // console.log(helpMove.gem);
   // console.log(helpMove.direction);
@@ -513,12 +512,12 @@ $(document).on('click', "#helpBtn", function(evt){
 
 });
 
-function getCanvasPos(evt) {
+function getCanvasPos(event) {
   var canvasRect = document.getElementById('Canvas').getBoundingClientRect();
 
   //Get relative position on canvas
-  var xPos = (evt.clientX - canvasRect.left);
-  var yPos = (evt.clientY - canvasRect.top);
+  var xPos = (event.clientX - canvasRect.left);
+  var yPos = (event.clientY - canvasRect.top);
   
   //Get coordinate
   var size = 320/BOARD_SIZE;
@@ -530,17 +529,17 @@ function getCanvasPos(evt) {
   return xPos + yPos;
 }
 
-$(document).on('mousedown', '#Canvas', function(evt){
+$(document).on('mousedown', '#Canvas', function(event){
   console.log('mousedown');
-  mouseDownLocation = getCanvasPos(evt);
+  mouseDownLocation = getCanvasPos(event);
   console.log('mousedown: ' + mouseDownLocation);
 
   document.getElementById('inputBox').value = mouseDownLocation;
 });
 
-$(document).on('mouseup', '#Canvas', function(evt){
+$(document).on('mouseup', '#Canvas', function(event){
   console.log('mouseup');
-  mouseUpLocation = getCanvasPos(evt);
+  mouseUpLocation = getCanvasPos(event);
   console.log('mouseUp: ' + mouseUpLocation);
   clearMoves();
   $("#mainColumn").html(drawBoard());
@@ -548,11 +547,11 @@ $(document).on('mouseup', '#Canvas', function(evt){
   checkDrag();
 });
 
-$(document).on('mousemove', '#Canvas', function(evt){
+$(document).on('mousemove', '#Canvas', function(event){
   console.log('mousemove');
 });
 
-$(document).on('mouseout', '#Canvas', function(evt){
+$(document).on('mouseout', '#Canvas', function(event){
   console.log('mouseout');
 });
 
@@ -636,12 +635,21 @@ function load_img(imgToLoad) {
 
 function drawBoard() {
     
-    load_img(['./graphics/blue-gem.png', './graphics/blue-special.png', 
-                './graphics/green-gem.png', './graphics/green-special.png',
-                './graphics/orange-gem.png', './graphics/orange-special.png',
-                './graphics/purple-gem.png', './graphics/purple-special.png',
-                './graphics/red-gem.png', './graphics/red-special.png',
-                './graphics/yellow-gem.png', './graphics/color-bomb.png']);
+    // load_img(['./graphics/blue-gem.png', './graphics/blue-special.png', 
+    //             './graphics/green-gem.png', './graphics/green-special.png',
+    //             './graphics/orange-gem.png', './graphics/orange-special.png',
+    //             './graphics/purple-gem.png', './graphics/purple-special.png',
+    //             './graphics/red-gem.png', './graphics/red-special.png',
+    //             './graphics/yellow-gem.png', './graphics/color-bomb.png']);
+
+    load_img([
+      './graphics/github.png',
+      './graphics/react.png',
+      './graphics/javascript.png',
+      './graphics/nodejs.png',
+      './graphics/webpack.png',
+      './graphics/jquery.png',
+    ]);
 
     var size = 320/board.getSize();
     var gemHeight = size;
@@ -657,8 +665,8 @@ function drawBoard() {
 
     for(var row = 0; row < BOARD_SIZE; row++){
       for(var col = 0; col < BOARD_SIZE; col++) {
-          var colorBack =  board.getGemAt(row, col);
-          var color = "style=background-color:" + colorBack;
+          var bgColor =  board.getGemAt(row, col);
+          var color = "style=background-color:" + bgColor;
           
           switch(color) {
             case 'style=background-color:red':
@@ -721,18 +729,13 @@ function drawBoard() {
       <!-- <canvas class ="d-flex-column mx-auto align-self-center" id ='Canvas' width='320' height='320' style ='border:2px solid #d3d3d3; width:320px;height:320px; z-index:-1;' > -->
       <canvas class ="d-flex-column align-self-center" id ='Canvas' width='320' height='320' style:'z-index:-1; position:absolute;'>
         Sorry browser doesn't support Canvas
-        <img id ='blue-gem'  src ='./graphics/blue-gem.png'>
-        <img id ='green-gem'  src ='./graphics/green-gem.png'>
-        <img id ='orange-gem'  src ='./graphics/orange-gem.png'>
-        <img id ='red-gem'  src ='./graphics/red-gem.png'>
-        <img id ='purple-gem'  src ='./graphics/purple-gem.png'>
-        <img id ='yellow-gem'  src ='./graphics/yellow-gem.png'>
-        <img id ='blue-special'  src ='./graphics/blue-special.png'>
-        <img id ='green-special'  src ='./graphics/green-special.png'>
-        <img id ='orange-special'  src ='./graphics/orange-special.png'>
-        <img id ='red-special'  src ='./graphics/red-special.png'>
-        <img id ='purple-special'  src ='./graphics/purple-special.png'>
-        <img id ='bomb'  src ='./graphics/color-bomb.png'>
+        <img id ='red-gem'  src ='./graphics/github.png'>
+        <img id ='orange-gem'  src ='./graphics/react.png'>
+        <img id ='yellow-gem'  src ='./graphics/javascript.png'>
+        <img id ='green-gem'  src ='./graphics/nodejs.png'>
+        <img id ='blue-gem'  src ='./graphics/webpack.png'>
+        <img id ='purple-gem'  src ='./graphics/jquery.png'>
+
         <canvas  id ='gemCanvas1' width='320' height='320' style='z-index:40;  position:absolute;'></canvas>
         <canvas class ="d-flex-column align-self-center" id ='gemCanvas2' width='320' height='320' style='z-index:80'></canvas>
 
