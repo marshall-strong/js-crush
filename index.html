@@ -4,10 +4,11 @@
 <head>
 <meta charset="utf-8">
 <title>JS Gem Crush</title>
+<link rel="icon" href="./graphics/favicon.ico" type="image/x-icon" />
 
 
-<link rel="stylesheet" href=
-  "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.css">
+<!-- <link rel="stylesheet" href=
+  "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.css"> -->
 
 <link rel="stylesheet" href="layout.css">
 
@@ -701,29 +702,33 @@ function drawBoard() {
     
 
     <div class="row1">
-        <div class="col-md-3 d-flex flex-column align-self-center" id="firstColumn">
+        <div class="widthAuto" id="firstColumn">
           <div class="p-2"> <h2 class="text-center">JS Gem Crush</h2> </div>
+        </div>
+    </div>
+
+    <div class="row2">
+        <div class="widthAuto" id="firstColumn">
           <div class="p-2 text-center" id='score'> <h3>Score</h3> </div>
         </div>
     </div>
 
-
-    <div class="row2">
+    <div class="row3">
   
-      <div class="col-md-6 d-flex flex-column mx-auto align-self-center" id="mainColumn" style='position:relative'>
+      <div class="mx-auto align-self-center" id="mainColumn" style='position:relative'>
         <script language ="javascript"> rules.prepareNewGame();</script>
-        <canvas class ="d-flex-column align-self-center" id ='Canvas' width='320' height='320' style:'z-index:-1; position:absolute;'>
+        <canvas class ="align-self-center" id ='Canvas' width='320' height='320' style:'z-index:-1; position:absolute;'>
 
-            Sorry browser doesn't support Canvas
-            <img id ='red-gem'  src ='./graphics/github.png'>
-            <img id ='orange-gem'  src ='./graphics/react.png'>
-            <img id ='yellow-gem'  src ='./graphics/javascript.png'>
-            <img id ='green-gem'  src ='./graphics/nodejs.png'>
-            <img id ='blue-gem'  src ='./graphics/webpack.png'>
-            <img id ='purple-gem'  src ='./graphics/jquery.png'>
+            Sorry, your browser does not support Canvas. Try using Chrome!
+            <img id='red-gem'    src='./graphics/github.png'>
+            <img id='orange-gem' src='./graphics/react.png'>
+            <img id='yellow-gem' src='./graphics/javascript.png'>
+            <img id='green-gem'  src='./graphics/nodejs.png'>
+            <img id='blue-gem'   src='./graphics/webpack.png'>
+            <img id='purple-gem' src='./graphics/jquery.png'>
 
             <canvas  id ='gemCanvas1' width='320' height='320' style='z-index:40;  position:absolute;'></canvas>
-            <canvas class ="d-flex-column align-self-center" id ='gemCanvas2' width='320' height='320' style='z-index:80'></canvas>
+            <canvas class ="align-self-center" id ='gemCanvas2' width='320' height='320' style='z-index:80'></canvas>
 
         </canvas>
 
@@ -733,7 +738,7 @@ function drawBoard() {
         <p class="mx-auto" id="invalid">Invalid Move!</p>
       </div>
 
-      <div class="col-md-3 d-flex flex-column align-self-center" id="lastColumn">
+      <div class="align-self-center" id="lastColumn">
 
         <div class="p-2 text-center">
           <h2 class="">Move:</h2>
@@ -761,11 +766,14 @@ function drawBoard() {
     
     </div>
 
-    <div class="row">
+    <div class="row4">
+      <div class="p-2 text-center"><button class="btn helpBtn" id="helpBtn">Get Hint</button></div>
         <div class="p-2 text-center"><button class="btn newGameBtn" id="newGame">New Game</button></div>
-        <div class="p-2 text-center"><button class="btn helpBtn" id="helpBtn">Get Hint</button></div>
     </div>
 
+    <div class="row4">
+      Get three like gems in a row. Click and drag into place. 
+    </div>
   
 </div>
 
