@@ -1,4 +1,4 @@
-# Gem-Crush
+# JS-Crush
 
 Play the live version!
 https://marstrong.github.io/js-crush/
