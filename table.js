@@ -7,7 +7,7 @@ function lookupLetter(num) {
 
 function genBoardHtml() {
   const divClass = `class='p-2 align-self-center'`;
-  const divStyle = `style='margin:-10px;'`
+  const divStyle = `style='margin:-10px;'`;
   const tableClass = `class='tableBorder'`;
 
   let htmlTable = `<div ${divClass} ${divStyle}><table ${tableClass}>`;
@@ -16,25 +16,25 @@ function genBoardHtml() {
     let htmlRow = `<tr class='tableBorder'>`;
 
     for (let col = 0; col < DEFAULT_BOARD_SIZE; col++) {
-      const colLetter = lookupLetter(col+1);
-      const bgColor =  board.getGemAt(row, col);
+      const colLetter = lookupLetter(col + 1);
+      const bgColor = board.getGemAt(row, col);
       let txtColor = `white`;
       if (bgColor == `yellow`) {
-          txtColor = `#505050`;
+        txtColor = `#505050`;
       }
 
       const cellClass = `class='tableBorder padCell text-center'`;
       const cellStyle = `style='background-color:${bgColor};color:${txtColor}'`;
       const cellContents = `${colLetter}${row + 1}`;
-      
+
       const htmlCell = `<td ${cellClass} ${cellStyle}>${cellContents}</td>`;
       htmlRow += htmlCell;
     }
 
-    htmlRow += `</tr>`;   
-    htmlTable += htmlRow; 
+    htmlRow += `</tr>`;
+    htmlTable += htmlRow;
   }
-  
-  htmlTable += `</table></div>`;  
+
+  htmlTable += `</table></div>`;
   return htmlTable;
-};
+}

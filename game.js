@@ -63,7 +63,6 @@
 //   board.resetScore();
 // });
 
-
 // $(document).keypress(function(event){
 //   if(event.which == 13){
 //     checkInput();
@@ -107,7 +106,6 @@
 //     document.getElementById('right').disabled = true;
 //     document.getElementById('down').disabled = true;
 // }
-
 
 // $(document).on('click', "#up", function(event){
 //   if(validInput)
@@ -257,7 +255,6 @@
 //     // ctxt.clearRect(0, 0, canvas.width, canvas.height);
 //     $("#mainColumn").html(drawBoard());
 
-
 //     document.getElementById('inputBox').value = null;
 //     document.getElementById('inputBox').focus();
 //     validInput = false;
@@ -306,7 +303,7 @@
 //       // console.log(alphaCounter/10);
 //       for(var i = 0; i < numCrush; {
 //         for(var j = 0; j < crushLength; {
-//           var color = String(listRemove[i][j].color) + '-gem'; 
+//           var color = String(listRemove[i][j].color) + '-gem';
 //           var scoreColor = listRemove[i][j].color;
 //           ctx.clearRect(listRemove[i][j].col*size, listRemove[i][j].row*size, size, size);
 //           cxt.drawImage(document.getElementById(color), listRemove[i][j].col*size, listRemove[i][j].row*size, size, size);
@@ -330,7 +327,6 @@
 
 //     $("#mainColumn").html(drawBoard());
 
-
 //     listRemove = rules.getGemCrushes();
 //     if(listRemove.length == 0) {
 //     document.getElementById('crusher').disabled = true;
@@ -346,7 +342,6 @@
 //       globalCrushCounter = true;
 //     }
 //   },550);
-
 
 // }
 // function getAllGem(crushList){
@@ -411,7 +406,6 @@
 //               break;
 //           }
 // }
-
 
 // $(document).on('click', "#helpBtn", function(event){
 //   var helpMove = rules.getRandomValidMove();
@@ -604,7 +598,7 @@
 
 // function drawBoard() {
 
-//     // load_img(['./graphics/blue-gem.png', './graphics/blue-special.png', 
+//     // load_img(['./graphics/blue-gem.png', './graphics/blue-special.png',
 //     //             './graphics/green-gem.png', './graphics/green-special.png',
 //     //             './graphics/orange-gem.png', './graphics/orange-special.png',
 //     //             './graphics/purple-gem.png', './graphics/purple-special.png',
@@ -630,7 +624,6 @@
 //     ctx.clearRect(0, 0, canvas.width, canvas.height);
 //     // ctx.strokeRect(0,0, canvas.width, canvas.height);
 //     ctx.strokeStyle="lightgrey";
-
 
 //     for(var row = 0; row < BOARD_SIZE; {
 //       for(var col = 0; col < BOARD_SIZE; {

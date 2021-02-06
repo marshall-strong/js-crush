@@ -1,19 +1,19 @@
 div {
-    border: 1px solid #000000;
+  border: 1px solid #000000;
 }
 
 #mainColumn {
   margin-top: 10px;
   height: 320px;
   width: 320px;
-    /* border: 2px solid black; */
+  /* border: 2px solid black; */
 }
 
 #firstColumn {
   color: red;
 }
 
-#lastColumn{
+#lastColumn {
   display: none;
   visibility: hidden;
 }
@@ -31,14 +31,12 @@ div {
 
 .tableBorder {
   /* border: 2px solid lightgrey; */
-
 }
 
-#score{
-  color:whitesmoke;
+#score {
+  color: whitesmoke;
   background-color: lightsalmon;
 }
-
 
 #inputBox {
   width: 40px;
@@ -60,7 +58,7 @@ div {
 }
 
 .padCell {
-  padding: 5px 9px; 
+  padding: 5px 9px;
   height: 39px;
   width: 39px;
 }
