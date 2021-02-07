@@ -80,8 +80,8 @@ const Game = function (board) {
 
     // Pass 2: list out resulting sets of minSize or larger.
     let results = {};
-    for (row = 0; row < board.boardSize; row++) {
-      for (col = 0; col < board.boardSize; col++) {
+    for (row = 0; row < board.size; row++) {
+      for (col = 0; col < board.size; col++) {
         const gem = board.getGemAt(row, col);
         if (gem) {
           const p = find(gem.id);
@@ -119,10 +119,10 @@ const Game = function (board) {
   // If there are holes created by moving the gems down, populates the holes with random gems, and issues "add" events for these gems.
   this.moveGemsDown = function () {
     // Collapse each column
-    for (let col = 0; col < board.boardSize; col++) {
+    for (let col = 0; col < board.size; col++) {
       var emptyRow = null;
       // In each column, scan for the bottom most empty row
-      for (var emptyRow = board.boardSize - 1; emptyRow >= 0; emptyRow--) {
+      for (var emptyRow = board.size - 1; emptyRow >= 0; emptyRow--) {
         if (board.getGemAt(emptyRow, col) == null) {
           break;
         }
@@ -156,8 +156,8 @@ const Game = function (board) {
 
     // For each cell in the board, check to see if moving it in any of the four directions would result in a crush.
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes of size 3, validMoves_moreThanThreeCrush for crushes larger than 3)
-    for (let row = 0; row < board.boardSize; row++) {
-      for (let col = 0; col < board.boardSize; col++) {
+    for (let row = 0; row < board.size; row++) {
+      for (let col = 0; col < board.size; col++) {
         const fromGem = board.getGemAt(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
@@ -219,18 +219,15 @@ const Game = function (board) {
     boardSpec.map(function (i) {
       return (numChars += i.length);
     });
-    if (
-      boardSpec.length != board.boardSize ||
-      numChars != Math.pow(board.boardSize, 2)
-    ) {
+    if (boardSpec.length != board.size || numChars != Math.pow(board.size, 2)) {
       console.warn(
-        "boardSpec must be of dimensions boardSize x boardSize to populate board"
+        "boardSpec must be of dimensions size x size to populate board"
       );
       return;
     }
 
-    for (let col = 0; col < board.boardSize; col++) {
-      for (let row = 0; row < board.boardSize; row++) {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
         if (board.getGemAt(row, col) == null) {
           const letter = letter_dict[boardSpec[row].charAt(col)];
           board.addGem(letter, row, col);
@@ -246,8 +243,8 @@ const Game = function (board) {
   // Called when a new game is created.
   // Fills all the empty positions on the board with random-lettered gems.
   this.populateBoard = function () {
-    for (let col = 0; col < board.boardSize; col++) {
-      for (let row = 0; row < board.boardSize; row++) {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
         // Check the empty gem position (hole), fill with new gem
         if (board.getGemAt(row, col) == null) {
           board.addRandomGem(row, col);
@@ -258,8 +255,8 @@ const Game = function (board) {
 
   // clear entire board
   this.cleanBoard = function () {
-    for (let col = 0; col < board.boardSize; col++) {
-      for (let row = 0; row < board.boardSize; row++) {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
         board.removeAt(row, col);
       }
     }
@@ -317,14 +314,14 @@ const Game = function (board) {
 
     let result = [];
 
-    for (let j = 0; j < board.boardSize; j++) {
-      for (let h, k = 0; k < board.boardSize; k = h) {
+    for (let j = 0; j < board.size; j++) {
+      for (let h, k = 0; k < board.size; k = h) {
         // Scan for rows of same-lettered gem starting at k
         const firstGem = getAt(j, k);
         h = k + 1;
         if (!firstGem) continue;
         let gems = [firstGem];
-        for (; h < board.boardSize; h++) {
+        for (; h < board.size; h++) {
           const lastGem = getAt(j, h);
           if (!lastGem || lastGem.letter != firstGem.letter) break;
           gems.push(lastGem);

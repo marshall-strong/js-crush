@@ -1,24 +1,51 @@
-const Board = function (size) {
-  let gemId = 0;
-  this.score = 0;
-  this.boardSize = size;
-  this.grid = new Array(this.boardSize);
-  for (let i = 0; i <= this.boardSize; i++) {
-    this.grid[i] = [];
+const initializeGrid = (size) => {
+  let grid = new Array(size);
+  for (let i = 0; i < size; i++) {
+    grid[i] = [];
   }
+  return grid;
+};
 
-  this.isValidPosition = function (row, col) {
+const Board = function (size) {
+  // define Board properties
+  Object.defineProperty(this, "size", {
+    enumberable: false,
+    configurable: false,
+    writable: false,
+    value: size,
+  });
+  Object.defineProperty(this, "grid", {
+    enumberable: false,
+    configurable: true,
+    writable: true,
+    value: initializeGrid(size),
+  });
+  debugger;
+  Object.defineProperty(this, "nextGemId", {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: 0,
+  });
+  Object.defineProperty(this, "score", {
+    enumberable: false,
+    configurable: true,
+    writable: true,
+    value: 0,
+  });
+
+  this.isValid = function (row, col) {
     return (
       row >= 0 &&
       col >= 0 &&
-      row <= this.boardSize &&
-      col <= this.boardSize &&
+      row <= this.size &&
+      col <= this.size &&
       row == Math.round(row) &&
       col == Math.round(col)
     );
   };
 
-  this.isEmptyPosition = function (row, col) {
+  this.isEmpty = function (row, col) {
     if (this.getGemAt(row, col)) {
       return false;
     } else {
@@ -35,12 +62,8 @@ const Board = function (size) {
     this.flipGems(move.gem, toGem);
   };
 
-  this.getSize = function () {
-    return this.boardSize;
-  };
-
   this.getGemAt = function (row, col) {
-    if (this.isValidPosition(row, col)) {
+    if (this.isValid(row, col)) {
       return this.grid[row][col];
     }
   };
@@ -70,7 +93,7 @@ const Board = function (size) {
   // It is used to animate new gems that are coming in from offscreen.
 
   this.add = function (gem, row, col, spawnRow, spawnCol) {
-    if (this.isEmptyPosition(row, col)) {
+    if (this.isEmpty(row, col)) {
       const details = {
         gem: gem,
         toRow: row,
@@ -92,7 +115,7 @@ const Board = function (size) {
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
-    if (this.isEmptyPosition(toRow, toCol)) {
+    if (this.isEmpty(toRow, toCol)) {
       const details = {
         gem: gem,
         toRow: toRow,
@@ -125,7 +148,7 @@ const Board = function (size) {
 
   // remove gem at specified position from the board
   this.removeAt = function (row, col) {
-    if (this.isEmptyPosition(row, col)) {
+    if (this.isEmpty(row, col)) {
       console.log("removeAt found no gem at " + r + "," + c);
     } else {
       this.remove(this.grid[row][col]);
@@ -156,7 +179,7 @@ const Board = function (size) {
   // Add a gem of random letter at row, col
   this.addRandomGem = function (row, col, spawnRow, spawnCol) {
     const random_letter = Math.floor(Math.random() * Gem.letters.length);
-    const gem = new Gem(Gem.letters[random_letter], gemId++);
+    const gem = new Gem(Gem.letters[random_letter], this.nextGemId++);
     this.add(gem, row, col, spawnRow, spawnCol);
   };
 
@@ -234,22 +257,5 @@ const Board = function (size) {
   // get current score
   this.getScore = function () {
     return this.score;
-  };
-
-  // get a string representation of the board as a matrix
-  this.toString = function () {
-    let result = "";
-    for (let r = 0; r < this.boardSize; ++r) {
-      for (let c = 0; c < this.boardSize; ++c) {
-        const gem = this.grid[r][c];
-        if (gem) {
-          result += gem.toString().charAt(0) + " ";
-        } else {
-          result += "_ ";
-        }
-      }
-      result += "<br/>";
-    }
-    return result.toString();
   };
 };

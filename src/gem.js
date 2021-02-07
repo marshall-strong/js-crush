@@ -25,10 +25,6 @@ const Gem = function (letter, id) {
     writable: true,
     value: null,
   });
-
-  this.toString = function () {
-    return this.letter[-1];
-  };
 };
 
 Gem.letters = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];

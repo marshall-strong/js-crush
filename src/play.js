@@ -5,9 +5,8 @@ Math.seedrandom(0);
 const alphabet = "abcdefghijklmnopqrstuvwxyz";
 const col_array = alphabet.split("");
 
-const defaultBoardSize = 8;
-const boardSize = defaultBoardSize;
-const board = new Board(boardSize);
+const defaultSize = 8;
+const board = new Board(defaultSize);
 const game = new Game(board);
 
 var inputBoxInfo;
@@ -137,7 +136,7 @@ function checkMove(dir) {
   var canvas = document.getElementById("Canvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
-  var size = 320 / board.getSize();
+  var size = 320 / board.size;
 
   var clearWidth, clearHeight;
 
@@ -274,7 +273,7 @@ function crushcrush() {
   var listRemove = game.getGemCrushes();
   var canvas = document.getElementById("Canvas");
   var cxt = canvas.getContext("2d");
-  var size = 320 / board.getSize();
+  var size = 320 / board.size;
   var alphaCounter = 10;
   if (listRemove.length != 0) {
     var numCrush = listRemove.length;
@@ -303,7 +302,7 @@ function crushcrush() {
           );
         }
       }
-      changeScoreLetter(scoreLetter);
+      changeScoreColor(scoreLetter);
       if (alphaCounter <= 0) {
         clearInterval(alpha);
         // console.log('alpha cleared');
@@ -344,25 +343,25 @@ function getAllGem(crushList) {
   }
 }
 
-function changeScoreLetter(gemLetter) {
+function changeScoreColor(gemLetter) {
   switch (gemLetter) {
     case "gemA":
-      document.getElementById("score").style.backgroundLetter = "red";
+      document.getElementById("score").style.backgroundColor = "red";
       break;
     case "gemB":
-      document.getElementById("score").style.backgroundLetter = "green";
+      document.getElementById("score").style.backgroundColor = "green";
       break;
     case "gemC":
-      document.getElementById("score").style.backgroundLetter = "blue";
+      document.getElementById("score").style.backgroundColor = "blue";
       break;
     case "gemD":
-      document.getElementById("score").style.backgroundLetter = "orange";
+      document.getElementById("score").style.backgroundColor = "orange";
       break;
     case "gemE":
-      document.getElementById("score").style.backgroundLetter = "purple";
+      document.getElementById("score").style.backgroundColor = "purple";
       break;
     case "gemF":
-      document.getElementById("score").style.backgroundLetter = "yellow";
+      document.getElementById("score").style.backgroundColor = "yellow";
       break;
   }
 }
@@ -436,7 +435,7 @@ $(document).on("click", "#helpBtn", function (event) {
   var helpMove = game.getRandomValidMove();
   // console.log(helpMove.gem);
   // console.log(helpMove.direction);
-  var size = 320 / board.getSize();
+  var size = 320 / board.size;
   var canvas = document.getElementById("Canvas");
   var ctx2 = canvas.getContext("2d");
   ctx2.beginPath();
@@ -517,7 +516,7 @@ function getCanvasPos(event) {
   var yPos = event.clientY - canvasRect.top;
 
   //Get coordinate
-  var size = 320 / boardSize;
+  var size = 320 / board.size;
   yPos = Math.floor(yPos / size) + 1;
   xPos = Math.floor(xPos / size);
   xPos = col_array[xPos];
@@ -555,7 +554,7 @@ $(document).on("mouseout", "#Canvas", function (event) {
 function checkDrag() {
   var originCol = col_array.indexOf(mouseDownLocation.charAt(0));
   var destCol = col_array.indexOf(mouseUpLocation.charAt(0));
-  var spliceSize = boardSize > 9 ? 2 : 1;
+  var spliceSize = board.size > 9 ? 2 : 1;
   var originRow = mouseDownLocation.substr(1, spliceSize);
   var destRow = mouseUpLocation.substr(1, spliceSize);
 
@@ -620,7 +619,7 @@ function drawBoard() {
     "./graphics/jquery.png",
   ]);
 
-  var size = 320 / board.getSize();
+  var size = 320 / board.size;
   var gemHeight = size;
   var gemWidth = size;
 
@@ -630,10 +629,10 @@ function drawBoard() {
   // ctx.strokeRect(0,0, canvas.width, canvas.height);
   ctx.strokeStyle = "lightgrey";
 
-  for (let row = 0; row < boardSize; row++) {
-    for (let col = 0; col < boardSize; col++) {
+  for (let row = 0; row < board.size; row++) {
+    for (let col = 0; col < board.size; col++) {
       var gem = board.getGemAt(row, col);
-      // debugger
+      debugger;
       var gemLetter = gem.letter;
       // debugger;
       switch (gemLetter) {
