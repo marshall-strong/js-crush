@@ -109,9 +109,6 @@ function avaliableMove(dir) {
   return bool;
 }
 
-/* Add basic behaivor to gameplay
- * because this game is stupid
- */
 function checkMove(dir) {
   // var inputCol = col_array.indexOf(inputBoxInfo.charAt(0));
   // var inputRow;

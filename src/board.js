@@ -57,6 +57,13 @@ const Board = function (size) {
     return this.isValidCell(row, col) ? this.grid[row][col] : null;
   };
 
+  this.createRandomGem = function () {
+    const index = Math.floor(Math.random() * Gem.letters.length);
+    const letter = Gem.letters[index];
+    const newGem = new Gem(letter, this.nextGemId++);
+    return newGem;
+  };
+
   // Add a new gem to the board.
   // spawnRow, spawnCol are optional args.
   // They indicate where the gem was "spawned", BEFORE it moved to row, col.
@@ -64,26 +71,38 @@ const Board = function (size) {
   // Spawn Location is included to the 'add' event.
   // It is used to animate new gems that are coming in from offscreen.
 
-  this.add = function (gem, row, col, spawnRow, spawnCol) {
+  this.addRandomGem = function (row, col, spawnRow, spawnCol) {
     if (this.isEmptyCell(row, col)) {
+      const newGem = this.createRandomGem();
       const details = {
-        gem: gem,
+        gem: newGem,
         toRow: row,
         toCol: col,
         fromRow: spawnRow,
         fromCol: spawnCol,
       };
-
-      gem.row = row;
-      gem.col = col;
-
-      this.grid[row][col] = gem;
-
+      newGem.row = row;
+      newGem.col = col;
+      this.grid[row][col] = newGem;
       $(this).triggerHandler("add", details);
     } else {
       console.log("add already found a gem at " + row + "," + col);
     }
   };
+
+  // // // Add a gem of specified letter at row, col.
+  // // this.addGem = function (letter, row, col, spawnRow, spawnCol) {
+  // //   const gem = new Gem(letter, gemId++);
+  // //   this.add(gem, row, col, spawnRow, spawnCol);
+  // // };
+
+  // // Add a gem of random letter at row, col
+  // this.createRandomGem = function (row, col, spawnRow, spawnCol) {
+  //   const index = Math.floor(Math.random() * Gem.letters.length);
+  //   const letter = Gem.letters[index];
+  //   const newGem = new Gem(letter, this.nextGemId++);
+  //   this.add(newGem, row, col, spawnRow, spawnCol);
+  // };
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
@@ -141,19 +160,6 @@ const Board = function (size) {
   ////////////////////////////////////////////////
   // Utilities
   //
-
-  // Add a gem of specified letter at row, col.
-  this.addGem = function (letter, row, col, spawnRow, spawnCol) {
-    const gem = new Gem(letter, gemId++);
-    this.add(gem, row, col, spawnRow, spawnCol);
-  };
-
-  // Add a gem of random letter at row, col
-  this.addRandomGem = function (row, col, spawnRow, spawnCol) {
-    const random_letter = Math.floor(Math.random() * Gem.letters.length);
-    const gem = new Gem(Gem.letters[random_letter], this.nextGemId++);
-    this.add(gem, row, col, spawnRow, spawnCol);
-  };
 
   // Returns the gem immediately in the direction specified by direction
   // ['up', 'down', 'left', 'right'] from the gem passed as fromGem
