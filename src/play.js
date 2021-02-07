@@ -312,9 +312,9 @@ function crushcrush() {
 
   setTimeout(function () {
     ctx.globalAlpha = 1.0;
+
     game.removeCrushes(listRemove);
 
-    $("#mainColumn").html(drawBoard());
     game.moveGemsDown();
 
     $("#mainColumn").html(drawBoard());
