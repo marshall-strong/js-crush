@@ -212,16 +212,13 @@ const Board = function (size) {
     $(this).triggerHandler("move", details2);
   };
 
-  // reset score
   this.resetScore = function () {
     this.score = 0;
     $(this).triggerHandler("scoreUpdate", [{ score: 0 }]);
   };
 
-  // update score
   this.incrementScore = function (gem, row, col) {
     this.score += 1;
-
     $(this).triggerHandler("scoreUpdate", [
       {
         score: this.score,
@@ -230,10 +227,5 @@ const Board = function (size) {
         col: col,
       },
     ]);
-  };
-
-  // get current score
-  this.getScore = function () {
-    return this.score;
   };
 };

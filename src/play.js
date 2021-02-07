@@ -18,7 +18,7 @@ var mouseUpLocation;
 
 // move a gem on the board
 $(board).on("scoreUpdate", function (e, info) {
-  $("#score").html(board.getScore());
+  $("#score").html(board.score);
 });
 
 // keyboard events arrive here
