@@ -8,7 +8,7 @@ const col_array = alphabet.split("");
 const defaultBoardSize = 8;
 const boardSize = defaultBoardSize;
 const board = new Board(boardSize);
-const rules = new Rules(board);
+const game = new Game(board);
 
 var inputBoxInfo;
 var validInput = false;
@@ -29,8 +29,8 @@ $(document).on("keydown", function (event) {
 
 // Button Events
 $(document).on("click", "#newGame", function (event) {
-  rules.cleanBoard();
-  rules.prepareNewGame();
+  game.cleanBoard();
+  game.prepareNewGame();
   $("#mainColumn").html(drawBoard());
   board.resetScore();
 });
@@ -106,7 +106,7 @@ function avaliableMove(dir) {
     inputRow = Number(temp) - 1;
   }
   var currGem = board.getGemAt(inputRow, inputCol);
-  var bool = rules.isMoveTypeValid(currGem, dir);
+  var bool = game.isMoveTypeValid(currGem, dir);
   return bool;
 }
 
@@ -133,7 +133,7 @@ function checkMove(dir) {
     inputRow = Number(temp) - 1;
   }
   var currGem = board.getGemAt(inputRow, inputCol);
-  var bool = rules.isMoveTypeValid(currGem, dir);
+  var bool = game.isMoveTypeValid(currGem, dir);
   var canvas = document.getElementById("Canvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
@@ -271,7 +271,7 @@ function flipAndDraw(currGem, dir) {
 }
 
 function crushcrush() {
-  var listRemove = rules.getGemCrushes();
+  var listRemove = game.getGemCrushes();
   var canvas = document.getElementById("Canvas");
   var cxt = canvas.getContext("2d");
   var size = 320 / board.getSize();
@@ -313,14 +313,14 @@ function crushcrush() {
 
   setTimeout(function () {
     ctx.globalAlpha = 1.0;
-    rules.removeCrushes(listRemove);
+    game.removeCrushes(listRemove);
 
     $("#mainColumn").html(drawBoard());
-    rules.moveGemsDown();
+    game.moveGemsDown();
 
     $("#mainColumn").html(drawBoard());
 
-    listRemove = rules.getGemCrushes();
+    listRemove = game.getGemCrushes();
     if (listRemove.length == 0) {
       document.getElementById("crusher").disabled = true;
       document.getElementById("inputBox").disabled = false;
@@ -433,7 +433,7 @@ function drawGem(row, col, size, letter) {
 }
 
 $(document).on("click", "#helpBtn", function (event) {
-  var helpMove = rules.getRandomValidMove();
+  var helpMove = game.getRandomValidMove();
   // console.log(helpMove.gem);
   // console.log(helpMove.direction);
   var size = 320 / board.getSize();

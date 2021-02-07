@@ -1,4 +1,4 @@
-const Rules = function (board) {
+const Game = function (board) {
   // Disable scoring during setup
   let scoring = false;
 
@@ -20,7 +20,7 @@ const Rules = function (board) {
   };
 
   // Returns true if swapping the `fromGem` with the gem in the specified
-  //   direction is a valid move according to the rules.
+  //   direction is a valid move according to the game rules.
   // direction = ['up', 'down', 'left', 'right']
   this.isMoveTypeValid = function (fromGem, direction) {
     return this.numberGemsCrushedByMove(fromGem, direction) > 0;
@@ -242,7 +242,7 @@ const Rules = function (board) {
   ////////////////////////////////////////////////
   // Private methods
 
-  // Helper method to rules.prepareNewGame
+  // Helper method for game.prepareNewGame
   // Called when a new game is created.
   // Fills all the empty positions on the board with random-lettered gems.
   this.populateBoard = function () {
@@ -265,14 +265,14 @@ const Rules = function (board) {
     }
   };
 
-  // Helper method for rules.isMoveTypeValid
+  // Helper method for game.isMoveTypeValid
   // Returns the number of gems that would be crushed if the gem provided by fromGem were to be flipped in the direction specified(['up', 'down', 'left', 'right'])
   // If move is not valid, return 0
   this.numberGemsCrushedByMove = function (fromGem, direction) {
     return this.getGemsToCrushGivenMove(fromGem, direction).length;
   };
 
-  // Helper method for rules.numberGemsCrushedByMove
+  // Helper method for game.numberGemsCrushedByMove
   // Returns a list of gems that would be "crushed" (i.e. removed) if fromGem were to be moved in the specified direction
   // (['up', 'down', 'left', 'right'])
   // If move would result in no crushed gems, an empty list is returned.
@@ -296,7 +296,7 @@ const Rules = function (board) {
     return [].concat.apply([], connected); //flatten nested lists
   };
 
-  // Helper Method for rules.getGemCrushes
+  // Helper Method for game.getGemCrushes
   // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
   // If 'vertical' is set to true, only look for vertical strips.
   // Otherwise, only look for horizontal strips.

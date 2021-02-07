@@ -30,7 +30,7 @@ const Board = function (size) {
   // Public methods
 
   this.doAutoMove = function () {
-    const move = rules.getRandomValidMove();
+    const move = game.getRandomValidMove();
     const toGem = board.getGemInDirection(move.gem, move.direction);
     this.flipGems(move.gem, toGem);
   };
