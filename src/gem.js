@@ -1,7 +1,17 @@
 const Gem = function (color, id) {
   // immutable properties
-  Object.defineProperty(this, "color", { value: color, writable: false });
-  Object.defineProperty(this, "id", { value: id, writable: false });
+  Object.defineProperty(this, "color", {
+    enumberable: false,
+    configurable: false,
+    writable: false,
+    value: color,
+  });
+  Object.defineProperty(this, "id", {
+    enumberable: false,
+    configurable: false,
+    writable: false,
+    value: id,
+  });
 
   // mutable properties
   this.row = null;
