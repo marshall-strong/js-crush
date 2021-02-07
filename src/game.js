@@ -188,55 +188,6 @@ const Game = function (board) {
   };
 
   ////////////////////////////////////////////////
-  // DEBUGGING...
-  //
-
-  // Specify a board configuration by passing in a boardSpec.
-  // boardSpec is a list of strings, one string per row.
-  // ex: 8x8 board with alternating columns of red and orange would have
-  // a boardSpec of:
-  // [
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo',
-  //  'rorororo'
-  // ]
-  this.createSpecifiedBoard = function (boardSpec) {
-    const letter_dict = {
-      r: "red",
-      o: "orange",
-      y: "yellow",
-      g: "green",
-      b: "blue",
-      p: "purple",
-    };
-    let numChars = 0;
-
-    boardSpec.map(function (i) {
-      return (numChars += i.length);
-    });
-    if (boardSpec.length != board.size || numChars != Math.pow(board.size, 2)) {
-      console.warn(
-        "boardSpec must be of dimensions size x size to populate board"
-      );
-      return;
-    }
-
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
-        if (board.gemAt(row, col) == null) {
-          const letter = letter_dict[boardSpec[row].charAt(col)];
-          board.addGem(letter, row, col);
-        }
-      }
-    }
-  };
-
-  ////////////////////////////////////////////////
   // Private methods
 
   // Helper method for game.prepareNewGame
