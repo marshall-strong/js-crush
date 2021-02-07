@@ -619,9 +619,7 @@ function drawBoard() {
     "./graphics/jquery.png",
   ]);
 
-  var size = 320 / board.size;
-  var gemHeight = size;
-  var gemWidth = size;
+  const cellSize = 320 / board.size;
 
   var canvas = document.getElementById("Canvas");
   ctx = canvas.getContext("2d");
@@ -631,77 +629,14 @@ function drawBoard() {
 
   for (let row = 0; row < board.size; row++) {
     for (let col = 0; col < board.size; col++) {
-      var gem = board.gemAt(row, col);
-      debugger;
-      var gemLetter = gem.letter;
-      // debugger;
-      switch (gemLetter) {
-        case "gemA":
-          // ctx.globalAlpha = .5;
-          ctx.drawImage(
-            document.getElementById("gemA"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          // ctx.globalAlpha = 1.0;
-          break;
-        case "gemB":
-          ctx.drawImage(
-            document.getElementById("gemB"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          break;
-        case "gemC":
-          ctx.drawImage(
-            document.getElementById("gemC"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          break;
-        case "gemD":
-          ctx.drawImage(
-            document.getElementById("gemD"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          break;
-        case "gemE":
-          ctx.drawImage(
-            document.getElementById("gemE"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          break;
-        case "gemF":
-          ctx.drawImage(
-            document.getElementById("gemF"),
-            col * size,
-            row * size,
-            gemWidth,
-            gemHeight
-          );
-          ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-          break;
-      }
+      const gem = board.gemAt(row, col);
+      const image = document.getElementById(gem.letter);
+      const dx = col * cellSize;
+      const dy = row * cellSize;
+      const dWidth = cellSize;
+      const dHeight = cellSize;
+      ctx.drawImage(image, dx, dy, dWidth, dHeight);
+      ctx.strokeRect(dx, dy, dWidth, dHeight);
     }
   }
-  // const canvas2 = document.getElementById("gemCanvas1");
-  // cntxt = canvas2.getContext("2d");
-  // cntxt.fillRect(0, 0, 200, 200);
 }
