@@ -1,77 +1,21 @@
 // Seed RNG to generate initial board
 Math.seedrandom(0);
 
-// A short jQuery extension to read query parameters from the URL.
-$.extend({
-  getUrlVars: function () {
-    let vars = [],
-      pair;
-    const pairs = window.location.search.substr(1).split("&");
-    for (let i = 0; i < pairs.length; i++) {
-      pair = pairs[i].split("=");
-      vars.push(pair[0]);
-      vars[pair[0]] =
-        pair[1] && decodeURIComponent(pair[1].replace(/\+/g, " "));
-    }
-    return vars;
-  },
-  getUrlVar: function (name) {
-    return $.getUrlVars()[name];
-  },
-});
-
-// constants
-const DEFAULT_BOARD_SIZE = 8;
-
 // data model at global scope for easier debugging
-const col_array = [
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
-let board;
-var rules;
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+const col_array = alphabet.split("");
+
+const defaultBoardSize = 8;
+const boardSize = defaultBoardSize;
+const board = new Board(boardSize);
+const rules = new Rules(board);
+
 var inputBoxInfo;
 var validInput = false;
 var image_array;
-var BOARD_SIZE;
 var globalCrushCounter = true;
 var mouseDownLocation;
 var mouseUpLocation;
-
-// initialize board
-if ($.getUrlVar("size") && $.getUrlVar("size") >= 3) {
-  board = new Board($.getUrlVar("size"));
-  BOARD_SIZE = $.getUrlVar("size");
-} else {
-  board = new Board(DEFAULT_BOARD_SIZE);
-  BOARD_SIZE = DEFAULT_BOARD_SIZE;
-}
-
-rules = new Rules(board);
 
 // move a gem on the board
 $(board).on("scoreUpdate", function (e, info) {
@@ -202,17 +146,17 @@ function checkMove(dir) {
   if (dir == "right" || dir == "left") {
     clearWidth = size * 2;
     clearHeight = size;
-    var originColor, destColor;
+    var originLetter, destLetter;
     if (currGem.col > gemTo.col) {
       destCol = currGem.col * size;
       originCol = gemTo.col * size;
-      originColor = gemTo.color;
-      destColor = currGem.color;
+      originLetter = gemTo.letter;
+      destLetter = currGem.letter;
     } else {
       destCol = gemTo.col * size;
       originCol = currGem.col * size;
-      originColor = currGem.color;
-      destColor = gemTo.color;
+      originLetter = currGem.letter;
+      destLetter = gemTo.letter;
     }
     destRow = gemTo.row * size;
     originRow = currGem.row * size;
@@ -223,14 +167,14 @@ function checkMove(dir) {
       ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
       ctxt.drawImage(
-        document.getElementById(originColor),
+        document.getElementById(originLetter),
         originCol + (timer * size) / 20,
         originRow,
         size,
         size
       );
       ctxt.drawImage(
-        document.getElementById(destColor),
+        document.getElementById(destLetter),
         destCol - (timer * size) / 20,
         destRow,
         size,
@@ -250,13 +194,13 @@ function checkMove(dir) {
     if (currGem.row > gemTo.row) {
       destRow = currGem.row * size;
       originRow = gemTo.row * size;
-      originColor = gemTo.color;
-      destColor = currGem.color;
+      originLetter = gemTo.letter;
+      destLetter = currGem.letter;
     } else {
       destRow = gemTo.row * size;
       originRow = currGem.row * size;
-      originColor = currGem.color;
-      destColor = gemTo.color;
+      originLetter = currGem.letter;
+      destLetter = gemTo.letter;
     }
     destCol = gemTo.col * size;
     originCol = currGem.col * size;
@@ -266,14 +210,14 @@ function checkMove(dir) {
       ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
       ctxt.drawImage(
-        document.getElementById(originColor),
+        document.getElementById(originLetter),
         originCol,
         originRow + (timer * size) / 20,
         size,
         size
       );
       ctxt.drawImage(
-        document.getElementById(destColor),
+        document.getElementById(destLetter),
         destCol,
         destRow - (timer * size) / 20,
         size,
@@ -342,8 +286,8 @@ function crushcrush() {
       // console.log(alphaCounter/10);
       for (var i = 0; i < numCrush; i++) {
         for (var j = 0; j < crushLength; j++) {
-          var color = String(listRemove[i][j].color);
-          var scoreColor = listRemove[i][j].color;
+          var letter = String(listRemove[i][j].letter);
+          var scoreLetter = listRemove[i][j].letter;
           ctx.clearRect(
             listRemove[i][j].col * size,
             listRemove[i][j].row * size,
@@ -351,7 +295,7 @@ function crushcrush() {
             size
           );
           cxt.drawImage(
-            document.getElementById(color),
+            document.getElementById(letter),
             listRemove[i][j].col * size,
             listRemove[i][j].row * size,
             size,
@@ -359,7 +303,7 @@ function crushcrush() {
           );
         }
       }
-      changeScoreColor(scoreColor);
+      changeScoreLetter(scoreLetter);
       if (alphaCounter <= 0) {
         clearInterval(alpha);
         // console.log('alpha cleared');
@@ -400,32 +344,31 @@ function getAllGem(crushList) {
   }
 }
 
-function changeScoreColor(gemColor) {
-  // var colorChange = "style=background-color:" + gem;
-  switch (gemColor) {
+function changeScoreLetter(gemLetter) {
+  switch (gemLetter) {
     case "gemA":
-      document.getElementById("score").style.backgroundColor = "red";
+      document.getElementById("score").style.backgroundLetter = "red";
       break;
     case "gemB":
-      document.getElementById("score").style.backgroundColor = "green";
+      document.getElementById("score").style.backgroundLetter = "green";
       break;
     case "gemC":
-      document.getElementById("score").style.backgroundColor = "blue";
+      document.getElementById("score").style.backgroundLetter = "blue";
       break;
     case "gemD":
-      document.getElementById("score").style.backgroundColor = "orange";
+      document.getElementById("score").style.backgroundLetter = "orange";
       break;
     case "gemE":
-      document.getElementById("score").style.backgroundColor = "purple";
+      document.getElementById("score").style.backgroundLetter = "purple";
       break;
     case "gemF":
-      document.getElementById("score").style.backgroundColor = "yellow";
+      document.getElementById("score").style.backgroundLetter = "yellow";
       break;
   }
 }
 
-function drawGem(row, col, size, color) {
-  switch (color) {
+function drawGem(row, col, size, letter) {
+  switch (letter) {
     case "gemA":
       ctx.drawImage(
         document.getElementById("gemA"),
@@ -574,7 +517,7 @@ function getCanvasPos(event) {
   var yPos = event.clientY - canvasRect.top;
 
   //Get coordinate
-  var size = 320 / BOARD_SIZE;
+  var size = 320 / boardSize;
   yPos = Math.floor(yPos / size) + 1;
   xPos = Math.floor(xPos / size);
   xPos = col_array[xPos];
@@ -612,7 +555,7 @@ $(document).on("mouseout", "#Canvas", function (event) {
 function checkDrag() {
   var originCol = col_array.indexOf(mouseDownLocation.charAt(0));
   var destCol = col_array.indexOf(mouseUpLocation.charAt(0));
-  var spliceSize = BOARD_SIZE > 9 ? 2 : 1;
+  var spliceSize = boardSize > 9 ? 2 : 1;
   var originRow = mouseDownLocation.substr(1, spliceSize);
   var destRow = mouseUpLocation.substr(1, spliceSize);
 
@@ -687,12 +630,13 @@ function drawBoard() {
   // ctx.strokeRect(0,0, canvas.width, canvas.height);
   ctx.strokeStyle = "lightgrey";
 
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    for (let col = 0; col < BOARD_SIZE; col++) {
+  for (let row = 0; row < boardSize; row++) {
+    for (let col = 0; col < boardSize; col++) {
       var gem = board.getGemAt(row, col);
-      var gemColor = gem.color;
-      debugger;
-      switch (gemColor) {
+      // debugger
+      var gemLetter = gem.letter;
+      // debugger;
+      switch (gemLetter) {
         case "gemA":
           // ctx.globalAlpha = .5;
           ctx.drawImage(

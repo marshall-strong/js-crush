@@ -1,10 +1,10 @@
-const Gem = function (color, id) {
+const Gem = function (letter, id) {
   // data descriptors -- immutable
-  Object.defineProperty(this, "color", {
+  Object.defineProperty(this, "letter", {
     enumberable: false,
     configurable: false,
     writable: false,
-    value: color,
+    value: letter,
   });
   Object.defineProperty(this, "id", {
     enumberable: false,
@@ -27,8 +27,8 @@ const Gem = function (color, id) {
   });
 
   this.toString = function () {
-    return this.color[-1];
+    return this.letter[-1];
   };
 };
 
-Gem.colors = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];
+Gem.letters = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];

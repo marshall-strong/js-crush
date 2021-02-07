@@ -147,16 +147,16 @@ const Board = function (size) {
   // Utilities
   //
 
-  // Add a gem of specified color at row, col.
-  this.addGem = function (color, row, col, spawnRow, spawnCol) {
-    const gem = new Gem(color, gemId++);
+  // Add a gem of specified letter at row, col.
+  this.addGem = function (letter, row, col, spawnRow, spawnCol) {
+    const gem = new Gem(letter, gemId++);
     this.add(gem, row, col, spawnRow, spawnCol);
   };
 
-  // Add a gem of random color at row, col
+  // Add a gem of random letter at row, col
   this.addRandomGem = function (row, col, spawnRow, spawnCol) {
-    const random_color = Math.floor(Math.random() * Gem.colors.length);
-    const gem = new Gem(Gem.colors[random_color], gemId++);
+    const random_letter = Math.floor(Math.random() * Gem.letters.length);
+    const gem = new Gem(Gem.letters[random_letter], gemId++);
     this.add(gem, row, col, spawnRow, spawnCol);
   };
 

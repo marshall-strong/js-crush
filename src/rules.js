@@ -27,7 +27,7 @@ const Rules = function (board) {
   };
 
   // Returns a list of ALL gem crushes on the board.
-  // A gem crush is a list of three or more gems in a single row or column that have the same color.
+  // A gem crush is a list of three or more gems in a single row or column that have the same letter.
   // Each crush is provided as a list of the gems being crushed, resulting in a list of lists.
   // The output of this method is passed directly into this.removeCrushes to remove gem crushes.
   this.getGemCrushes = function (swap) {
@@ -65,8 +65,8 @@ const Rules = function (board) {
     }
 
     // Get strips of length 3.
-    let vert = this.findColorStrips(true, swap);
-    let horiz = this.findColorStrips(false, swap);
+    let vert = this.findLetterStrips(true, swap);
+    let horiz = this.findLetterStrips(false, swap);
     let sets = vert.concat(horiz);
 
     // Execute union of all the strips, possibly joining
@@ -206,7 +206,7 @@ const Rules = function (board) {
   //  'rorororo'
   // ]
   this.createSpecifiedBoard = function (boardSpec) {
-    const color_dict = {
+    const letter_dict = {
       r: "red",
       o: "orange",
       y: "yellow",
@@ -232,8 +232,8 @@ const Rules = function (board) {
     for (let col = 0; col < board.boardSize; col++) {
       for (let row = 0; row < board.boardSize; row++) {
         if (board.getGemAt(row, col) == null) {
-          const color = color_dict[boardSpec[row].charAt(col)];
-          board.addGem(color, row, col);
+          const letter = letter_dict[boardSpec[row].charAt(col)];
+          board.addGem(letter, row, col);
         }
       }
     }
@@ -244,7 +244,7 @@ const Rules = function (board) {
 
   // Helper method to rules.prepareNewGame
   // Called when a new game is created.
-  // Fills all the empty positions on the board with random-colored gems.
+  // Fills all the empty positions on the board with random-lettered gems.
   this.populateBoard = function () {
     for (let col = 0; col < board.boardSize; col++) {
       for (let row = 0; row < board.boardSize; row++) {
@@ -279,7 +279,7 @@ const Rules = function (board) {
   this.getGemsToCrushGivenMove = function (fromGem, direction) {
     const toGem = board.getGemInDirection(fromGem, direction);
 
-    if (!toGem || toGem.color == fromGem.color) {
+    if (!toGem || toGem.letter == fromGem.letter) {
       return [];
     }
     const swap = [fromGem, toGem];
@@ -297,11 +297,11 @@ const Rules = function (board) {
   };
 
   // Helper Method for rules.getGemCrushes
-  // Returns a set of sets of all the same-color gem strips of length at least 3 on the board.
+  // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
   // If 'vertical' is set to true, only look for vertical strips.
   // Otherwise, only look for horizontal strips.
   // If the 'swap' array is passed, then every even-indexed gem in the array is considered swapped with every odd-indexed gem in the array.
-  this.findColorStrips = function (vertical, swap) {
+  this.findLetterStrips = function (vertical, swap) {
     const getAt = function (x, y) {
       // Retrieve the gem at a row and column (depending on vertical)
       let result = vertical ? board.getGemAt(y, x) : board.getGemAt(x, y);
@@ -319,14 +319,14 @@ const Rules = function (board) {
 
     for (let j = 0; j < board.boardSize; j++) {
       for (let h, k = 0; k < board.boardSize; k = h) {
-        // Scan for rows of same-colored gem starting at k
+        // Scan for rows of same-lettered gem starting at k
         const firstGem = getAt(j, k);
         h = k + 1;
         if (!firstGem) continue;
         let gems = [firstGem];
         for (; h < board.boardSize; h++) {
           const lastGem = getAt(j, h);
-          if (!lastGem || lastGem.color != firstGem.color) break;
+          if (!lastGem || lastGem.letter != firstGem.letter) break;
           gems.push(lastGem);
         }
         // If there are at least 3 gems in a row, remember the set.
