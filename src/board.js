@@ -1,11 +1,3 @@
-const newMatrix = (size) => {
-  let matrix = new Array(size);
-  for (let i = 0; i < size; i++) {
-    matrix[i] = [];
-  }
-  return matrix;
-};
-
 const Board = function (size) {
   Object.defineProperty(this, "size", {
     enumberable: false,
@@ -13,18 +5,29 @@ const Board = function (size) {
     writable: false,
     value: size,
   });
+
+  this.initializeNewGrid = function () {
+    let matrix = new Array(this.size);
+    for (let i = 0; i < this.size; i++) {
+      matrix[i] = [];
+    }
+    return matrix;
+  };
+
   Object.defineProperty(this, "grid", {
     enumberable: false,
     configurable: true,
     writable: true,
-    value: newMatrix(size),
+    value: this.initializeNewGrid(),
   });
+
   Object.defineProperty(this, "nextGemId", {
     enumerable: false,
     configurable: true,
     writable: true,
     value: 0,
   });
+
   Object.defineProperty(this, "score", {
     enumberable: false,
     configurable: true,
@@ -32,32 +35,26 @@ const Board = function (size) {
     value: 0,
   });
 
-  this.isValid = function (row, col) {
+  this.isValidCell = function (row, col) {
     const validValues = [...Array(this.size).keys()];
     return validValues.includes(row) && validValues.includes(col);
   };
 
-  this.isEmpty = function (row, col) {
+  this.isEmptyCell = function (row, col) {
     return this.gemAt(row, col) ? false : true;
   };
 
   ////////////////////////////////////////////////
   // Public methods
 
-  this.doAutoMove = function () {
-    const move = game.getRandomValidMove();
-    const toGem = board.getGemInDirection(move.gem, move.direction);
-    this.flipGems(move.gem, toGem);
-  };
+  // this.doAutoMove = function () {
+  //   const move = game.getRandomValidMove();
+  //   const toGem = board.getGemInDirection(move.gem, move.direction);
+  //   this.flipGems(move.gem, toGem);
+  // };
 
   this.gemAt = function (row, col) {
-    if (this.isValid(row, col)) {
-      return this.grid[row][col];
-    }
-  };
-
-  this.getLocationOf = function (gem) {
-    return { row: gem.row, col: gem.col };
+    return this.isValidCell(row, col) ? this.grid[row][col] : null;
   };
 
   // Add a new gem to the board.
@@ -68,7 +65,7 @@ const Board = function (size) {
   // It is used to animate new gems that are coming in from offscreen.
 
   this.add = function (gem, row, col, spawnRow, spawnCol) {
-    if (this.isEmpty(row, col)) {
+    if (this.isEmptyCell(row, col)) {
       const details = {
         gem: gem,
         toRow: row,
@@ -90,7 +87,7 @@ const Board = function (size) {
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
-    if (this.isEmpty(toRow, toCol)) {
+    if (this.isEmptyCell(toRow, toCol)) {
       const details = {
         gem: gem,
         toRow: toRow,
@@ -123,7 +120,7 @@ const Board = function (size) {
 
   // remove gem at specified position from the board
   this.removeAt = function (row, col) {
-    if (this.isEmpty(row, col)) {
+    if (this.isEmptyCell(row, col)) {
       console.log("removeAt found no gem at " + r + "," + c);
     } else {
       this.remove(this.grid[row][col]);
