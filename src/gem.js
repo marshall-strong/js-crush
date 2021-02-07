@@ -1,5 +1,5 @@
 const Gem = function (color, id) {
-  // immutable properties
+  // data descriptors -- immutable
   Object.defineProperty(this, "color", {
     enumberable: false,
     configurable: false,
@@ -12,10 +12,19 @@ const Gem = function (color, id) {
     writable: false,
     value: id,
   });
-
-  // mutable properties
-  this.row = null;
-  this.col = null;
+  // data descriptors -- mutable
+  Object.defineProperty(this, "row", {
+    enumberable: false,
+    configurable: true,
+    writable: true,
+    value: null,
+  });
+  Object.defineProperty(this, "col", {
+    enumberable: false,
+    configurable: true,
+    writable: true,
+    value: null,
+  });
 
   this.toString = function () {
     const name = this.color;
