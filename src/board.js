@@ -1,9 +1,9 @@
-const initializeGrid = (size) => {
-  let grid = new Array(size);
+const newMatrix = (size) => {
+  let matrix = new Array(size);
   for (let i = 0; i < size; i++) {
-    grid[i] = [];
+    matrix[i] = [];
   }
-  return grid;
+  return matrix;
 };
 
 const Board = function (size) {
@@ -18,7 +18,7 @@ const Board = function (size) {
     enumberable: false,
     configurable: true,
     writable: true,
-    value: initializeGrid(size),
+    value: newMatrix(size),
   });
   debugger;
   Object.defineProperty(this, "nextGemId", {
@@ -35,14 +35,8 @@ const Board = function (size) {
   });
 
   this.isValid = function (row, col) {
-    return (
-      row >= 0 &&
-      col >= 0 &&
-      row <= this.size &&
-      col <= this.size &&
-      row == Math.round(row) &&
-      col == Math.round(col)
-    );
+    const validValues = [...Array(this.size).keys()];
+    return validValues.includes(row) && validValues.includes(col);
   };
 
   this.isEmpty = function (row, col) {
