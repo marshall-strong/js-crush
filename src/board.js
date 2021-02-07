@@ -40,11 +40,7 @@ const Board = function (size) {
   };
 
   this.isEmpty = function (row, col) {
-    if (this.getGemAt(row, col)) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.gemAt(row, col) ? false : true;
   };
 
   ////////////////////////////////////////////////
@@ -56,7 +52,7 @@ const Board = function (size) {
     this.flipGems(move.gem, toGem);
   };
 
-  this.getGemAt = function (row, col) {
+  this.gemAt = function (row, col) {
     if (this.isValid(row, col)) {
       return this.grid[row][col];
     }
@@ -182,16 +178,16 @@ const Board = function (size) {
   this.getGemInDirection = function (fromGem, direction) {
     switch (direction) {
       case "up": {
-        return this.getGemAt(fromGem.row - 1, fromGem.col);
+        return this.gemAt(fromGem.row - 1, fromGem.col);
       }
       case "down": {
-        return this.getGemAt(fromGem.row + 1, fromGem.col);
+        return this.gemAt(fromGem.row + 1, fromGem.col);
       }
       case "left": {
-        return this.getGemAt(fromGem.row, fromGem.col - 1);
+        return this.gemAt(fromGem.row, fromGem.col - 1);
       }
       case "right": {
-        return this.getGemAt(fromGem.row, fromGem.col + 1);
+        return this.gemAt(fromGem.row, fromGem.col + 1);
       }
     }
   };
