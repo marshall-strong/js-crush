@@ -7,7 +7,6 @@ const newMatrix = (size) => {
 };
 
 const Board = function (size) {
-  // define Board properties
   Object.defineProperty(this, "size", {
     enumberable: false,
     configurable: false,
@@ -20,7 +19,6 @@ const Board = function (size) {
     writable: true,
     value: newMatrix(size),
   });
-  debugger;
   Object.defineProperty(this, "nextGemId", {
     enumerable: false,
     configurable: true,
@@ -60,19 +58,6 @@ const Board = function (size) {
 
   this.getLocationOf = function (gem) {
     return { row: gem.row, col: gem.col };
-  };
-
-  // list all gems on board (no order)
-  this.getAllGems = function () {
-    let results = [];
-    for (let r in this.grid) {
-      for (let c in this.grid[r]) {
-        if (this.grid[r][c]) {
-          results.push(this.grid[r][c]);
-        }
-      }
-    }
-    return results;
   };
 
   // Add a new gem to the board.
