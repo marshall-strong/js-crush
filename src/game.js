@@ -223,14 +223,14 @@ function checkMove(dir) {
       ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
       ctxt.drawImage(
-        document.getElementById(originColor + "-gem"),
+        document.getElementById(originColor),
         originCol + (timer * size) / 20,
         originRow,
         size,
         size
       );
       ctxt.drawImage(
-        document.getElementById(destColor + "-gem"),
+        document.getElementById(destColor),
         destCol - (timer * size) / 20,
         destRow,
         size,
@@ -266,14 +266,14 @@ function checkMove(dir) {
       ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
       ctxt.drawImage(
-        document.getElementById(originColor + "-gem"),
+        document.getElementById(originColor),
         originCol,
         originRow + (timer * size) / 20,
         size,
         size
       );
       ctxt.drawImage(
-        document.getElementById(destColor + "-gem"),
+        document.getElementById(destColor),
         destCol,
         destRow - (timer * size) / 20,
         size,
@@ -342,7 +342,7 @@ function crushcrush() {
       // console.log(alphaCounter/10);
       for (var i = 0; i < numCrush; i++) {
         for (var j = 0; j < crushLength; j++) {
-          var color = String(listRemove[i][j].color) + "-gem";
+          var color = String(listRemove[i][j].color);
           var scoreColor = listRemove[i][j].color;
           ctx.clearRect(
             listRemove[i][j].col * size,
@@ -359,7 +359,7 @@ function crushcrush() {
           );
         }
       }
-      changeColor(scoreColor);
+      changeScoreColor(scoreColor);
       if (alphaCounter <= 0) {
         clearInterval(alpha);
         // console.log('alpha cleared');
@@ -400,25 +400,25 @@ function getAllGem(crushList) {
   }
 }
 
-function changeColor(gem) {
-  var colorChange = "style=background-color:" + gem;
-  switch (colorChange) {
-    case "style=background-color:red":
+function changeScoreColor(gemColor) {
+  // var colorChange = "style=background-color:" + gem;
+  switch (gemColor) {
+    case "gemA":
       document.getElementById("score").style.backgroundColor = "red";
       break;
-    case "style=background-color:green":
+    case "gemB":
       document.getElementById("score").style.backgroundColor = "green";
       break;
-    case "style=background-color:blue":
+    case "gemC":
       document.getElementById("score").style.backgroundColor = "blue";
       break;
-    case "style=background-color:orange":
+    case "gemD":
       document.getElementById("score").style.backgroundColor = "orange";
       break;
-    case "style=background-color:purple":
+    case "gemE":
       document.getElementById("score").style.backgroundColor = "purple";
       break;
-    case "style=background-color:yellow":
+    case "gemF":
       document.getElementById("score").style.backgroundColor = "yellow";
       break;
   }
@@ -426,9 +426,9 @@ function changeColor(gem) {
 
 function drawGem(row, col, size, color) {
   switch (color) {
-    case "red":
+    case "gemA":
       ctx.drawImage(
-        document.getElementById("red-gem"),
+        document.getElementById("gemA"),
         col * size,
         row * size,
         gemWidth,
@@ -436,9 +436,9 @@ function drawGem(row, col, size, color) {
       );
       ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
-    case "green":
+    case "gemB":
       ctx.drawImage(
-        document.getElementById("green-gem"),
+        document.getElementById("gemB"),
         col * size,
         row * size,
         gemWidth,
@@ -446,9 +446,9 @@ function drawGem(row, col, size, color) {
       );
       ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
-    case "blue":
+    case "gemC":
       ctx.drawImage(
-        document.getElementById("blue-gem"),
+        document.getElementById("gemC"),
         col * size,
         row * size,
         gemWidth,
@@ -456,9 +456,9 @@ function drawGem(row, col, size, color) {
       );
       ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
-    case "orange":
+    case "gemD":
       ctx.drawImage(
-        document.getElementById("orange-gem"),
+        document.getElementById("gemD"),
         col * size,
         row * size,
         gemWidth,
@@ -466,9 +466,9 @@ function drawGem(row, col, size, color) {
       );
       ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
-    case "purple":
+    case "gemE":
       ctx.drawImage(
-        document.getElementById("purple-gem"),
+        document.getElementById("gemE"),
         col * size,
         row * size,
         gemWidth,
@@ -476,9 +476,9 @@ function drawGem(row, col, size, color) {
       );
       ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
-    case "yellow":
+    case "gemF":
       ctx.drawImage(
-        document.getElementById("yellow-gem"),
+        document.getElementById("gemF"),
         col * size,
         row * size,
         gemWidth,
@@ -689,14 +689,14 @@ function drawBoard() {
 
   for (let row = 0; row < BOARD_SIZE; row++) {
     for (let col = 0; col < BOARD_SIZE; col++) {
-      var bgColor = board.getGemAt(row, col);
-      var color = "style=background-color:" + bgColor;
-
-      switch (color) {
-        case "style=background-color:red":
+      var gem = board.getGemAt(row, col);
+      var gemColor = gem.color;
+      debugger;
+      switch (gemColor) {
+        case "gemA":
           // ctx.globalAlpha = .5;
           ctx.drawImage(
-            document.getElementById("red-gem"),
+            document.getElementById("gemA"),
             col * size,
             row * size,
             gemWidth,
@@ -705,9 +705,9 @@ function drawBoard() {
           ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
           // ctx.globalAlpha = 1.0;
           break;
-        case "style=background-color:green":
+        case "gemB":
           ctx.drawImage(
-            document.getElementById("green-gem"),
+            document.getElementById("gemB"),
             col * size,
             row * size,
             gemWidth,
@@ -715,9 +715,9 @@ function drawBoard() {
           );
           ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
           break;
-        case "style=background-color:blue":
+        case "gemC":
           ctx.drawImage(
-            document.getElementById("blue-gem"),
+            document.getElementById("gemC"),
             col * size,
             row * size,
             gemWidth,
@@ -725,9 +725,9 @@ function drawBoard() {
           );
           ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
           break;
-        case "style=background-color:orange":
+        case "gemD":
           ctx.drawImage(
-            document.getElementById("orange-gem"),
+            document.getElementById("gemD"),
             col * size,
             row * size,
             gemWidth,
@@ -735,9 +735,9 @@ function drawBoard() {
           );
           ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
           break;
-        case "style=background-color:purple":
+        case "gemE":
           ctx.drawImage(
-            document.getElementById("purple-gem"),
+            document.getElementById("gemE"),
             col * size,
             row * size,
             gemWidth,
@@ -745,9 +745,9 @@ function drawBoard() {
           );
           ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
           break;
-        case "style=background-color:yellow":
+        case "gemF":
           ctx.drawImage(
-            document.getElementById("yellow-gem"),
+            document.getElementById("gemF"),
             col * size,
             row * size,
             gemWidth,

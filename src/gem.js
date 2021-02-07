@@ -27,9 +27,8 @@ const Gem = function (color, id) {
   });
 
   this.toString = function () {
-    const name = this.color;
-    return name;
+    return this.color[-1];
   };
 };
 
-Gem.colors = ["red", "yellow", "green", "orange", "blue", "purple"];
+Gem.colors = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];
