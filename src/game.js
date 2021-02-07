@@ -774,7 +774,7 @@
             }
           }
         }
-        const canvas2 = document.getElementById("gemCanvas1");
-        cntxt = canvas2.getContext("2d");
-        cntxt.fillRect(0, 0, 200, 200);
+        // const canvas2 = document.getElementById("gemCanvas1");
+        // cntxt = canvas2.getContext("2d");
+        // cntxt.fillRect(0, 0, 200, 200);
       }
