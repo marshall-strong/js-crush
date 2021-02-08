@@ -20,8 +20,8 @@ const Game = function (board) {
   // GAME SETUP
 
   this.clearGameboard = function () {
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
+    for (let col = 0; col < board.dimension; col++) {
+      for (let row = 0; row < board.dimension; row++) {
         board.removeAt(row, col);
       }
     }
@@ -33,8 +33,8 @@ const Game = function (board) {
     // populate gameboard
     while (true) {
       // iterate through gameboard, adding gems to empty cells
-      for (let col = 0; col < board.size; col++) {
-        for (let row = 0; row < board.size; row++) {
+      for (let col = 0; col < board.dimension; col++) {
+        for (let row = 0; row < board.dimension; row++) {
           if (board.gridCellGem(row, col) == null)
             board.addGemToBoard(row, col);
         }
@@ -104,8 +104,8 @@ const Game = function (board) {
 
     // For each cell in the board, check to see if moving it in any of the four directions would result in a crush.
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes of size 3, validMoves_moreThanThreeCrush for crushes larger than 3)
-    for (let row = 0; row < board.size; row++) {
-      for (let col = 0; col < board.size; col++) {
+    for (let row = 0; row < board.dimension; row++) {
+      for (let col = 0; col < board.dimension; col++) {
         const fromGem = board.gridCellGem(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
@@ -194,8 +194,8 @@ const Game = function (board) {
     }
     // Pass 2: list out resulting sets of minSize or larger.
     let results = {};
-    for (row = 0; row < board.size; row++) {
-      for (col = 0; col < board.size; col++) {
+    for (row = 0; row < board.dimension; row++) {
+      for (col = 0; col < board.dimension; col++) {
         const gem = board.gridCellGem(row, col);
         if (gem) {
           const p = find(gem.id);
@@ -237,14 +237,14 @@ const Game = function (board) {
 
     let result = [];
 
-    for (let j = 0; j < board.size; j++) {
-      for (let h, k = 0; k < board.size; k = h) {
+    for (let j = 0; j < board.dimension; j++) {
+      for (let h, k = 0; k < board.dimension; k = h) {
         // Scan for rows of same-lettered gem starting at k
         const firstGem = getAt(j, k);
         h = k + 1;
         if (!firstGem) continue;
         let gems = [firstGem];
-        for (; h < board.size; h++) {
+        for (; h < board.dimension; h++) {
           const lastGem = getAt(j, h);
           if (!lastGem || lastGem.letter != firstGem.letter) break;
           gems.push(lastGem);
@@ -284,10 +284,10 @@ const Game = function (board) {
   // If there are holes created by moving the gems down, populates the holes with random gems, and issues "add" events for these gems.
   this.moveGemsDown = function () {
     // Collapse each column
-    for (let col = 0; col < board.size; col++) {
+    for (let col = 0; col < board.dimension; col++) {
       let emptyRow = null;
       // In each column, scan for the bottom most empty row
-      for (let row = board.size - 1; row >= 0; row--) {
+      for (let row = board.dimension - 1; row >= 0; row--) {
         emptyRow = row;
         if (board.gridCellGem(emptyRow, col) == null) {
           break;

@@ -29,14 +29,14 @@ $(document).on("click", "#newGame", function (event) {
 // Get Hint button
 $(document).on("click", "#getHint", function (event) {
   const helpMove = game.getRandomValidMove();
-  const cellSize = 600 / board.size;
+  const cellSize = 600 / board.dimension;
+  const arrowLength = cellSize / 4;
   var canvas = document.getElementById("gameCanvas");
   var ctx2 = canvas.getContext("2d");
   ctx2.beginPath();
   posY = (helpMove.gem.row + 1) * cellSize;
   posX = helpMove.gem.col * cellSize;
   ctx2.strokeStyle = "black";
-  var arrowSize = cellSize / 4;
 
   switch (helpMove.direction) {
     case "right":
@@ -44,14 +44,14 @@ $(document).on("click", "#getHint", function (event) {
       posX = posX + cellSize * 1.2;
       posY = posY - cellSize / 2;
       ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
-      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
+      ctx2.lineTo(posX - arrowLength, posY - arrowLength);
+      ctx2.lineTo(posX - arrowLength, posY + arrowLength);
       ctx2.fill();
       ctx2.rect(
-        posX - arrowSize * 2,
-        posY - arrowSize / 2,
-        arrowSize,
-        arrowSize
+        posX - arrowLength * 2,
+        posY - arrowLength / 2,
+        arrowLength,
+        arrowLength
       );
       ctx2.fill();
       break;
@@ -60,10 +60,10 @@ $(document).on("click", "#getHint", function (event) {
       posX = posX - cellSize / 4;
       posY = posY - cellSize / 2;
       ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
-      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
+      ctx2.lineTo(posX + arrowLength, posY + arrowLength);
+      ctx2.lineTo(posX + arrowLength, posY - arrowLength);
       ctx2.fill();
-      ctx2.rect(posX + arrowSize, posY - arrowSize / 2, arrowSize, arrowSize);
+      ctx2.rect(posX + arrowLength, posY - arrowLength / 2, arrowLength, arrowLength);
       ctx2.fill();
       break;
     case "up":
@@ -71,10 +71,10 @@ $(document).on("click", "#getHint", function (event) {
       posY = posY - cellSize * 1.2;
       posX = posX + cellSize / 2;
       ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
-      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
+      ctx2.lineTo(posX - arrowLength, posY + arrowLength);
+      ctx2.lineTo(posX + arrowLength, posY + arrowLength);
       ctx2.fill();
-      ctx2.rect(posX - arrowSize / 2, posY + arrowSize, arrowSize, arrowSize);
+      ctx2.rect(posX - arrowLength / 2, posY + arrowLength, arrowLength, arrowLength);
       ctx2.fill();
       break;
     case "down":
@@ -82,14 +82,14 @@ $(document).on("click", "#getHint", function (event) {
       posY = posY + cellSize / 4;
       posX = posX + cellSize / 2;
       ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
-      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
+      ctx2.lineTo(posX + arrowLength, posY - arrowLength);
+      ctx2.lineTo(posX - arrowLength, posY - arrowLength);
       ctx2.fill();
       ctx2.rect(
-        posX - arrowSize / 2,
-        posY - arrowSize * 2,
-        arrowSize,
-        arrowSize
+        posX - arrowLength / 2,
+        posY - arrowLength * 2,
+        arrowLength,
+        arrowLength
       );
       ctx2.fill();
       break;
@@ -146,7 +146,7 @@ function checkMove(dir) {
   var canvas = document.getElementById("gameCanvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
-  const cellSize = 600 / board.size;
+  const cellSize = 600 / board.dimension;
 
   var clearWidth, clearHeight;
 
@@ -266,7 +266,7 @@ function crushcrush() {
   var listRemove = game.getGemCrushes();
   var canvas = document.getElementById("gameCanvas");
   var cxt = canvas.getContext("2d");
-  const cellSize = 600 / board.size;
+  const cellSize = 600 / board.dimension;
   var alphaCounter = 10;
   if (listRemove.length != 0) {
     var numCrush = listRemove.length;
@@ -369,7 +369,7 @@ function getCanvasPos(event) {
   var yPos = event.clientY - canvasRect.top;
 
   //Get coordinate
-  const cellSize = 600 / board.size;
+  const cellSize = 600 / board.dimension;
   yPos = Math.floor(yPos / cellSize) + 1;
   xPos = Math.floor(xPos / cellSize);
   xPos = col_array[xPos];
@@ -381,7 +381,7 @@ function getCanvasPos(event) {
 function checkDrag() {
   var originCol = col_array.indexOf(mouseDownLocation.charAt(0));
   var destCol = col_array.indexOf(mouseUpLocation.charAt(0));
-  var spliceSize = board.size > 9 ? 2 : 1;
+  var spliceSize = board.dimension > 9 ? 2 : 1;
   var originRow = mouseDownLocation.substr(1, spliceSize);
   var destRow = mouseUpLocation.substr(1, spliceSize);
 
@@ -447,7 +447,7 @@ function drawBoard() {
     "./graphics/jquery.png",
   ]);
 
-  const cellSize = 600 / board.size;
+  const cellSize = 600 / board.dimension;
 
   var canvas = document.getElementById("gameCanvas");
   ctx = canvas.getContext("2d");
@@ -455,8 +455,8 @@ function drawBoard() {
   // ctx.strokeRect(0,0, canvas.width, canvas.height);
   ctx.strokeStyle = "lightgrey";
 
-  for (let row = 0; row < board.size; row++) {
-    for (let col = 0; col < board.size; col++) {
+  for (let row = 0; row < board.dimension; row++) {
+    for (let col = 0; col < board.dimension; col++) {
       const gem = board.gridCellGem(row, col);
       const image = document.getElementById(gem.letter);
       const dx = col * cellSize;

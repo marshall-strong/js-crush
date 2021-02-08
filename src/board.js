@@ -1,17 +1,17 @@
-const Board = function (size) {
+const Board = function (dimension) {
   ////////////////////////////////////////////////
   // setup grid
 
-  Object.defineProperty(this, "size", {
+  Object.defineProperty(this, "dimension", {
     enumberable: false,
     configurable: false,
     writable: false,
-    value: size,
+    value: dimension,
   });
 
   this.newGrid = function () {
-    let matrix = new Array(this.size);
-    for (let i = 0; i < this.size; i++) {
+    let matrix = new Array(this.dimension);
+    for (let i = 0; i < this.dimension; i++) {
       matrix[i] = [];
     }
     return matrix;
@@ -28,7 +28,7 @@ const Board = function (size) {
   // gridCell info
 
   this.gridCellIsValid = function (row, col) {
-    const validValues = [...Array(this.size).keys()];
+    const validValues = [...Array(this.dimension).keys()];
     return validValues.includes(row) && validValues.includes(col);
   };
 
