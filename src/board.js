@@ -1,11 +1,5 @@
 const Board = function (size) {
-  Object.defineProperty(this, "size", {
-    enumberable: false,
-    configurable: false,
-    writable: false,
-    value: size,
-  });
-
+  // helper method for initializing grid
   this.initializeNewGrid = function () {
     let matrix = new Array(this.size);
     for (let i = 0; i < this.size; i++) {
@@ -13,6 +7,16 @@ const Board = function (size) {
     }
     return matrix;
   };
+
+  ////////////////////////////////////////////////
+  // BOARD PROPERTIES
+
+  Object.defineProperty(this, "size", {
+    enumberable: false,
+    configurable: false,
+    writable: false,
+    value: size,
+  });
 
   Object.defineProperty(this, "grid", {
     enumberable: false,
@@ -35,6 +39,9 @@ const Board = function (size) {
     value: 0,
   });
 
+  ////////////////////////////////////////////////
+  // functions with `row` and `col` parameters return info about a cell
+
   this.isValidCell = function (row, col) {
     const validValues = [...Array(this.size).keys()];
     return validValues.includes(row) && validValues.includes(col);
@@ -44,18 +51,12 @@ const Board = function (size) {
     return this.gemAt(row, col) ? false : true;
   };
 
-  ////////////////////////////////////////////////
-  // Public methods
-
-  // this.doAutoMove = function () {
-  //   const move = game.getRandomValidMove();
-  //   const toGem = board.getGemInDirection(move.gem, move.direction);
-  //   this.flipGems(move.gem, toGem);
-  // };
-
   this.gemAt = function (row, col) {
     return this.isValidCell(row, col) ? this.grid[row][col] : null;
   };
+
+  ////////////////////////////////////////////////
+  // CREATE GEMS
 
   this.createRandomGem = function () {
     const index = Math.floor(Math.random() * Gem.letters.length);
@@ -90,19 +91,46 @@ const Board = function (size) {
     }
   };
 
-  // // // Add a gem of specified letter at row, col.
-  // // this.addGem = function (letter, row, col, spawnRow, spawnCol) {
-  // //   const gem = new Gem(letter, gemId++);
-  // //   this.add(gem, row, col, spawnRow, spawnCol);
-  // // };
+  ////////////////////////////////////////////////
+  // MOVE GEMS
 
-  // // Add a gem of random letter at row, col
-  // this.createRandomGem = function (row, col, spawnRow, spawnCol) {
-  //   const index = Math.floor(Math.random() * Gem.letters.length);
-  //   const letter = Gem.letters[index];
-  //   const newGem = new Gem(letter, this.nextGemId++);
-  //   this.add(newGem, row, col, spawnRow, spawnCol);
-  // };
+  // Flip gem1 with gem2 in one step, firing two move events.
+  // Does not verify the validity of the flip.
+  // Does not crush gems produced by flip.
+  this.flipGems = function (gem1, gem2) {
+    // Swap the two gems simultaneously.
+    const details1 = {
+      gem: gem1,
+      toRow: gem2.row,
+      toCol: gem2.col,
+      fromRow: gem1.row,
+      fromCol: gem1.col,
+    };
+    const details2 = {
+      gem: gem2,
+      toRow: gem1.row,
+      toCol: gem1.col,
+      fromRow: gem2.row,
+      fromCol: gem2.col,
+    };
+
+    gem1.row = details1.toRow;
+    gem1.col = details1.toCol;
+    this.grid[details1.toRow][details1.toCol] = gem1;
+    gem2.row = details2.toRow;
+    gem2.col = details2.toCol;
+    this.grid[details2.toRow][details2.toCol] = gem2;
+
+    // Trigger two move events.
+    $(this).triggerHandler("move", details1);
+    $(this).triggerHandler("move", details2);
+  };
+
+  this.doAutoMove = function () {
+    const move = game.getRandomValidMove();
+    const toGem = board.getGemInDirection(move.gem, move.direction);
+    this.flipGems(move.gem, toGem);
+  };
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
@@ -124,6 +152,9 @@ const Board = function (size) {
       $(this).triggerHandler("move", details);
     }
   };
+
+  ////////////////////////////////////////////////
+  // REMOVE GEMS
 
   // remove specified gem from the board
   this.remove = function (gem) {
@@ -158,7 +189,7 @@ const Board = function (size) {
   };
 
   ////////////////////////////////////////////////
-  // Utilities
+  // Get Gem in Direction
   //
 
   // Returns the gem immediately in the direction specified by direction
@@ -180,37 +211,8 @@ const Board = function (size) {
     }
   };
 
-  // Flip gem1 with gem2 in one step, firing two move events.
-  // Does not verify the validity of the flip.
-  // Does not crush gems produced by flip.
-  this.flipGems = function (gem1, gem2) {
-    // Swap the two gems simultaneously.
-    const details1 = {
-      gem: gem1,
-      toRow: gem2.row,
-      toCol: gem2.col,
-      fromRow: gem1.row,
-      fromCol: gem1.col,
-    };
-    const details2 = {
-      gem: gem2,
-      toRow: gem1.row,
-      toCol: gem1.col,
-      fromRow: gem2.row,
-      fromCol: gem2.col,
-    };
-
-    gem1.row = details1.toRow;
-    gem1.col = details1.toCol;
-    this.grid[details1.toRow][details1.toCol] = gem1;
-    gem2.row = details2.toRow;
-    gem2.col = details2.toCol;
-    this.grid[details2.toRow][details2.toCol] = gem2;
-
-    // Trigger two move events.
-    $(this).triggerHandler("move", details1);
-    $(this).triggerHandler("move", details2);
-  };
+  ////////////////////////////////////////////////
+  // SCORE
 
   this.resetScore = function () {
     this.score = 0;
