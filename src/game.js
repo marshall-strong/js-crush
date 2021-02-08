@@ -1,23 +1,70 @@
 const Game = function (board) {
-  // Disable scoring during setup
-  let scoring = false;
+  ////////////////////////////////////////////////
+  // GAME PROPERTIES
+
+  Object.defineProperty(this, "gameboard", {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: board,
+  });
+
+  Object.defineProperty(this, "keepScore", {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: false,
+  });
 
   ////////////////////////////////////////////////
-  // PUBLIC METHODS
+  // GAME SETUP
 
-  // Initial game board should not have any matches
-  // if a match exists, regenerate
-  // Scoring is disabled during this time
   this.prepareNewGame = function () {
-    scoring = false;
+    // disable scoring during game setup
+    this.keepScore = false;
     while (true) {
-      this.populateBoard();
+      // iterate through gameboard, adding gems to empty cells
+      for (let col = 0; col < board.size; col++) {
+        for (let row = 0; row < board.size; row++) {
+          if (board.gemAt(row, col) == null) board.addRandomGem(row, col);
+        }
+      }
+      // once all cells are filled, check gameboard for matches
       const crushable = this.getGemCrushes();
+      // if no matches are found, exit setup and begin gameplay
       if (crushable.length == 0) break;
+      // remove any matches found, then continue the loop to add more gems
       this.removeCrushes(crushable);
     }
-    scoring = true;
+    // enable scoring
+    this.keepScore = true;
   };
+
+  // Helper method for game.prepareNewGame
+  // Called when a new game is created.
+  // Fills all the empty positions on the board with random-lettered gems.
+  this.populateBoard = function () {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
+        // Check the empty gem position (hole), fill with new gem
+        if (board.gemAt(row, col) == null) {
+          board.addRandomGem(row, col);
+        }
+      }
+    }
+  };
+
+  // clear entire board
+  this.clearBoard = function () {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
+        board.removeAt(row, col);
+      }
+    }
+  };
+
+  ////////////////////////////////////////////////
+  // GAME MOVES
 
   // Returns true if swapping the `fromGem` with the gem in the specified
   //   direction is a valid move according to the game rules.
@@ -25,6 +72,81 @@ const Game = function (board) {
   this.isMoveTypeValid = function (fromGem, direction) {
     return this.numberGemsCrushedByMove(fromGem, direction) > 0;
   };
+  // Helper method for game.isMoveTypeValid
+  // Returns the number of gems that would be crushed if the gem provided by fromGem were to be flipped in the direction specified(['up', 'down', 'left', 'right'])
+  // If move is not valid, return 0
+  this.numberGemsCrushedByMove = function (fromGem, direction) {
+    return this.getGemsToCrushGivenMove(fromGem, direction).length;
+  };
+  // Helper method for game.numberGemsCrushedByMove
+  // Returns a list of gems that would be "crushed" (i.e. removed) if fromGem were to be moved in the specified direction
+  // (['up', 'down', 'left', 'right'])
+  // If move would result in no crushed gems, an empty list is returned.
+  this.getGemsToCrushGivenMove = function (fromGem, direction) {
+    const toGem = board.getGemInDirection(fromGem, direction);
+
+    if (!toGem || toGem.letter == fromGem.letter) {
+      return [];
+    }
+    const swap = [fromGem, toGem];
+    const crushable = this.getGemCrushes(swap);
+    // Only return crushable groups that involve the swapped gems.
+    // If the board has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
+    const connected = crushable.filter(function (set) {
+      for (let k = 0; k < swap.length; k++) {
+        if (set.indexOf(swap[k]) >= 0) return true;
+      }
+      return false;
+    });
+
+    return [].concat.apply([], connected); //flatten nested lists
+  };
+
+  // If there is a valid move, returns an object with two properties:
+  //   gem: a Gem that can be moved
+  //   direction: the direction that it can be moved.
+  // If there are no valid moves, returns null.
+  // The move is selected randomly from the available moves, favoring moves with smaller crushes.
+  this.getRandomValidMove = function () {
+    const directions = ["up", "down", "left", "right"];
+    let validMovesThreeCrush = [];
+    let validMovesMoreThanThreeCrush = [];
+
+    // For each cell in the board, check to see if moving it in any of the four directions would result in a crush.
+    // If yes, add it to the appropriate list (validMoves_threeCrush for crushes of size 3, validMoves_moreThanThreeCrush for crushes larger than 3)
+    for (let row = 0; row < board.size; row++) {
+      for (let col = 0; col < board.size; col++) {
+        const fromGem = board.gemAt(row, col);
+        if (!fromGem) continue;
+        for (i = 0; i < 4; i++) {
+          const direction = directions[i];
+          const numGemsCrushed = this.numberGemsCrushedByMove(
+            fromGem,
+            direction
+          );
+          if (numGemsCrushed == 3) {
+            validMovesThreeCrush.push({ gem: fromGem, direction: direction });
+          } else if (numGemsCrushed > 3) {
+            validMovesMoreThanThreeCrush.push({
+              gem: fromGem,
+              direction: direction,
+            });
+          }
+        }
+      }
+    }
+    // if there are three-crushes possible, prioritize these
+    const searchArray = validMovesThreeCrush.length
+      ? validMovesThreeCrush
+      : validMovesMoreThanThreeCrush;
+    // If there are no valid moves, return null
+    if (searchArray.length == 0) return null;
+    // select a random crush from among the crushes found
+    return searchArray[Math.floor(Math.random() * searchArray.length)];
+  };
+
+  ////////////////////////////////////////////////
+  // GAME LOGIC
 
   // Returns a list of ALL gem crushes on the board.
   // A gem crush is a list of three or more gems in a single row or column that have the same letter.
@@ -77,7 +199,6 @@ const Game = function (board) {
         union(set[0].id, set[k].id);
       }
     }
-
     // Pass 2: list out resulting sets of minSize or larger.
     let results = {};
     for (row = 0; row < board.size; row++) {
@@ -102,13 +223,56 @@ const Game = function (board) {
     return list;
   };
 
+  // Helper Method for game.getGemCrushes
+  // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
+  // If 'vertical' is set to true, only look for vertical strips.
+  // Otherwise, only look for horizontal strips.
+  // If the 'swap' array is passed, then every even-indexed gem in the array is considered swapped with every odd-indexed gem in the array.
+  this.findLetterStrips = function (vertical, swap) {
+    const getAt = function (x, y) {
+      // Retrieve the gem at a row and column (depending on vertical)
+      let result = vertical ? board.gemAt(y, x) : board.gemAt(x, y);
+      if (swap) {
+        // If the result gem is in the 'swap' array, then swap the result with its adjacent pair.
+        let index = swap.indexOf(result);
+        if (index >= 0) {
+          return swap[index ^ 1];
+        }
+      }
+      return result;
+    };
+
+    let result = [];
+
+    for (let j = 0; j < board.size; j++) {
+      for (let h, k = 0; k < board.size; k = h) {
+        // Scan for rows of same-lettered gem starting at k
+        const firstGem = getAt(j, k);
+        h = k + 1;
+        if (!firstGem) continue;
+        let gems = [firstGem];
+        for (; h < board.size; h++) {
+          const lastGem = getAt(j, h);
+          if (!lastGem || lastGem.letter != firstGem.letter) break;
+          gems.push(lastGem);
+        }
+        // If there are at least 3 gems in a row, remember the set.
+        if (gems.length >= 3) result.push(gems);
+      }
+    }
+
+    return result;
+  };
+
   // Deletes all the gems in setOfSetsOfCrushes (which can be generated by getGemCrushes or by getGemsToCrushGivenMove)
   // Does not shift gems down at all. Updates the score accordingly.
   this.removeCrushes = function (setOfSetsOfCrushes) {
     for (let j = 0; j < setOfSetsOfCrushes.length; j++) {
       const set = setOfSetsOfCrushes[j];
       for (let k = 0; k < set.length; k++) {
-        if (scoring) board.incrementScore(set[k], set[k].row, set[k].col);
+        if (this.keepScore) {
+          board.incrementScore(set[k], set[k].row, set[k].col);
+        }
         board.remove(set[k]);
       }
     }
@@ -135,150 +299,11 @@ const Game = function (board) {
           emptyRow--;
         }
       }
-
       for (let spawnRow = -1; emptyRow >= 0; emptyRow--, spawnRow--) {
         // We report spawnRow as the (negative) position where
         // the gem "would have" started to fall into place.
         board.addRandomGem(emptyRow, col, spawnRow, col);
       }
     }
-  };
-
-  // If there is a valid move, returns an object with two properties:
-  //   gem: a Gem that can be moved
-  //   direction: the direction that it can be moved.
-  // If there are no valid moves, returns null.
-  // The move is selected randomly from the available moves, favoring moves with smaller crushes.
-  this.getRandomValidMove = function () {
-    const directions = ["up", "down", "left", "right"];
-    let validMovesThreeCrush = [];
-    let validMovesMoreThanThreeCrush = [];
-
-    // For each cell in the board, check to see if moving it in any of the four directions would result in a crush.
-    // If yes, add it to the appropriate list (validMoves_threeCrush for crushes of size 3, validMoves_moreThanThreeCrush for crushes larger than 3)
-    for (let row = 0; row < board.size; row++) {
-      for (let col = 0; col < board.size; col++) {
-        const fromGem = board.gemAt(row, col);
-        if (!fromGem) continue;
-        for (i = 0; i < 4; i++) {
-          const direction = directions[i];
-          const numGemsCrushed = this.numberGemsCrushedByMove(
-            fromGem,
-            direction
-          );
-          if (numGemsCrushed == 3) {
-            validMovesThreeCrush.push({ gem: fromGem, direction: direction });
-          } else if (numGemsCrushed > 3) {
-            validMovesMoreThanThreeCrush.push({
-              gem: fromGem,
-              direction: direction,
-            });
-          }
-        }
-      }
-    }
-    // if there are three-crushes possible, prioritize these
-    const searchArray = validMovesThreeCrush.length
-      ? validMovesThreeCrush
-      : validMovesMoreThanThreeCrush;
-    // If there are no valid moves, return null
-    if (searchArray.length == 0) return null;
-    // select a random crush from among the crushes found
-    return searchArray[Math.floor(Math.random() * searchArray.length)];
-  };
-
-  ////////////////////////////////////////////////
-  // Private methods
-
-  // Helper method for game.prepareNewGame
-  // Called when a new game is created.
-  // Fills all the empty positions on the board with random-lettered gems.
-  this.populateBoard = function () {
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
-        // Check the empty gem position (hole), fill with new gem
-        if (board.gemAt(row, col) == null) {
-          board.addRandomGem(row, col);
-        }
-      }
-    }
-  };
-
-  // clear entire board
-  this.clearBoard = function () {
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
-        board.removeAt(row, col);
-      }
-    }
-  };
-
-  // Helper method for game.isMoveTypeValid
-  // Returns the number of gems that would be crushed if the gem provided by fromGem were to be flipped in the direction specified(['up', 'down', 'left', 'right'])
-  // If move is not valid, return 0
-  this.numberGemsCrushedByMove = function (fromGem, direction) {
-    return this.getGemsToCrushGivenMove(fromGem, direction).length;
-  };
-
-  // Helper method for game.numberGemsCrushedByMove
-  // Returns a list of gems that would be "crushed" (i.e. removed) if fromGem were to be moved in the specified direction
-  // (['up', 'down', 'left', 'right'])
-  // If move would result in no crushed gems, an empty list is returned.
-  this.getGemsToCrushGivenMove = function (fromGem, direction) {
-    const toGem = board.getGemInDirection(fromGem, direction);
-
-    if (!toGem || toGem.letter == fromGem.letter) {
-      return [];
-    }
-    const swap = [fromGem, toGem];
-    const crushable = this.getGemCrushes(swap);
-    // Only return crushable groups that involve the swapped gems.
-    // If the board has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
-    const connected = crushable.filter(function (set) {
-      for (let k = 0; k < swap.length; k++) {
-        if (set.indexOf(swap[k]) >= 0) return true;
-      }
-      return false;
-    });
-
-    return [].concat.apply([], connected); //flatten nested lists
-  };
-
-  // Helper Method for game.getGemCrushes
-  // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
-  // If 'vertical' is set to true, only look for vertical strips.
-  // Otherwise, only look for horizontal strips.
-  // If the 'swap' array is passed, then every even-indexed gem in the array is considered swapped with every odd-indexed gem in the array.
-  this.findLetterStrips = function (vertical, swap) {
-    const getAt = function (x, y) {
-      // Retrieve the gem at a row and column (depending on vertical)
-      let result = vertical ? board.gemAt(y, x) : board.gemAt(x, y);
-      if (swap) {
-        // If the result gem is in the 'swap' array, then swap the result with its adjacent pair.
-        let index = swap.indexOf(result);
-        if (index >= 0) {
-          return swap[index ^ 1];
-        }
-      }
-      return result;
-    };
-    let result = [];
-    for (let j = 0; j < board.size; j++) {
-      for (let h, k = 0; k < board.size; k = h) {
-        // Scan for rows of same-lettered gem starting at k
-        const firstGem = getAt(j, k);
-        h = k + 1;
-        if (!firstGem) continue;
-        let gems = [firstGem];
-        for (; h < board.size; h++) {
-          const lastGem = getAt(j, h);
-          if (!lastGem || lastGem.letter != firstGem.letter) break;
-          gems.push(lastGem);
-        }
-        // If there are at least 3 gems in a row, remember the set.
-        if (gems.length >= 3) result.push(gems);
-      }
-    }
-    return result;
   };
 };
