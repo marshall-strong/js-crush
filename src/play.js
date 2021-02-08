@@ -28,7 +28,7 @@ $(document).on("keydown", function (event) {
 
 // Button Events
 $(document).on("click", "#newGame", function (event) {
-  game.cleanBoard();
+  game.clearBoard();
   game.prepareNewGame();
   $("#mainColumn").html(drawBoard());
   board.resetScore();

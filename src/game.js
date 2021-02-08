@@ -205,7 +205,7 @@ const Game = function (board) {
   };
 
   // clear entire board
-  this.cleanBoard = function () {
+  this.clearBoard = function () {
     for (let col = 0; col < board.size; col++) {
       for (let row = 0; row < board.size; row++) {
         board.removeAt(row, col);

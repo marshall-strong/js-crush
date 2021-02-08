@@ -1,5 +1,5 @@
 const Gem = function (letter, id) {
-  // data descriptors -- immutable
+  // immutable data descriptors
   Object.defineProperty(this, "letter", {
     enumberable: false,
     configurable: false,
@@ -12,7 +12,7 @@ const Gem = function (letter, id) {
     writable: false,
     value: id,
   });
-  // data descriptors -- mutable
+  // mutable data descriptors
   Object.defineProperty(this, "row", {
     enumberable: false,
     configurable: true,
