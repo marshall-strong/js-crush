@@ -115,7 +115,6 @@ $(document).on("mousedown", "#gameCanvas", function (event) {
 $(document).on("mouseup", "#gameCanvas", function (event) {
   mouseUpLocation = getCanvasPos(event);
   console.log("mouseUp: " + mouseUpLocation);
-  clearMoves();
   $("#mainColumn").html(drawBoard());
   checkDrag();
 });
@@ -422,13 +421,6 @@ function checkDrag() {
     }
     //moving left or right
   }
-}
-
-function clearMoves() {
-  document.getElementById("left").disabled = true;
-  document.getElementById("right").disabled = true;
-  document.getElementById("up").disabled = true;
-  document.getElementById("down").disabled = true;
 }
 
 function drawBoard() {
