@@ -433,23 +433,24 @@ function clearMoves() {
 
 function drawBoard() {
   const cellSize = 600 / board.dimension;
-
-  var canvas = document.getElementById("gameCanvas");
+  const canvas = document.getElementById("gameCanvas");
   ctx = canvas.getContext("2d");
+  // draw grid container
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // ctx.strokeRect(0,0, canvas.width, canvas.height);
-  ctx.strokeStyle = "lightgrey";
-
+  ctx.strokeStyle = "white";
+  // iterate through gridCells
   for (let row = 0; row < board.dimension; row++) {
     for (let col = 0; col < board.dimension; col++) {
-      const gem = board.gridCellGem(row, col);
-      const image = document.getElementById(gem.letter);
       const dx = col * cellSize;
       const dy = row * cellSize;
       const dWidth = cellSize;
       const dHeight = cellSize;
-      ctx.drawImage(image, dx, dy, dWidth, dHeight);
+      // draw cell outline
       ctx.strokeRect(dx, dy, dWidth, dHeight);
+      const gem = board.gridCellGem(row, col);
+      const gemImage = document.getElementById(gem.letter);
+      // draw gemImage
+      ctx.drawImage(gemImage, dx, dy, dWidth, dHeight);
     }
   }
 }
