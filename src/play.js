@@ -28,8 +28,8 @@ $(document).on("keydown", function (event) {
 
 // Button Events
 $(document).on("click", "#newGame", function (event) {
-  game.clearBoard();
-  game.prepareNewGame();
+  game.clearGameboard();
+  game.setupGameboard();
   $("#mainColumn").html(drawBoard());
   board.resetScore();
 });

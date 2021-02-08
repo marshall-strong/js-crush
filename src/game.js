@@ -19,9 +19,18 @@ const Game = function (board) {
   ////////////////////////////////////////////////
   // GAME SETUP
 
-  this.prepareNewGame = function () {
+  this.clearGameboard = function () {
+    for (let col = 0; col < board.size; col++) {
+      for (let row = 0; row < board.size; row++) {
+        board.removeAt(row, col);
+      }
+    }
+  };
+
+  this.setupGameboard = function () {
     // disable scoring during game setup
     this.keepScore = false;
+    // populate gameboard
     while (true) {
       // iterate through gameboard, adding gems to empty cells
       for (let col = 0; col < board.size; col++) {
@@ -38,29 +47,6 @@ const Game = function (board) {
     }
     // enable scoring
     this.keepScore = true;
-  };
-
-  // Helper method for game.prepareNewGame
-  // Called when a new game is created.
-  // Fills all the empty positions on the board with random-lettered gems.
-  this.populateBoard = function () {
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
-        // Check the empty gem position (hole), fill with new gem
-        if (board.gemAt(row, col) == null) {
-          board.addRandomGem(row, col);
-        }
-      }
-    }
-  };
-
-  // clear entire board
-  this.clearBoard = function () {
-    for (let col = 0; col < board.size; col++) {
-      for (let row = 0; row < board.size; row++) {
-        board.removeAt(row, col);
-      }
-    }
   };
 
   ////////////////////////////////////////////////
