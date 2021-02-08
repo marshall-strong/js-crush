@@ -178,14 +178,14 @@ const Game = function (board) {
     let horiz = this.findLetterStrips(false, swap);
     let sets = vert.concat(horiz);
 
-    // Execute union of all the strips, possibly joining
-    // horizontal and vertical strips that intersect.
+    // Execute union of all the strips, possibly joining horizontal and vertical strips that intersect.
     for (let j = 0; j < sets.length; j++) {
       let set = sets[j];
       for (let k = 1; k < set.length; k++) {
         union(set[0].id, set[k].id);
       }
     }
+
     // Pass 2: list out resulting sets of minSize or larger.
     let results = {};
     for (row = 0; row < board.dimension; row++) {
@@ -202,6 +202,7 @@ const Game = function (board) {
         }
       }
     }
+
     // Pass 3: Return results as a list of list of gems.
     const list = [];
     for (const key in results) {

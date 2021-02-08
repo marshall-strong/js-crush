@@ -431,32 +431,7 @@ function clearMoves() {
   document.getElementById("down").disabled = true;
 }
 
-function load_img(imgToLoad) {
-  let loaded = false;
-  let counter = 0;
-  for (let i = 0; i < imgToLoad.length; i++) {
-    const img = new Image();
-    img.onload = function () {
-      counter++;
-      if (counter == imgToLoad.length) {
-        loaded = true;
-      }
-    };
-    img.src = imgToLoad[i];
-    img_array = img;
-  }
-}
-
 function drawBoard() {
-  load_img([
-    "./graphics/github.png",
-    "./graphics/react.png",
-    "./graphics/javascript.png",
-    "./graphics/nodejs.png",
-    "./graphics/webpack.png",
-    "./graphics/jquery.png",
-  ]);
-
   const cellSize = 600 / board.dimension;
 
   var canvas = document.getElementById("gameCanvas");
