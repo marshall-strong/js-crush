@@ -248,7 +248,7 @@ function flipAndDraw(currGem, dir) {
   document.getElementById("crusher").disabled = false;
   document.getElementById("inputBox").disabled = true;
   document.getElementById("Canvas").style.pointerEvents = "none";
-  document.getElementById("helpBtn").disabled = true;
+  document.getElementById("getHint").disabled = true;
 
   var counter = true;
   crushcrush();
@@ -261,7 +261,7 @@ function flipAndDraw(currGem, dir) {
     } else {
       clearInterval(gg);
       document.getElementById("Canvas").style.pointerEvents = "auto";
-      document.getElementById("helpBtn").disabled = false;
+      document.getElementById("getHint").disabled = false;
     }
   }, 1100);
 }
@@ -428,7 +428,7 @@ function drawGem(row, col, size, letter) {
   }
 }
 
-$(document).on("click", "#helpBtn", function (event) {
+$(document).on("click", "#getHint", function (event) {
   var helpMove = game.getRandomValidMove();
   // console.log(helpMove.gem);
   // console.log(helpMove.direction);
