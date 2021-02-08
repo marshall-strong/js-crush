@@ -369,22 +369,18 @@ function changeScoreColor(gemLetter) {
 }
 
 function getCanvasPos(event) {
-  var canvasRect = document
-    .getElementById("gameCanvas")
-    .getBoundingClientRect();
-
-  //Get relative position on canvas
+  const canvas = document.getElementById("gameCanvas");
+  const canvasRect = canvas.getBoundingClientRect();
+  // get relative position on canvas
   var xPos = event.clientX - canvasRect.left;
   var yPos = event.clientY - canvasRect.top;
-
-  //Get coordinate
+  // get coordinate
   const cellSize = 600 / board.dimension;
-  yPos = Math.floor(yPos / cellSize) + 1;
-  xPos = Math.floor(xPos / cellSize);
-  xPos = col_array[xPos];
-
-  // console.log({ col: xPos, row: yPos});
-  return xPos + yPos;
+  xCol = col_array[Math.floor(xPos / cellSize)];
+  yRow = Math.floor(yPos / cellSize) + 1;
+  // log coordinate
+  console.log({ col: xCol, row: yRow });
+  return xCol + yRow;
 }
 
 function checkDrag() {
