@@ -133,7 +133,7 @@ function checkMove(dir) {
   var canvas = document.getElementById("Canvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
-  var size = 320 / board.size;
+  var size = 600 / board.size;
 
   var clearWidth, clearHeight;
 
@@ -270,7 +270,7 @@ function crushcrush() {
   var listRemove = game.getGemCrushes();
   var canvas = document.getElementById("Canvas");
   var cxt = canvas.getContext("2d");
-  var size = 320 / board.size;
+  var size = 600 / board.size;
   var alphaCounter = 10;
   if (listRemove.length != 0) {
     var numCrush = listRemove.length;
@@ -432,7 +432,7 @@ $(document).on("click", "#getHint", function (event) {
   var helpMove = game.getRandomValidMove();
   // console.log(helpMove.gem);
   // console.log(helpMove.direction);
-  var size = 320 / board.size;
+  var size = 600 / board.size;
   var canvas = document.getElementById("Canvas");
   var ctx2 = canvas.getContext("2d");
   ctx2.beginPath();
@@ -513,7 +513,7 @@ function getCanvasPos(event) {
   var yPos = event.clientY - canvasRect.top;
 
   //Get coordinate
-  var size = 320 / board.size;
+  var size = 600 / board.size;
   yPos = Math.floor(yPos / size) + 1;
   xPos = Math.floor(xPos / size);
   xPos = col_array[xPos];
@@ -616,7 +616,7 @@ function drawBoard() {
     "./graphics/jquery.png",
   ]);
 
-  const cellSize = 320 / board.size;
+  const cellSize = 600 / board.size;
 
   var canvas = document.getElementById("Canvas");
   ctx = canvas.getContext("2d");
