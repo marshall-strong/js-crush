@@ -9,24 +9,16 @@ const defaultSize = 8;
 const board = new Board(defaultSize);
 const game = new Game(board);
 
-// var inputBoxInfo;
-// var validInput = false;
-// var image_array;
-var globalCrushCounter = true;
-var mouseDownLocation;
-var mouseUpLocation;
+let globalCrushCounter = true;
+let mouseDownLocation;
+let mouseUpLocation;
 
-// move a gem on the board
+// update score display when score value changes
 $(board).on("scoreUpdate", function (e, info) {
   $("#score").html(board.score);
 });
 
-// keyboard events arrive here
-$(document).on("keydown", function (event) {
-  // Your code here.
-});
-
-// Button Events
+// New Game button
 $(document).on("click", "#newGame", function (event) {
   game.clearGameboard();
   game.setupGameboard();
@@ -34,66 +26,95 @@ $(document).on("click", "#newGame", function (event) {
   board.resetScore();
 });
 
-$(document).keypress(function (event) {
-  if (event.which == 13) {
-    checkInput();
+// Get Hint button
+$(document).on("click", "#getHint", function (event) {
+  const helpMove = game.getRandomValidMove();
+  const cellSize = 600 / board.size;
+  var canvas = document.getElementById("Canvas");
+  var ctx2 = canvas.getContext("2d");
+  ctx2.beginPath();
+  posY = (helpMove.gem.row + 1) * cellSize;
+  posX = helpMove.gem.col * cellSize;
+  ctx2.strokeStyle = "black";
+  var arrowSize = cellSize / 4;
+
+  switch (helpMove.direction) {
+    case "right":
+      $("#mainColumn").html(drawBoard());
+      posX = posX + cellSize * 1.2;
+      posY = posY - cellSize / 2;
+      ctx2.moveTo(posX, posY);
+      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
+      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
+      ctx2.fill();
+      ctx2.rect(
+        posX - arrowSize * 2,
+        posY - arrowSize / 2,
+        arrowSize,
+        arrowSize
+      );
+      ctx2.fill();
+      break;
+    case "left":
+      $("#mainColumn").html(drawBoard());
+      posX = posX - cellSize / 4;
+      posY = posY - cellSize / 2;
+      ctx2.moveTo(posX, posY);
+      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
+      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
+      ctx2.fill();
+      ctx2.rect(posX + arrowSize, posY - arrowSize / 2, arrowSize, arrowSize);
+      ctx2.fill();
+      break;
+    case "up":
+      $("#mainColumn").html(drawBoard());
+      posY = posY - cellSize * 1.2;
+      posX = posX + cellSize / 2;
+      ctx2.moveTo(posX, posY);
+      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
+      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
+      ctx2.fill();
+      ctx2.rect(posX - arrowSize / 2, posY + arrowSize, arrowSize, arrowSize);
+      ctx2.fill();
+      break;
+    case "down":
+      $("#mainColumn").html(drawBoard());
+      posY = posY + cellSize / 4;
+      posX = posX + cellSize / 2;
+      ctx2.moveTo(posX, posY);
+      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
+      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
+      ctx2.fill();
+      ctx2.rect(
+        posX - arrowSize / 2,
+        posY - arrowSize * 2,
+        arrowSize,
+        arrowSize
+      );
+      ctx2.fill();
+      break;
   }
+  ctx2.closePath();
 });
 
-// function checkInput() {
-//   inputBoxInfo = document.getElementById("inputBox").value;
-//   // console.log(inputBoxInfo.length);
-//   if (inputBoxInfo.length <= 3) {
-//     var bool1 = col_array.indexOf(inputBoxInfo.charAt(0)) != -1;
-//     var bool2 =
-//       Number(inputBoxInfo.charAt(1)) > 0 &&
-//       Number(inputBoxInfo.charAt(1)) <= 20;
-//     if (bool1 && bool2) {
-//       validInput = true;
-//       var counter = 0;
-//       if (avaliableMove("up")) {
-//         document.getElementById("up").disabled = false;
-//         counter++;
-//       }
-//       if (avaliableMove("left")) {
-//         document.getElementById("left").disabled = false;
-//         counter++;
-//       }
-//       if (avaliableMove("right")) {
-//         document.getElementById("right").disabled = false;
-//         counter++;
-//       }
-//       if (avaliableMove("down")) {
-//         document.getElementById("down").disabled = false;
-//         counter++;
-//       }
-//       if (counter > 0) return;
-//     }
-//   }
-//   // console.log("hello");
-//   document.getElementById("inputBox").value = null;
-//   document.getElementById("inputBox").focus();
-//   document.getElementById("up").disabled = true;
-//   document.getElementById("left").disabled = true;
-//   document.getElementById("right").disabled = true;
-//   document.getElementById("down").disabled = true;
-// }
+// Click and Drag functionality
+$(document).on("mousedown", "#Canvas", function (event) {
+  mouseDownLocation = getCanvasPos(event);
+  console.log("mousedown: " + mouseDownLocation);
+});
+$(document).on("mouseup", "#Canvas", function (event) {
+  mouseUpLocation = getCanvasPos(event);
+  console.log("mouseUp: " + mouseUpLocation);
+  clearMoves();
+  $("#mainColumn").html(drawBoard());
+  checkDrag();
+});
 
-// $(document).on("click", "#up", function (event) {
-//   if (validInput) checkMove("up");
-// });
-
-// $(document).on("click", "#left", function (event) {
-//   if (validInput) checkMove("left");
-// });
-
-// $(document).on("click", "#right", function (event) {
-//   if (validInput) checkMove("right");
-// });
-
-// $(document).on("click", "#down", function (event) {
-//   if (validInput) checkMove("down");
-// });
+// unused
+$(document).on("mousemove", "#Canvas", function (event) {});
+$(document).on("mouseout", "#Canvas", function (event) {});
+$(document).on("keydown", function (event) {});
+$(document).keypress(function (event) {});
 
 function avaliableMove(dir) {
   var inputCol = col_array.indexOf(mouseDownLocation.charAt(0));
@@ -110,14 +131,6 @@ function avaliableMove(dir) {
 }
 
 function checkMove(dir) {
-  // var inputCol = col_array.indexOf(inputBoxInfo.charAt(0));
-  // var inputRow;
-  // if(inputBoxInfo.length < 3)
-  //  inputRow = Number(inputBoxInfo.charAt(1))-1;
-  // else {
-  //   var temp = inputBoxInfo.charAt(1) + inputBoxInfo.charAt(2);
-  //   inputRow = Number(temp) -1;
-  // }
   console.log(mouseDownLocation);
   console.log(mouseUpLocation);
   var inputRow;
@@ -133,48 +146,47 @@ function checkMove(dir) {
   var canvas = document.getElementById("Canvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
-  var size = 600 / board.size;
+  const cellSize = 600 / board.size;
 
   var clearWidth, clearHeight;
 
   var destRow, destCol, originRow, originCol;
 
   if (dir == "right" || dir == "left") {
-    clearWidth = size * 2;
-    clearHeight = size;
+    clearWidth = cellSize * 2;
+    clearHeight = cellSize;
     var originLetter, destLetter;
     if (currGem.col > gemTo.col) {
-      destCol = currGem.col * size;
-      originCol = gemTo.col * size;
+      destCol = currGem.col * cellSize;
+      originCol = gemTo.col * cellSize;
       originLetter = gemTo.letter;
       destLetter = currGem.letter;
     } else {
-      destCol = gemTo.col * size;
-      originCol = currGem.col * size;
+      destCol = gemTo.col * cellSize;
+      originCol = currGem.col * cellSize;
       originLetter = currGem.letter;
       destLetter = gemTo.letter;
     }
-    destRow = gemTo.row * size;
-    originRow = currGem.row * size;
+    destRow = gemTo.row * cellSize;
+    originRow = currGem.row * cellSize;
     var timer = 0;
 
     var inter = setInterval(function () {
-      // console.log('switching here');
       ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
       ctxt.drawImage(
         document.getElementById(originLetter),
-        originCol + (timer * size) / 20,
+        originCol + (timer * cellSize) / 20,
         originRow,
-        size,
-        size
+        cellSize,
+        cellSize
       );
       ctxt.drawImage(
         document.getElementById(destLetter),
-        destCol - (timer * size) / 20,
+        destCol - (timer * cellSize) / 20,
         destRow,
-        size,
-        size
+        cellSize,
+        cellSize
       );
 
       timer++;
@@ -185,21 +197,21 @@ function checkMove(dir) {
       }
     }, 10);
   } else {
-    clearWidth = size;
-    clearHeight = size * 2;
+    clearWidth = cellSize;
+    clearHeight = cellSize * 2;
     if (currGem.row > gemTo.row) {
-      destRow = currGem.row * size;
-      originRow = gemTo.row * size;
+      destRow = currGem.row * cellSize;
+      originRow = gemTo.row * cellSize;
       originLetter = gemTo.letter;
       destLetter = currGem.letter;
     } else {
-      destRow = gemTo.row * size;
-      originRow = currGem.row * size;
+      destRow = gemTo.row * cellSize;
+      originRow = currGem.row * cellSize;
       originLetter = currGem.letter;
       destLetter = gemTo.letter;
     }
-    destCol = gemTo.col * size;
-    originCol = currGem.col * size;
+    destCol = gemTo.col * cellSize;
+    originCol = currGem.col * cellSize;
     var timer = 0;
 
     var inter = setInterval(function () {
@@ -208,16 +220,16 @@ function checkMove(dir) {
       ctxt.drawImage(
         document.getElementById(originLetter),
         originCol,
-        originRow + (timer * size) / 20,
-        size,
-        size
+        originRow + (timer * cellSize) / 20,
+        cellSize,
+        cellSize
       );
       ctxt.drawImage(
         document.getElementById(destLetter),
         destCol,
-        destRow - (timer * size) / 20,
-        size,
-        size
+        destRow - (timer * cellSize) / 20,
+        cellSize,
+        cellSize
       );
 
       timer++;
@@ -232,31 +244,15 @@ function checkMove(dir) {
 }
 
 function flipAndDraw(currGem, dir) {
-  // console.log(currGem);
   board.flipGems(currGem, board.getGemInDirection(currGem, dir));
-
-  // ctxt.clearRect(0, 0, canvas.width, canvas.height);
   $("#mainColumn").html(drawBoard());
-
-  // document.getElementById("inputBox").value = null;
-  // document.getElementById("inputBox").focus();
-  // validInput = false;
-  // document.getElementById("up").disabled = true;
-  // document.getElementById("left").disabled = true;
-  // document.getElementById("right").disabled = true;
-  // document.getElementById("down").disabled = true;
-  // document.getElementById("crusher").disabled = false;
-  // document.getElementById("inputBox").disabled = true;
   document.getElementById("Canvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  // var counter = true;
   crushcrush();
 
   var gg = setInterval(function () {
-    // console.log(counter);
     if (globalCrushCounter == true) {
-      // console.log(globalCrushCounter);
       crushcrush();
     } else {
       clearInterval(gg);
@@ -270,7 +266,7 @@ function crushcrush() {
   var listRemove = game.getGemCrushes();
   var canvas = document.getElementById("Canvas");
   var cxt = canvas.getContext("2d");
-  var size = 600 / board.size;
+  const cellSize = 600 / board.size;
   var alphaCounter = 10;
   if (listRemove.length != 0) {
     var numCrush = listRemove.length;
@@ -279,23 +275,22 @@ function crushcrush() {
     var alpha = setInterval(function () {
       alphaCounter = alphaCounter - 1;
       cxt.globalAlpha = alphaCounter / 10;
-      // console.log(alphaCounter/10);
       for (var i = 0; i < numCrush; i++) {
         for (var j = 0; j < crushLength; j++) {
           var letter = String(listRemove[i][j].letter);
           var scoreLetter = listRemove[i][j].letter;
           ctx.clearRect(
-            listRemove[i][j].col * size,
-            listRemove[i][j].row * size,
-            size,
-            size
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
           );
           cxt.drawImage(
             document.getElementById(letter),
-            listRemove[i][j].col * size,
-            listRemove[i][j].row * size,
-            size,
-            size
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
           );
         }
       }
@@ -318,9 +313,9 @@ function crushcrush() {
 
     listRemove = game.getGemCrushes();
     if (listRemove.length == 0) {
-      document.getElementById("crusher").disabled = true;
-      document.getElementById("inputBox").disabled = false;
-      document.getElementById("inputBox").focus();
+      // document.getElementById("crusher").disabled = true;
+      // document.getElementById("inputBox").disabled = false;
+      // document.getElementById("inputBox").focus();
       // console.log('crush false');
       globalCrushCounter = false;
     } else {
@@ -330,6 +325,7 @@ function crushcrush() {
     }
   }, 550);
 }
+
 function getAllGem(crushList) {
   var gems = [];
   // console.log(crushList);
@@ -363,83 +359,6 @@ function changeScoreColor(gemLetter) {
   }
 }
 
-$(document).on("click", "#getHint", function (event) {
-  var helpMove = game.getRandomValidMove();
-  // console.log(helpMove.gem);
-  // console.log(helpMove.direction);
-  var size = 600 / board.size;
-  var canvas = document.getElementById("Canvas");
-  var ctx2 = canvas.getContext("2d");
-  ctx2.beginPath();
-  posY = (helpMove.gem.row + 1) * size;
-  posX = helpMove.gem.col * size;
-  ctx2.strokeStyle = "black";
-  var arrowSize = size / 4;
-  // console.log(arrowSize);
-
-  switch (helpMove.direction) {
-    case "right":
-      // ctx2.clearRect(0, 0, canvas.width, canvas.height);
-      $("#mainColumn").html(drawBoard());
-      posX = posX + size * 1.2;
-      posY = posY - size / 2;
-      ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
-      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
-      ctx2.fill();
-      ctx2.rect(
-        posX - arrowSize * 2,
-        posY - arrowSize / 2,
-        arrowSize,
-        arrowSize
-      );
-      ctx2.fill();
-      break;
-    case "left":
-      // ctx2.clearRect(0, 0, canvas.width, canvas.height);
-      $("#mainColumn").html(drawBoard());
-      posX = posX - size / 4;
-      posY = posY - size / 2;
-      ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
-      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
-      ctx2.fill();
-      ctx2.rect(posX + arrowSize, posY - arrowSize / 2, arrowSize, arrowSize);
-      ctx2.fill();
-      break;
-    case "up":
-      // ctx2.clearRect(0, 0, canvas.width, canvas.height);
-      $("#mainColumn").html(drawBoard());
-      posY = posY - size * 1.2;
-      posX = posX + size / 2;
-      ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX - arrowSize, posY + arrowSize);
-      ctx2.lineTo(posX + arrowSize, posY + arrowSize);
-      ctx2.fill();
-      ctx2.rect(posX - arrowSize / 2, posY + arrowSize, arrowSize, arrowSize);
-      ctx2.fill();
-      break;
-    case "down":
-      // ctx2.clearRect(0, 0, canvas.width, canvas.height);
-      $("#mainColumn").html(drawBoard());
-      posY = posY + size / 4;
-      posX = posX + size / 2;
-      ctx2.moveTo(posX, posY);
-      ctx2.lineTo(posX + arrowSize, posY - arrowSize);
-      ctx2.lineTo(posX - arrowSize, posY - arrowSize);
-      ctx2.fill();
-      ctx2.rect(
-        posX - arrowSize / 2,
-        posY - arrowSize * 2,
-        arrowSize,
-        arrowSize
-      );
-      ctx2.fill();
-      break;
-  }
-  ctx2.closePath();
-});
-
 function getCanvasPos(event) {
   var canvasRect = document.getElementById("Canvas").getBoundingClientRect();
 
@@ -448,40 +367,14 @@ function getCanvasPos(event) {
   var yPos = event.clientY - canvasRect.top;
 
   //Get coordinate
-  var size = 600 / board.size;
-  yPos = Math.floor(yPos / size) + 1;
-  xPos = Math.floor(xPos / size);
+  const cellSize = 600 / board.size;
+  yPos = Math.floor(yPos / cellSize) + 1;
+  xPos = Math.floor(xPos / cellSize);
   xPos = col_array[xPos];
 
   // console.log({ col: xPos, row: yPos});
   return xPos + yPos;
 }
-
-$(document).on("mousedown", "#Canvas", function (event) {
-  // console.log("mousedown");
-  mouseDownLocation = getCanvasPos(event);
-  console.log("mousedown: " + mouseDownLocation);
-
-  document.getElementById("inputBox").value = mouseDownLocation;
-});
-
-$(document).on("mouseup", "#Canvas", function (event) {
-  // console.log("mouseup");
-  mouseUpLocation = getCanvasPos(event);
-  console.log("mouseUp: " + mouseUpLocation);
-  clearMoves();
-  $("#mainColumn").html(drawBoard());
-
-  checkDrag();
-});
-
-$(document).on("mousemove", "#Canvas", function (event) {
-  // console.log("mousemove");
-});
-
-$(document).on("mouseout", "#Canvas", function (event) {
-  // console.log("mouseout");
-});
 
 function checkDrag() {
   var originCol = col_array.indexOf(mouseDownLocation.charAt(0));
@@ -518,6 +411,7 @@ function checkDrag() {
     //moving left or right
   }
 }
+
 function clearMoves() {
   document.getElementById("left").disabled = true;
   document.getElementById("right").disabled = true;
