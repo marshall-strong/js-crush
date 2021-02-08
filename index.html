@@ -5,12 +5,10 @@
     <title>JS Gem Crush</title>
     <link rel="icon" href="./graphics/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="index.css" />
-
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.2/seedrandom.js"></script>
     <script src="src/gem.js"></script>
@@ -20,132 +18,55 @@
   </head>
 
   <body>
-    <div class="container">
-      <div class="row1">
-        <div class="widthAuto" id="firstColumn">
-          <div class="p-2"><h2 class="text-center">JS Gem Crush</h2></div>
-          A Javascript game by Marshall Strong
-        </div>
+    <h4>JS Gem Crush</h4>
+    <h6>Get three like gems in a row. Click and drag into place.</h6>
+
+    <div id="mainColumn">
+      <button id="newGame">New Game</button>
+      <button id="getHint">Get Hint</button>
+      <div>
+        SCORE:
+        <div id="score">this will be replaced by `board.score`</div>
       </div>
+      <script language="javascript">
+        game.prepareNewGame();
+      </script>
+      <canvas id="Canvas" width="320" height="320">
+        Sorry, your browser does not support Canvas. Try using Chrome!
+        <img id="gemA" src="./graphics/github.png" />
+        <img id="gemB" src="./graphics/react.png" />
+        <img id="gemC" src="./graphics/javascript.png" />
+        <img id="gemD" src="./graphics/nodejs.png" />
+        <img id="gemE" src="./graphics/webpack.png" />
+        <img id="gemF" src="./graphics/jquery.png" />
+      </canvas>
+      <script>
+        drawBoard();
+      </script>
+      <script language="javascript">
+        board.resetScore();
+      </script>
+      <p id="invalid">Invalid Move!</p>
+    </div>
 
-      <div class="row2">
-        <div class="widthAuto" id="firstColumn">
-          SCORE:
-          <div class="p-2 text-center" id="score"><h3>Score</h3></div>
-        </div>
+    <a href="https://github.com/marshall-strong/js-crush">
+      GitHub repository
+    </a>
+    <h5>A Javascript game by Marshall Strong</h5>
+
+    <div style="display: none">
+      <h2>Move:</h2>
+      <input type="text" id="inputBox" />
+      <button id="crusher" disabled style="display: none">Crush Once</button>
+      <div>
+        <button id="up" disabled>&uarr;</button>
       </div>
-
-      <div class="row3">
-        <div
-          class="mx-auto align-self-center"
-          id="mainColumn"
-          style="position: relative"
-        >
-          <script language="javascript">
-            game.prepareNewGame();
-          </script>
-          <canvas
-            class="align-self-center"
-            id="Canvas"
-            width="320"
-            height="320"
-          >
-            Sorry, your browser does not support Canvas. Try using Chrome!
-            <img id="gemA" src="./graphics/github.png" />
-            <img id="gemB" src="./graphics/react.png" />
-            <img id="gemC" src="./graphics/javascript.png" />
-            <img id="gemD" src="./graphics/nodejs.png" />
-            <img id="gemE" src="./graphics/webpack.png" />
-            <img id="gemF" src="./graphics/jquery.png" />
-
-            <canvas
-              id="gemCanvas1"
-              width="320"
-              height="320"
-              style="z-index: 40; position: absolute"
-            ></canvas>
-            <canvas
-              class="align-self-center"
-              id="gemCanvas2"
-              width="320"
-              height="320"
-              style="z-index: 80"
-            ></canvas>
-          </canvas>
-
-          <script>
-            drawBoard();
-          </script>
-          <script language="javascript">
-            board.resetScore();
-          </script>
-
-          <p class="mx-auto" id="invalid">Invalid Move!</p>
-        </div>
-
-        <div class="align-self-center" id="lastColumn">
-          <div class="p-2 text-center">
-            <h2 class="">Move:</h2>
-            <input type="text" id="inputBox" />
-          </div>
-
-          <div class="p-2 text-center modP">
-            <button class="btn btnLetter" id="up" disabled>&uarr;</button>
-          </div>
-
-          <div class="p-2 text-center modP">
-            <button
-              class="btn btnLetter"
-              id="left"
-              style="margin-right: 20px"
-              disabled
-            >
-              &larr;
-            </button>
-            <button
-              class="btn btnLetter"
-              id="right"
-              style="margin-left: 20px"
-              disabled
-            >
-              &rarr;
-            </button>
-          </div>
-
-          <div class="p-2 text-center modP">
-            <button class="btn btnLetter" id="down" disabled>&darr;</button>
-          </div>
-
-          <div class="p-2 text-center">
-            <button
-              class="btn btnLetter"
-              id="crusher"
-              disabled
-              style="display: none"
-            >
-              Crush Once
-            </button>
-          </div>
-        </div>
+      <div>
+        <button id="left" disabled>&larr;</button>
+        <button id="right" disabled>&rarr;</button>
       </div>
-
-      <div class="row4">
-        <div class="p-2 text-center">
-          <button class="btn helpBtn" id="helpBtn">Get Hint</button>
-        </div>
-        <div class="p-2 text-center">
-          <button class="btn newGameBtn" id="newGame">New Game</button>
-        </div>
-      </div>
-
-      <div class="row4">
-        Get three like gems in a row. Click and drag into place.
-      </div>
-
-      <div class="row5">
-        <a href="https://github.com/marshall-strong/js-crush"
-          >GitHub repository</a
-        >
+      <div>
+        <button id="down" disabled>&darr;</button>
       </div>
     </div>
   </body>
