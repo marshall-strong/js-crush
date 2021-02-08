@@ -1,7 +1,4 @@
 const Gem = function (letter, id) {
-  ////////////////////////////////////////////////
-  // GEM PROPERTIES
-
   Object.defineProperty(this, "letter", {
     enumberable: false,
     configurable: false,

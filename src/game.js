@@ -35,7 +35,8 @@ const Game = function (board) {
       // iterate through gameboard, adding gems to empty cells
       for (let col = 0; col < board.size; col++) {
         for (let row = 0; row < board.size; row++) {
-          if (board.gridCellGem(row, col) == null) board.addRandomGem(row, col);
+          if (board.gridCellGem(row, col) == null)
+            board.addGemToBoard(row, col);
         }
       }
       // once all cells are filled, check gameboard for matches
@@ -288,7 +289,7 @@ const Game = function (board) {
       for (let spawnRow = -1; emptyRow >= 0; emptyRow--, spawnRow--) {
         // We report spawnRow as the (negative) position where
         // the gem "would have" started to fall into place.
-        board.addRandomGem(emptyRow, col, spawnRow, col);
+        board.addGemToBoard(emptyRow, col, spawnRow, col);
       }
     }
   };

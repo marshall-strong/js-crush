@@ -1,6 +1,6 @@
 const Board = function (size) {
   ////////////////////////////////////////////////
-  // Gameboard
+  // setup grid
 
   Object.defineProperty(this, "size", {
     enumberable: false,
@@ -25,7 +25,7 @@ const Board = function (size) {
   });
 
   ////////////////////////////////////////////////
-  // functions with `row` and `col` parameters return info about a gridCell
+  // gridCell info
 
   this.gridCellIsValid = function (row, col) {
     const validValues = [...Array(this.size).keys()];
@@ -50,23 +50,19 @@ const Board = function (size) {
     value: 0,
   });
 
-  this.newGem = function () {
+  this.createGem = function () {
     const index = Math.floor(Math.random() * Gem.letters.length);
     const letter = Gem.letters[index];
     const newGem = new Gem(letter, this.nextGemId++);
     return newGem;
   };
 
-  // Add a new gem to the board.
-  // spawnRow, spawnCol are optional args.
-  // They indicate where the gem was "spawned", BEFORE it moved to row, col.
-  // The spawn location may be off the board.
-  // Spawn Location is included to the 'add' event.
-  // It is used to animate new gems that are coming in from offscreen.
-
-  this.addRandomGem = function (row, col, spawnRow = row, spawnCol = col) {
+  this.addGemToBoard = function (row, col, spawnRow = row, spawnCol = col) {
     if (this.gridCellIsEmpty(row, col)) {
-      const newGem = this.newGem();
+      const newGem = this.createGem();
+      newGem.row = row;
+      newGem.col = col;
+      this.grid[row][col] = newGem;
       const details = {
         gem: newGem,
         toRow: row,
@@ -74,9 +70,6 @@ const Board = function (size) {
         fromRow: spawnRow,
         fromCol: spawnCol,
       };
-      newGem.row = row;
-      newGem.col = col;
-      this.grid[row][col] = newGem;
       $(this).triggerHandler("add", details);
     } else {
       console.log("add already found a gem at " + row + "," + col);
@@ -163,20 +156,9 @@ const Board = function (size) {
   // remove gem at specified position from the board
   this.removeAt = function (row, col) {
     if (this.gridCellIsEmpty(row, col)) {
-      console.log("removeAt found no gem at " + r + "," + c);
+      console.log("removeAt found no gem at " + row + "," + col);
     } else {
       this.remove(this.grid[row][col]);
-    }
-  };
-
-  // Remove all gems from the board
-  this.clear = function () {
-    for (let r in this.grid) {
-      for (let c in this.grid[r]) {
-        if (this.grid[r][c]) {
-          this.removeAt(r, c);
-        }
-      }
     }
   };
 
