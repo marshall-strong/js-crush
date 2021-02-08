@@ -271,9 +271,10 @@ const Game = function (board) {
   this.moveGemsDown = function () {
     // Collapse each column
     for (let col = 0; col < board.size; col++) {
-      var emptyRow = null;
+      let emptyRow = null;
       // In each column, scan for the bottom most empty row
-      for (var emptyRow = board.size - 1; emptyRow >= 0; emptyRow--) {
+      for (let row = board.size - 1; row >= 0; row--) {
+        emptyRow = row;
         if (board.gridCellGem(emptyRow, col) == null) {
           break;
         }
