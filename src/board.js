@@ -1,15 +1,6 @@
 const Board = function (size) {
-  // helper method for initializing grid
-  this.initializeNewGrid = function () {
-    let matrix = new Array(this.size);
-    for (let i = 0; i < this.size; i++) {
-      matrix[i] = [];
-    }
-    return matrix;
-  };
-
   ////////////////////////////////////////////////
-  // BOARD PROPERTIES
+  // Gameboard
 
   Object.defineProperty(this, "size", {
     enumberable: false,
@@ -18,25 +9,19 @@ const Board = function (size) {
     value: size,
   });
 
+  this.newGrid = function () {
+    let matrix = new Array(this.size);
+    for (let i = 0; i < this.size; i++) {
+      matrix[i] = [];
+    }
+    return matrix;
+  };
+
   Object.defineProperty(this, "grid", {
     enumberable: false,
     configurable: true,
     writable: true,
-    value: this.initializeNewGrid(),
-  });
-
-  Object.defineProperty(this, "nextGemId", {
-    enumerable: false,
-    configurable: true,
-    writable: true,
-    value: 0,
-  });
-
-  Object.defineProperty(this, "score", {
-    enumberable: false,
-    configurable: true,
-    writable: true,
-    value: 0,
+    value: this.newGrid(),
   });
 
   ////////////////////////////////////////////////
@@ -57,6 +42,13 @@ const Board = function (size) {
 
   ////////////////////////////////////////////////
   // CREATE GEMS
+
+  Object.defineProperty(this, "nextGemId", {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: 0,
+  });
 
   this.createRandomGem = function () {
     const index = Math.floor(Math.random() * Gem.letters.length);
@@ -213,6 +205,13 @@ const Board = function (size) {
 
   ////////////////////////////////////////////////
   // SCORE
+
+  Object.defineProperty(this, "score", {
+    enumberable: false,
+    configurable: true,
+    writable: true,
+    value: 0,
+  });
 
   this.resetScore = function () {
     this.score = 0;
