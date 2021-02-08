@@ -63,7 +63,12 @@ $(document).on("click", "#getHint", function (event) {
       ctx2.lineTo(posX + arrowLength, posY + arrowLength);
       ctx2.lineTo(posX + arrowLength, posY - arrowLength);
       ctx2.fill();
-      ctx2.rect(posX + arrowLength, posY - arrowLength / 2, arrowLength, arrowLength);
+      ctx2.rect(
+        posX + arrowLength,
+        posY - arrowLength / 2,
+        arrowLength,
+        arrowLength
+      );
       ctx2.fill();
       break;
     case "up":
@@ -74,7 +79,12 @@ $(document).on("click", "#getHint", function (event) {
       ctx2.lineTo(posX - arrowLength, posY + arrowLength);
       ctx2.lineTo(posX + arrowLength, posY + arrowLength);
       ctx2.fill();
-      ctx2.rect(posX - arrowLength / 2, posY + arrowLength, arrowLength, arrowLength);
+      ctx2.rect(
+        posX - arrowLength / 2,
+        posY + arrowLength,
+        arrowLength,
+        arrowLength
+      );
       ctx2.fill();
       break;
     case "down":
