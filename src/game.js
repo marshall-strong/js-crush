@@ -203,8 +203,8 @@ const Game = function (board) {
       }
     }
     // Pass 3: Return results as a list of list of gems.
-    var list = [];
-    for (var key in results) {
+    const list = [];
+    for (const key in results) {
       list.push(results[key]);
     }
     return list;
