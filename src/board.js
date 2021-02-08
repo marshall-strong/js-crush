@@ -25,19 +25,19 @@ const Board = function (size) {
   });
 
   ////////////////////////////////////////////////
-  // functions with `row` and `col` parameters return info about a cell
+  // functions with `row` and `col` parameters return info about a gridCell
 
-  this.isValidCell = function (row, col) {
+  this.gridCellIsValid = function (row, col) {
     const validValues = [...Array(this.size).keys()];
     return validValues.includes(row) && validValues.includes(col);
   };
 
-  this.isEmptyCell = function (row, col) {
-    return this.gemAt(row, col) ? false : true;
+  this.gridCellIsEmpty = function (row, col) {
+    return this.gridCellGem(row, col) ? false : true;
   };
 
-  this.gemAt = function (row, col) {
-    return this.isValidCell(row, col) ? this.grid[row][col] : null;
+  this.gridCellGem = function (row, col) {
+    return this.gridCellIsValid(row, col) ? this.grid[row][col] : null;
   };
 
   ////////////////////////////////////////////////
@@ -50,7 +50,7 @@ const Board = function (size) {
     value: 0,
   });
 
-  this.createRandomGem = function () {
+  this.newGem = function () {
     const index = Math.floor(Math.random() * Gem.letters.length);
     const letter = Gem.letters[index];
     const newGem = new Gem(letter, this.nextGemId++);
@@ -64,9 +64,9 @@ const Board = function (size) {
   // Spawn Location is included to the 'add' event.
   // It is used to animate new gems that are coming in from offscreen.
 
-  this.addRandomGem = function (row, col, spawnRow, spawnCol) {
-    if (this.isEmptyCell(row, col)) {
-      const newGem = this.createRandomGem();
+  this.addRandomGem = function (row, col, spawnRow = row, spawnCol = col) {
+    if (this.gridCellIsEmpty(row, col)) {
+      const newGem = this.newGem();
       const details = {
         gem: newGem,
         toRow: row,
@@ -126,7 +126,7 @@ const Board = function (size) {
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
-    if (this.isEmptyCell(toRow, toCol)) {
+    if (this.gridCellIsEmpty(toRow, toCol)) {
       const details = {
         gem: gem,
         toRow: toRow,
@@ -162,7 +162,7 @@ const Board = function (size) {
 
   // remove gem at specified position from the board
   this.removeAt = function (row, col) {
-    if (this.isEmptyCell(row, col)) {
+    if (this.gridCellIsEmpty(row, col)) {
       console.log("removeAt found no gem at " + r + "," + c);
     } else {
       this.remove(this.grid[row][col]);
@@ -181,24 +181,21 @@ const Board = function (size) {
   };
 
   ////////////////////////////////////////////////
-  // Get Gem in Direction
-  //
-
   // Returns the gem immediately in the direction specified by direction
   // ['up', 'down', 'left', 'right'] from the gem passed as fromGem
   this.getGemInDirection = function (fromGem, direction) {
     switch (direction) {
       case "up": {
-        return this.gemAt(fromGem.row - 1, fromGem.col);
+        return this.gridCellGem(fromGem.row - 1, fromGem.col);
       }
       case "down": {
-        return this.gemAt(fromGem.row + 1, fromGem.col);
+        return this.gridCellGem(fromGem.row + 1, fromGem.col);
       }
       case "left": {
-        return this.gemAt(fromGem.row, fromGem.col - 1);
+        return this.gridCellGem(fromGem.row, fromGem.col - 1);
       }
       case "right": {
-        return this.gemAt(fromGem.row, fromGem.col + 1);
+        return this.gridCellGem(fromGem.row, fromGem.col + 1);
       }
     }
   };

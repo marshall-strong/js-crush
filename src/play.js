@@ -104,7 +104,7 @@ function avaliableMove(dir) {
     var temp = mouseDownLocation.charAt(1) + mouseDownLocation.charAt(2);
     inputRow = Number(temp) - 1;
   }
-  var currGem = board.gemAt(inputRow, inputCol);
+  var currGem = board.gridCellGem(inputRow, inputCol);
   var bool = game.isMoveTypeValid(currGem, dir);
   return bool;
 }
@@ -128,7 +128,7 @@ function checkMove(dir) {
     var temp = mouseDownLocation.charAt(1) + mouseDownLocation.charAt(2);
     inputRow = Number(temp) - 1;
   }
-  var currGem = board.gemAt(inputRow, inputCol);
+  var currGem = board.gridCellGem(inputRow, inputCol);
   var bool = game.isMoveTypeValid(currGem, dir);
   var canvas = document.getElementById("Canvas");
   ctxt = canvas.getContext("2d");
@@ -626,7 +626,7 @@ function drawBoard() {
 
   for (let row = 0; row < board.size; row++) {
     for (let col = 0; col < board.size; col++) {
-      const gem = board.gemAt(row, col);
+      const gem = board.gridCellGem(row, col);
       const image = document.getElementById(gem.letter);
       const dx = col * cellSize;
       const dy = row * cellSize;

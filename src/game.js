@@ -35,7 +35,7 @@ const Game = function (board) {
       // iterate through gameboard, adding gems to empty cells
       for (let col = 0; col < board.size; col++) {
         for (let row = 0; row < board.size; row++) {
-          if (board.gemAt(row, col) == null) board.addRandomGem(row, col);
+          if (board.gridCellGem(row, col) == null) board.addRandomGem(row, col);
         }
       }
       // once all cells are filled, check gameboard for matches
@@ -102,7 +102,7 @@ const Game = function (board) {
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes of size 3, validMoves_moreThanThreeCrush for crushes larger than 3)
     for (let row = 0; row < board.size; row++) {
       for (let col = 0; col < board.size; col++) {
-        const fromGem = board.gemAt(row, col);
+        const fromGem = board.gridCellGem(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
           const direction = directions[i];
@@ -189,7 +189,7 @@ const Game = function (board) {
     let results = {};
     for (row = 0; row < board.size; row++) {
       for (col = 0; col < board.size; col++) {
-        const gem = board.gemAt(row, col);
+        const gem = board.gridCellGem(row, col);
         if (gem) {
           const p = find(gem.id);
           if (size(p) >= 3) {
@@ -217,7 +217,7 @@ const Game = function (board) {
   this.findLetterStrips = function (vertical, swap) {
     const getAt = function (x, y) {
       // Retrieve the gem at a row and column (depending on vertical)
-      let result = vertical ? board.gemAt(y, x) : board.gemAt(x, y);
+      let result = vertical ? board.gridCellGem(y, x) : board.gridCellGem(x, y);
       if (swap) {
         // If the result gem is in the 'swap' array, then swap the result with its adjacent pair.
         let index = swap.indexOf(result);
@@ -273,13 +273,13 @@ const Game = function (board) {
       var emptyRow = null;
       // In each column, scan for the bottom most empty row
       for (var emptyRow = board.size - 1; emptyRow >= 0; emptyRow--) {
-        if (board.gemAt(emptyRow, col) == null) {
+        if (board.gridCellGem(emptyRow, col) == null) {
           break;
         }
       }
       // Then shift any nonempty rows up
       for (let row = emptyRow - 1; row >= 0; row--) {
-        const gem = board.gemAt(row, col);
+        const gem = board.gridCellGem(row, col);
         if (gem != null) {
           board.moveTo(gem, emptyRow, col);
           emptyRow--;
