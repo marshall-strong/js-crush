@@ -30,7 +30,7 @@ $(document).on("click", "#newGame", function (event) {
 $(document).on("click", "#getHint", function (event) {
   const helpMove = game.getRandomValidMove();
   const cellSize = 600 / board.size;
-  var canvas = document.getElementById("Canvas");
+  var canvas = document.getElementById("gameCanvas");
   var ctx2 = canvas.getContext("2d");
   ctx2.beginPath();
   posY = (helpMove.gem.row + 1) * cellSize;
@@ -98,11 +98,11 @@ $(document).on("click", "#getHint", function (event) {
 });
 
 // Click and Drag functionality
-$(document).on("mousedown", "#Canvas", function (event) {
+$(document).on("mousedown", "#gameCanvas", function (event) {
   mouseDownLocation = getCanvasPos(event);
   console.log("mousedown: " + mouseDownLocation);
 });
-$(document).on("mouseup", "#Canvas", function (event) {
+$(document).on("mouseup", "#gameCanvas", function (event) {
   mouseUpLocation = getCanvasPos(event);
   console.log("mouseUp: " + mouseUpLocation);
   clearMoves();
@@ -111,8 +111,8 @@ $(document).on("mouseup", "#Canvas", function (event) {
 });
 
 // unused
-$(document).on("mousemove", "#Canvas", function (event) {});
-$(document).on("mouseout", "#Canvas", function (event) {});
+$(document).on("mousemove", "#gameCanvas", function (event) {});
+$(document).on("mouseout", "#gameCanvas", function (event) {});
 $(document).on("keydown", function (event) {});
 $(document).keypress(function (event) {});
 
@@ -143,7 +143,7 @@ function checkMove(dir) {
   }
   var currGem = board.gridCellGem(inputRow, inputCol);
   var bool = game.isMoveTypeValid(currGem, dir);
-  var canvas = document.getElementById("Canvas");
+  var canvas = document.getElementById("gameCanvas");
   ctxt = canvas.getContext("2d");
   var gemTo = board.getGemInDirection(currGem, dir);
   const cellSize = 600 / board.size;
@@ -246,7 +246,7 @@ function checkMove(dir) {
 function flipAndDraw(currGem, dir) {
   board.flipGems(currGem, board.getGemInDirection(currGem, dir));
   $("#mainColumn").html(drawBoard());
-  document.getElementById("Canvas").style.pointerEvents = "none";
+  document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
   crushcrush();
@@ -256,7 +256,7 @@ function flipAndDraw(currGem, dir) {
       crushcrush();
     } else {
       clearInterval(gg);
-      document.getElementById("Canvas").style.pointerEvents = "auto";
+      document.getElementById("gameCanvas").style.pointerEvents = "auto";
       document.getElementById("getHint").disabled = false;
     }
   }, 1100);
@@ -264,7 +264,7 @@ function flipAndDraw(currGem, dir) {
 
 function crushcrush() {
   var listRemove = game.getGemCrushes();
-  var canvas = document.getElementById("Canvas");
+  var canvas = document.getElementById("gameCanvas");
   var cxt = canvas.getContext("2d");
   const cellSize = 600 / board.size;
   var alphaCounter = 10;
@@ -360,7 +360,9 @@ function changeScoreColor(gemLetter) {
 }
 
 function getCanvasPos(event) {
-  var canvasRect = document.getElementById("Canvas").getBoundingClientRect();
+  var canvasRect = document
+    .getElementById("gameCanvas")
+    .getBoundingClientRect();
 
   //Get relative position on canvas
   var xPos = event.clientX - canvasRect.left;
@@ -447,7 +449,7 @@ function drawBoard() {
 
   const cellSize = 600 / board.size;
 
-  var canvas = document.getElementById("Canvas");
+  var canvas = document.getElementById("gameCanvas");
   ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // ctx.strokeRect(0,0, canvas.width, canvas.height);
