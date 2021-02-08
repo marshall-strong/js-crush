@@ -523,7 +523,7 @@ function getCanvasPos(event) {
 }
 
 $(document).on("mousedown", "#Canvas", function (event) {
-  console.log("mousedown");
+  // console.log("mousedown");
   mouseDownLocation = getCanvasPos(event);
   console.log("mousedown: " + mouseDownLocation);
 
@@ -531,7 +531,7 @@ $(document).on("mousedown", "#Canvas", function (event) {
 });
 
 $(document).on("mouseup", "#Canvas", function (event) {
-  console.log("mouseup");
+  // console.log("mouseup");
   mouseUpLocation = getCanvasPos(event);
   console.log("mouseUp: " + mouseUpLocation);
   clearMoves();
@@ -541,11 +541,11 @@ $(document).on("mouseup", "#Canvas", function (event) {
 });
 
 $(document).on("mousemove", "#Canvas", function (event) {
-  console.log("mousemove");
+  // console.log("mousemove");
 });
 
 $(document).on("mouseout", "#Canvas", function (event) {
-  console.log("mouseout");
+  // console.log("mouseout");
 });
 
 function checkDrag() {
