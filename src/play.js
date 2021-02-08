@@ -9,9 +9,9 @@ const defaultSize = 8;
 const board = new Board(defaultSize);
 const game = new Game(board);
 
-var inputBoxInfo;
-var validInput = false;
-var image_array;
+// var inputBoxInfo;
+// var validInput = false;
+// var image_array;
 var globalCrushCounter = true;
 var mouseDownLocation;
 var mouseUpLocation;
@@ -40,60 +40,60 @@ $(document).keypress(function (event) {
   }
 });
 
-function checkInput() {
-  inputBoxInfo = document.getElementById("inputBox").value;
-  // console.log(inputBoxInfo.length);
-  if (inputBoxInfo.length <= 3) {
-    var bool1 = col_array.indexOf(inputBoxInfo.charAt(0)) != -1;
-    var bool2 =
-      Number(inputBoxInfo.charAt(1)) > 0 &&
-      Number(inputBoxInfo.charAt(1)) <= 20;
-    if (bool1 && bool2) {
-      validInput = true;
-      var counter = 0;
-      if (avaliableMove("up")) {
-        document.getElementById("up").disabled = false;
-        counter++;
-      }
-      if (avaliableMove("left")) {
-        document.getElementById("left").disabled = false;
-        counter++;
-      }
-      if (avaliableMove("right")) {
-        document.getElementById("right").disabled = false;
-        counter++;
-      }
-      if (avaliableMove("down")) {
-        document.getElementById("down").disabled = false;
-        counter++;
-      }
-      if (counter > 0) return;
-    }
-  }
-  // console.log("hello");
-  document.getElementById("inputBox").value = null;
-  document.getElementById("inputBox").focus();
-  document.getElementById("up").disabled = true;
-  document.getElementById("left").disabled = true;
-  document.getElementById("right").disabled = true;
-  document.getElementById("down").disabled = true;
-}
+// function checkInput() {
+//   inputBoxInfo = document.getElementById("inputBox").value;
+//   // console.log(inputBoxInfo.length);
+//   if (inputBoxInfo.length <= 3) {
+//     var bool1 = col_array.indexOf(inputBoxInfo.charAt(0)) != -1;
+//     var bool2 =
+//       Number(inputBoxInfo.charAt(1)) > 0 &&
+//       Number(inputBoxInfo.charAt(1)) <= 20;
+//     if (bool1 && bool2) {
+//       validInput = true;
+//       var counter = 0;
+//       if (avaliableMove("up")) {
+//         document.getElementById("up").disabled = false;
+//         counter++;
+//       }
+//       if (avaliableMove("left")) {
+//         document.getElementById("left").disabled = false;
+//         counter++;
+//       }
+//       if (avaliableMove("right")) {
+//         document.getElementById("right").disabled = false;
+//         counter++;
+//       }
+//       if (avaliableMove("down")) {
+//         document.getElementById("down").disabled = false;
+//         counter++;
+//       }
+//       if (counter > 0) return;
+//     }
+//   }
+//   // console.log("hello");
+//   document.getElementById("inputBox").value = null;
+//   document.getElementById("inputBox").focus();
+//   document.getElementById("up").disabled = true;
+//   document.getElementById("left").disabled = true;
+//   document.getElementById("right").disabled = true;
+//   document.getElementById("down").disabled = true;
+// }
 
-$(document).on("click", "#up", function (event) {
-  if (validInput) checkMove("up");
-});
+// $(document).on("click", "#up", function (event) {
+//   if (validInput) checkMove("up");
+// });
 
-$(document).on("click", "#left", function (event) {
-  if (validInput) checkMove("left");
-});
+// $(document).on("click", "#left", function (event) {
+//   if (validInput) checkMove("left");
+// });
 
-$(document).on("click", "#right", function (event) {
-  if (validInput) checkMove("right");
-});
+// $(document).on("click", "#right", function (event) {
+//   if (validInput) checkMove("right");
+// });
 
-$(document).on("click", "#down", function (event) {
-  if (validInput) checkMove("down");
-});
+// $(document).on("click", "#down", function (event) {
+//   if (validInput) checkMove("down");
+// });
 
 function avaliableMove(dir) {
   var inputCol = col_array.indexOf(mouseDownLocation.charAt(0));
@@ -238,19 +238,19 @@ function flipAndDraw(currGem, dir) {
   // ctxt.clearRect(0, 0, canvas.width, canvas.height);
   $("#mainColumn").html(drawBoard());
 
-  document.getElementById("inputBox").value = null;
-  document.getElementById("inputBox").focus();
-  validInput = false;
-  document.getElementById("up").disabled = true;
-  document.getElementById("left").disabled = true;
-  document.getElementById("right").disabled = true;
-  document.getElementById("down").disabled = true;
-  document.getElementById("crusher").disabled = false;
-  document.getElementById("inputBox").disabled = true;
+  // document.getElementById("inputBox").value = null;
+  // document.getElementById("inputBox").focus();
+  // validInput = false;
+  // document.getElementById("up").disabled = true;
+  // document.getElementById("left").disabled = true;
+  // document.getElementById("right").disabled = true;
+  // document.getElementById("down").disabled = true;
+  // document.getElementById("crusher").disabled = false;
+  // document.getElementById("inputBox").disabled = true;
   document.getElementById("Canvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  var counter = true;
+  // var counter = true;
   crushcrush();
 
   var gg = setInterval(function () {
@@ -359,71 +359,6 @@ function changeScoreColor(gemLetter) {
       break;
     case "gemF":
       document.getElementById("score").style.backgroundColor = "yellow";
-      break;
-  }
-}
-
-function drawGem(row, col, size, letter) {
-  switch (letter) {
-    case "gemA":
-      ctx.drawImage(
-        document.getElementById("gemA"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-      break;
-    case "gemB":
-      ctx.drawImage(
-        document.getElementById("gemB"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-      break;
-    case "gemC":
-      ctx.drawImage(
-        document.getElementById("gemC"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-      break;
-    case "gemD":
-      ctx.drawImage(
-        document.getElementById("gemD"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-      break;
-    case "gemE":
-      ctx.drawImage(
-        document.getElementById("gemE"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
-      break;
-    case "gemF":
-      ctx.drawImage(
-        document.getElementById("gemF"),
-        col * size,
-        row * size,
-        gemWidth,
-        gemHeight
-      );
-      ctx.strokeRect(col * size, row * size, gemWidth, gemHeight);
       break;
   }
 }
