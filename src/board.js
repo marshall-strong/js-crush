@@ -120,6 +120,11 @@ const Board = function (size) {
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
     if (this.gridCellIsEmpty(toRow, toCol)) {
+      delete this.grid[gem.row][gem.col];
+      this.grid[toRow][toCol] = gem;
+      gem.row = toRow;
+      gem.col = toCol;
+
       const details = {
         gem: gem,
         toRow: toRow,
@@ -127,12 +132,6 @@ const Board = function (size) {
         fromRow: gem.row,
         fromCol: gem.col,
       };
-
-      delete this.grid[gem.row][gem.col];
-      this.grid[toRow][toCol] = gem;
-
-      gem.row = toRow;
-      gem.col = toCol;
 
       $(this).triggerHandler("move", details);
     }
