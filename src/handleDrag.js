@@ -3,13 +3,13 @@ let mouseUpLocation;
 
 // Click and Drag functionality
 $(document).on("mousedown", "#gameCanvas", function (event) {
-  mouseDownLocation = game.getCanvasPos(event);
+  mouseDownLocation = getCanvasPos(event);
   console.log("mousedown: " + mouseDownLocation);
 });
 $(document).on("mouseup", "#gameCanvas", function (event) {
-  mouseUpLocation = game.getCanvasPos(event);
+  mouseUpLocation = getCanvasPos(event);
   console.log("mouseUp: " + mouseUpLocation);
-  $("#mainColumn").html(game.drawBoard());
+  $("#mainColumn").html(drawBoard());
   checkDrag();
 });
 
@@ -164,33 +164,82 @@ function checkDrag() {
 ////////////////////////////////////////////////////////
 // everything below here is used in checkDrag
 
-// set by crushStreaks when the do-while loop is executed for the first time.
-let gameboardHasStreaks;
+let currentlyCrushing;
 
 function flipAndDraw(firstGem, dir) {
   board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
-  $("#mainColumn").html(game.drawBoard());
+  $("#mainColumn").html(drawBoard());
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  // continue to crush streaks (and to add replacement gems) until no more streaks remain.
-  do {
-    crushStreaks();
-  } while (gameboardHasStreaks);
-  // update user interface
-  document.getElementById("gameCanvas").style.pointerEvents = "auto";
-  document.getElementById("getHint").disabled = false;
+  crushStreaks();
+
+  var gg = setInterval(function () {
+    if (currentlyCrushing == true) {
+      crushStreaks();
+    } else {
+      clearInterval(gg);
+      document.getElementById("gameCanvas").style.pointerEvents = "auto";
+      document.getElementById("getHint").disabled = false;
+    }
+  }, 1000);
 }
 
 function crushStreaks() {
-  const gemStreaks = game.getGemStreaks();
-  if (gemStreaks.length != 0) {
-    game.removeGemStreaks(gemStreaks);
-    game.moveGemsDown();
-    $("#mainColumn").html(game.drawBoard());
+  var listRemove = game.getGemStreaks();
+  var canvas = document.getElementById("gameCanvas");
+  var cxt = canvas.getContext("2d");
+  const cellSize = 600 / board.dimension;
+  var alphaCounter = 10;
+  if (listRemove.length != 0) {
+    var numCrush = listRemove.length;
+    var crushLength = listRemove[0].length;
+
+    var alpha = setInterval(function () {
+      alphaCounter = alphaCounter - 1;
+      cxt.globalAlpha = alphaCounter / 10;
+      for (var i = 0; i < numCrush; i++) {
+        for (var j = 0; j < crushLength; j++) {
+          var letter = String(listRemove[i][j].letter);
+          var scoreLetter = listRemove[i][j].letter;
+          ctx.clearRect(
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
+          );
+          cxt.drawImage(
+            document.getElementById(letter),
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
+          );
+        }
+      }
+      changeScoreColor(scoreLetter);
+      if (alphaCounter <= 0) {
+        clearInterval(alpha);
+        // console.log('alpha cleared');
+      }
+    }, 50);
   }
-  // recalculate gemStreaks
-  const gemStreaksAfterUpdate = game.getGemStreaks();
-  // update flag
-  gameboardHasStreaks = gemStreaksAfterUpdate > 0;
+
+  setTimeout(function () {
+    ctx.globalAlpha = 1.0;
+
+    game.removeGemStreaks(listRemove);
+
+    game.moveGemsDown();
+
+    $("#mainColumn").html(drawBoard());
+
+    listRemove = game.getGemStreaks();
+
+    if (listRemove.length == 0) {
+      currentlyCrushing = false;
+    } else {
+      currentlyCrushing = true;
+    }
+  }, 550);
 }
