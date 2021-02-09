@@ -188,7 +188,7 @@ function crushStreaks() {
   setTimeout(function () {
     ctx.globalAlpha = 1.0;
 
-    game.removeCrushes(listRemove);
+    game.removeGemStreaks(listRemove);
 
     game.moveGemsDown();
 
