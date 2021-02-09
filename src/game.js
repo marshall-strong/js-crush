@@ -235,13 +235,13 @@ const Game = function (board) {
     for (let j = 0; j < board.dimension; j++) {
       for (let h, k = 0; k < board.dimension; k = h) {
         // Scan for rows of same-lettered gem starting at k
-        const firstGem = getAt(j, k);
+        const gem = getAt(j, k);
         h = k + 1;
-        if (!firstGem) continue;
-        let gems = [firstGem];
+        if (!gem) continue;
+        let gems = [gem];
         for (; h < board.dimension; h++) {
           const lastGem = getAt(j, h);
-          if (!lastGem || lastGem.letter != firstGem.letter) break;
+          if (!lastGem || lastGem.letter != gem.letter) break;
           gems.push(lastGem);
         }
         // If there are at least 3 gems in a row, remember the set.
