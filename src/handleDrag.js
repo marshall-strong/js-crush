@@ -42,6 +42,7 @@ function checkDrag() {
     var destRow, destCol, originRow, originCol;
 
     if (dir == "right" || dir == "left") {
+      // horizontal swap
       clearWidth = cellSize * 2;
       clearHeight = cellSize;
       var originLetter, destLetter;
@@ -60,7 +61,8 @@ function checkDrag() {
       originRow = firstGem.row * cellSize;
       var timer = 0;
 
-      var inter = setInterval(function () {
+      // horizontal swap animation
+      const horizontalSwap = setInterval(function () {
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
         ctxt.drawImage(
@@ -81,11 +83,12 @@ function checkDrag() {
         timer++;
         // console.log(timer);
         if (timer == 21) {
-          clearInterval(inter);
+          clearInterval(horizontalSwap);
           flipAndDraw(firstGem, dir);
         }
       }, 10);
     } else {
+      // vertical swap
       clearWidth = cellSize;
       clearHeight = cellSize * 2;
       if (firstGem.row > gemTo.row) {
@@ -102,8 +105,8 @@ function checkDrag() {
       destCol = gemTo.col * cellSize;
       originCol = firstGem.col * cellSize;
       var timer = 0;
-
-      var inter = setInterval(function () {
+      // vertical swap animation
+      const verticalSwap = setInterval(function () {
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
         ctxt.drawImage(
@@ -125,15 +128,15 @@ function checkDrag() {
 
         // console.log(timer);
         if (timer == 21) {
-          clearInterval(inter);
+          clearInterval(verticalSwap);
           flipAndDraw(firstGem, dir);
         }
       }, 10);
     }
   };
 
+  // check validity of move, then set the visibility of the "invalid" message
   if (originCol == destCol) {
-    //moving up or down
     if (originRow < destRow) {
       if (availableMove("down")) {
         checkMove("down");
@@ -157,7 +160,6 @@ function checkDrag() {
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     }
-    //moving left or right
   }
 }
 
@@ -173,7 +175,7 @@ function flipAndDraw(firstGem, dir) {
   document.getElementById("getHint").disabled = true;
 
   crushStreaks();
-
+  // not sure what this one does...
   var gg = setInterval(function () {
     if (currentlyCrushing == true) {
       crushStreaks();
@@ -194,7 +196,7 @@ function crushStreaks() {
   if (listRemove.length != 0) {
     var numCrush = listRemove.length;
     var crushLength = listRemove[0].length;
-
+    // fade-out animation
     var alpha = setInterval(function () {
       alphaCounter = alphaCounter - 1;
       cxt.globalAlpha = alphaCounter / 10;
@@ -225,6 +227,7 @@ function crushStreaks() {
     }, 50);
   }
 
+  // after swapping gems, pause before removing them
   setTimeout(function () {
     ctx.globalAlpha = 1.0;
 
@@ -243,3 +246,5 @@ function crushStreaks() {
     }
   }, 550);
 }
+
+// need to add an animation for moving gems down!!
