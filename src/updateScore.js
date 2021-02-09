@@ -1,8 +1,3 @@
-// update score display when score value changes
-$(board).on("scoreUpdate", function (e, info) {
-  $("#score").html(board.score);
-});
-
 function changeScoreColor(gemLetter) {
   switch (gemLetter) {
     case "gemA":

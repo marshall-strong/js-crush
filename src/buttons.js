@@ -2,7 +2,7 @@
 $(document).on("click", "#newGame", function (event) {
   game.clearGameboard();
   game.setupGameboard();
-  $("#mainColumn").html(drawBoard());
+  $("#mainColumn").html(game.drawBoard());
   board.resetScore();
 });
 
@@ -20,7 +20,7 @@ $(document).on("click", "#getHint", function (event) {
 
   switch (helpMove.direction) {
     case "right":
-      $("#mainColumn").html(drawBoard());
+      $("#mainColumn").html(game.drawBoard());
       posX = posX + cellSize * 1.2;
       posY = posY - cellSize / 2;
       ctx2.moveTo(posX, posY);
@@ -36,7 +36,7 @@ $(document).on("click", "#getHint", function (event) {
       ctx2.fill();
       break;
     case "left":
-      $("#mainColumn").html(drawBoard());
+      $("#mainColumn").html(game.drawBoard());
       posX = posX - cellSize / 4;
       posY = posY - cellSize / 2;
       ctx2.moveTo(posX, posY);
@@ -52,7 +52,7 @@ $(document).on("click", "#getHint", function (event) {
       ctx2.fill();
       break;
     case "up":
-      $("#mainColumn").html(drawBoard());
+      $("#mainColumn").html(game.drawBoard());
       posY = posY - cellSize * 1.2;
       posX = posX + cellSize / 2;
       ctx2.moveTo(posX, posY);
@@ -68,7 +68,7 @@ $(document).on("click", "#getHint", function (event) {
       ctx2.fill();
       break;
     case "down":
-      $("#mainColumn").html(drawBoard());
+      $("#mainColumn").html(game.drawBoard());
       posY = posY + cellSize / 4;
       posX = posX + cellSize / 2;
       ctx2.moveTo(posX, posY);

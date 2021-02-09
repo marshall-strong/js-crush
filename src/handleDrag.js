@@ -3,13 +3,13 @@ let mouseUpLocation;
 
 // Click and Drag functionality
 $(document).on("mousedown", "#gameCanvas", function (event) {
-  mouseDownLocation = getCanvasPos(event);
+  mouseDownLocation = game.getCanvasPos(event);
   console.log("mousedown: " + mouseDownLocation);
 });
 $(document).on("mouseup", "#gameCanvas", function (event) {
-  mouseUpLocation = getCanvasPos(event);
+  mouseUpLocation = game.getCanvasPos(event);
   console.log("mouseUp: " + mouseUpLocation);
-  $("#mainColumn").html(drawBoard());
+  $("#mainColumn").html(game.drawBoard());
   checkDrag();
 });
 
@@ -168,7 +168,7 @@ let currentlyCrushing;
 
 function flipAndDraw(firstGem, dir) {
   board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
-  $("#mainColumn").html(drawBoard());
+  $("#mainColumn").html(game.drawBoard());
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
@@ -232,7 +232,7 @@ function crushStreaks() {
 
     game.moveGemsDown();
 
-    $("#mainColumn").html(drawBoard());
+    $("#mainColumn").html(game.drawBoard());
 
     listRemove = game.getGemStreaks();
 
