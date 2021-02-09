@@ -230,7 +230,7 @@ const Game = function (board) {
       return result;
     };
 
-    let result = [];
+    const result = [];
 
     for (let j = 0; j < board.dimension; j++) {
       for (let h, k = 0; k < board.dimension; k = h) {
@@ -239,10 +239,11 @@ const Game = function (board) {
         h = k + 1;
         if (!gem) continue;
         let gems = [gem];
-        for (; h < board.dimension; h++) {
-          const lastGem = getAt(j, h);
-          if (!lastGem || lastGem.letter != gem.letter) break;
-          gems.push(lastGem);
+        while (h < board.dimension) {
+          const nextGem = getAt(j, h);
+          if (!nextGem || nextGem.letter != gem.letter) break;
+          gems.push(nextGem);
+          h++;
         }
         // If there are at least 3 gems in a row, remember the set.
         if (gems.length >= 3) result.push(gems);
