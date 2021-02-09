@@ -202,25 +202,4 @@ function flipAndDraw(firstGem, dir) {
     document.getElementById("gameCanvas").style.pointerEvents = "auto";
     document.getElementById("getHint").disabled = false;
   }
-
-  // // continue to crush streaks (and to add replacement gems) until no more streaks remain.
-  // do {
-  //   crushStreaks();
-  // } while (gameboardHasStreaks);
-  // // update user interface
-  // document.getElementById("gameCanvas").style.pointerEvents = "auto";
-  // document.getElementById("getHint").disabled = false;
 }
-
-// function crushStreaks() {
-//   const gemStreaks = game.getGemStreaks();
-//   if (gemStreaks.length != 0) {
-//     game.removeGemStreaks(gemStreaks);
-//     game.moveGemsDown();
-//     $("#mainColumn").html(game.drawBoard());
-//   }
-//   // recalculate gemStreaks
-//   const gemStreaksAfterUpdate = game.getGemStreaks();
-//   // update flag
-//   gameboardHasStreaks = gemStreaksAfterUpdate > 0;
-// }
