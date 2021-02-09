@@ -23,10 +23,10 @@ const Game = function (gameboard) {
   this.drawBoard = function () {
     const cellSize = 600 / gameboard.dimension;
     const canvas = document.getElementById("gameCanvas");
-    ctx = canvas.getContext("2d");
+    ctxt = canvas.getContext("2d");
     // draw grid container
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "white";
+    ctxt.clearRect(0, 0, canvas.width, canvas.height);
+    ctxt.strokeStyle = "white";
     // iterate through gridCells
     for (let row = 0; row < gameboard.dimension; row++) {
       for (let col = 0; col < gameboard.dimension; col++) {
@@ -35,11 +35,11 @@ const Game = function (gameboard) {
         const dWidth = cellSize;
         const dHeight = cellSize;
         // draw cell outline
-        ctx.strokeRect(dx, dy, dWidth, dHeight);
+        ctxt.strokeRect(dx, dy, dWidth, dHeight);
         const gem = gameboard.gridCellGem(row, col);
         const gemImage = document.getElementById(gem.letter);
         // draw gemImage
-        ctx.drawImage(gemImage, dx, dy, dWidth, dHeight);
+        ctxt.drawImage(gemImage, dx, dy, dWidth, dHeight);
       }
     }
   };
