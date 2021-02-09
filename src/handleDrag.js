@@ -164,7 +164,9 @@ function checkDrag() {
 ////////////////////////////////////////////////////////
 // everything below here is used in checkDrag
 
-let currentlyCrushing;
+let currentlyCrushing = false;
+// // initialize currentlyCrushing flag to true so that crushStreaksOrUpdateUI runs immediately
+// let currentlyCrushing = true;
 
 function flipAndDraw(firstGem, dir) {
   board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
@@ -174,11 +176,11 @@ function flipAndDraw(firstGem, dir) {
 
   crushStreaks();
 
-  var gg = setInterval(function () {
+  const crushStreaksOrUpdateUI = setInterval(function () {
     if (currentlyCrushing == true) {
       crushStreaks();
     } else {
-      clearInterval(gg);
+      clearInterval(crushStreaksOrUpdateUI);
       document.getElementById("gameCanvas").style.pointerEvents = "auto";
       document.getElementById("getHint").disabled = false;
     }
@@ -186,32 +188,33 @@ function flipAndDraw(firstGem, dir) {
 }
 
 function crushStreaks() {
-  var listRemove = game.getGemStreaks();
+  const gemStreaks = game.getGemStreaks();
   var canvas = document.getElementById("gameCanvas");
   var cxt = canvas.getContext("2d");
   const cellSize = 600 / board.dimension;
   var alphaCounter = 10;
-  if (listRemove.length != 0) {
-    var numCrush = listRemove.length;
-    var crushLength = listRemove[0].length;
+  // debugger
+  if (gemStreaks.length != 0) {
+    var numCrush = gemStreaks.length;
+    var crushLength = gemStreaks[0].length;
 
     var alpha = setInterval(function () {
       alphaCounter = alphaCounter - 1;
       cxt.globalAlpha = alphaCounter / 10;
       for (var i = 0; i < numCrush; i++) {
         for (var j = 0; j < crushLength; j++) {
-          var letter = String(listRemove[i][j].letter);
-          var scoreLetter = listRemove[i][j].letter;
+          var letter = String(gemStreaks[i][j].letter);
+          var scoreLetter = gemStreaks[i][j].letter;
           ctx.clearRect(
-            listRemove[i][j].col * cellSize,
-            listRemove[i][j].row * cellSize,
+            gemStreaks[i][j].col * cellSize,
+            gemStreaks[i][j].row * cellSize,
             cellSize,
             cellSize
           );
           cxt.drawImage(
             document.getElementById(letter),
-            listRemove[i][j].col * cellSize,
-            listRemove[i][j].row * cellSize,
+            gemStreaks[i][j].col * cellSize,
+            gemStreaks[i][j].row * cellSize,
             cellSize,
             cellSize
           );
@@ -228,15 +231,14 @@ function crushStreaks() {
   setTimeout(function () {
     ctx.globalAlpha = 1.0;
 
-    game.removeGemStreaks(listRemove);
+    game.removeGemStreaks(gemStreaks);
 
     game.moveGemsDown();
 
     $("#mainColumn").html(game.drawBoard());
 
-    listRemove = game.getGemStreaks();
-
-    if (listRemove.length == 0) {
+    // recalculate gemStreaks
+    if (game.getGemStreaks().length == 0) {
       currentlyCrushing = false;
     } else {
       currentlyCrushing = true;
