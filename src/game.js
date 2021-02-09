@@ -40,7 +40,7 @@ const Game = function (board) {
         }
       }
       // once all cells are filled, check gameboard for matches
-      const crushable = this.getGemCrushes();
+      const crushable = this.getGemStreaks();
       // if no matches are found, exit setup and begin gameplay
       if (crushable.length == 0) break;
       // remove any matches found, then continue the loop to add more gems
@@ -76,7 +76,7 @@ const Game = function (board) {
       return [];
     }
     const swap = [fromGem, toGem];
-    const crushable = this.getGemCrushes(swap);
+    const crushable = this.getGemStreaks(swap);
     // Only return crushable groups that involve the swapped gems.
     // If the board has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
     const connected = crushable.filter(function (set) {
@@ -135,11 +135,18 @@ const Game = function (board) {
   ////////////////////////////////////////////////
   // GAME LOGIC
 
-  // Returns a list of ALL gem crushes on the board.
-  // A gem crush is a list of three or more gems in a single row or column that have the same letter.
-  // Each crush is provided as a list of the gems being crushed, resulting in a list of lists.
-  // The output of this method is passed directly into this.removeCrushes to remove gem crushes.
-  this.getGemCrushes = function (swap) {
+  // A streak occurs when 3 or more adjacent gems have the same letter.
+  // Streaks can be horizontal or vertical, and overlapping streaks are joined.
+  // Streaks are provided as arrays, where each element is a gem in the streak.
+
+  // `getGemStreaks` finds and returns all streaks on the board.
+  // Results are output as an array of streaks (an array of arrays of gems).
+
+  // `getGemStreaks` has an optional parameter: `swap`.
+  //
+
+  // The output of `getGemStreaks` is passed directly to `removeCrushes`.
+  this.getGemStreaks = function (swap) {
     // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
     // Implementation of the classic union-find algorithm (unoptimized).
     // Allows any string keys to be unioned into a set of disjoint sets.
@@ -173,10 +180,63 @@ const Game = function (board) {
       delete setSizes[p2];
     }
 
+    // takes the swap parameter into account
+    const getGemAt = function (row, col) {
+      // Retrieve the gem at a row and column (depending on vertical)
+      const theGem = board.gridCellGem(row, col);
+      if (swap) {
+        // If theGem is one of the two gems in the `swap`, return the other gem.
+        let index = swap.indexOf(theGem);
+        if (index >= 0) {
+          return swap[index ^ 1];
+        }
+      }
+      return theGem;
+    };
+
     // Get strips of length 3 (or more).
-    let vert = this.findStreaks(true, swap);
-    let horiz = this.findStreaks(false, swap);
-    let sets = vert.concat(horiz);
+    const horizontalStreaks = [];
+    const verticalStreaks = [];
+
+    // find horizontal streaks, iterating through each row
+    for (let row = 0; row < board.dimension; row++) {
+      for (let nextCol, col = 0; col < board.dimension; col = nextCol) {
+        // Scan row for matches, starting at col
+        const gem = getGemAt(row, col);
+        nextCol = col + 1;
+        if (!gem) continue;
+        let matches = [gem];
+        while (nextCol < board.dimension) {
+          const nextGem = getGemAt(row, nextCol);
+          if (!nextGem || nextGem.letter != gem.letter) break;
+          matches.push(nextGem);
+          nextCol++;
+        }
+        // If there are at least 3 gems in the match, add it to streaks.
+        if (matches.length >= 3) horizontalStreaks.push(matches);
+      }
+    }
+
+    // find vertical streaks, iterating through each column
+    for (let col = 0; col < board.dimension; col++) {
+      for (let nextRow, row = 0; row < board.dimension; row = nextRow) {
+        // Scan col for matches, starting at row
+        const gem = getGemAt(row, col);
+        nextRow = row + 1;
+        if (!gem) continue;
+        let matches = [gem];
+        while (nextRow < board.dimension) {
+          const nextGem = getGemAt(nextRow, col);
+          if (!nextGem || nextGem.letter != gem.letter) break;
+          matches.push(nextGem);
+          nextRow++;
+        }
+        // If there are at least 3 gems in the match, add it to streaks.
+        if (matches.length >= 3) verticalStreaks.push(matches);
+      }
+    }
+
+    let sets = horizontalStreaks.concat(verticalStreaks);
 
     // Execute union of all the strips, possibly joining horizontal and vertical strips that intersect.
     for (let j = 0; j < sets.length; j++) {
@@ -211,49 +271,49 @@ const Game = function (board) {
     return list;
   };
 
-  // Helper Method for game.getGemCrushes
-  // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
-  // If 'vertical' is set to true, only look for vertical strips.
-  // Otherwise, only look for horizontal strips.
-  // If the 'swap' array is passed, then every even-indexed gem in the array is considered swapped with every odd-indexed gem in the array.
-  this.findStreaks = function (vertical, swap) {
-    const getAt = (x, y) => {
-      // Retrieve the gem at a row and column (depending on vertical)
-      let result = vertical ? board.gridCellGem(y, x) : board.gridCellGem(x, y);
-      if (swap) {
-        // If the result gem is in the 'swap' array, then swap the result with its adjacent pair.
-        let index = swap.indexOf(result);
-        if (index >= 0) {
-          return swap[index ^ 1];
-        }
-      }
-      return result;
-    };
+  // // Helper Method for game.getGemStreaks
+  // // Returns a set of sets of all the same-letter gem strips of length at least 3 on the board.
+  // // If 'vertical' is set to true, only look for vertical strips.
+  // // Otherwise, only look for horizontal strips.
+  // // If the 'swap' array is passed, then every even-indexed gem in the array is considered swapped with every odd-indexed gem in the array.
+  // this.findStreaks = function (vertical, swap) {
+  //   const getAt = (x, y) => {
+  //     // Retrieve the gem at a row and column (depending on vertical)
+  //     let result = vertical ? board.gridCellGem(y, x) : board.gridCellGem(x, y);
+  //     if (swap) {
+  //       // If the result gem is in the 'swap' array, then swap the result with its adjacent pair.
+  //       let index = swap.indexOf(result);
+  //       if (index >= 0) {
+  //         return swap[index ^ 1];
+  //       }
+  //     }
+  //     return result;
+  //   };
 
-    const streaks = [];
+  //   const streaks = [];
 
-    for (let j = 0; j < board.dimension; j++) {
-      for (let h, k = 0; k < board.dimension; k = h) {
-        // Scan for rows of same-lettered gem starting at k
-        const gem = getAt(j, k);
-        h = k + 1;
-        if (!gem) continue;
-        let gems = [gem];
-        while (h < board.dimension) {
-          const nextGem = getAt(j, h);
-          if (!nextGem || nextGem.letter != gem.letter) break;
-          gems.push(nextGem);
-          h++;
-        }
-        // If there are at least 3 gems in a row, remember the set.
-        if (gems.length >= 3) streaks.push(gems);
-      }
-    }
+  //   for (let j = 0; j < board.dimension; j++) {
+  //     for (let h, k = 0; k < board.dimension; k = h) {
+  //       // Scan for rows of same-lettered gem starting at k
+  //       const gem = getAt(j, k);
+  //       h = k + 1;
+  //       if (!gem) continue;
+  //       let gems = [gem];
+  //       while (h < board.dimension) {
+  //         const nextGem = getAt(j, h);
+  //         if (!nextGem || nextGem.letter != gem.letter) break;
+  //         gems.push(nextGem);
+  //         h++;
+  //       }
+  //       // If there are at least 3 gems in a row, remember the set.
+  //       if (gems.length >= 3) streaks.push(gems);
+  //     }
+  //   }
 
-    return streaks;
-  };
+  //   return streaks;
+  // };
 
-  // Deletes all the gems in setOfSetsOfCrushes (which can be generated by getGemCrushes or by getGemsToCrushGivenMove)
+  // Deletes all the gems in setOfSetsOfCrushes (which can be generated by getGemStreaks or by getGemsToCrushGivenMove)
   // Does not shift gems down at all. Updates the score accordingly.
   this.removeCrushes = function (setOfSetsOfCrushes) {
     for (let j = 0; j < setOfSetsOfCrushes.length; j++) {

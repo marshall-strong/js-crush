@@ -132,11 +132,11 @@ function flipAndDraw(firstGem, dir) {
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  crushcrush();
+  crushStreaks();
 
   var gg = setInterval(function () {
     if (currentlyCrushing == true) {
-      crushcrush();
+      crushStreaks();
     } else {
       clearInterval(gg);
       document.getElementById("gameCanvas").style.pointerEvents = "auto";
@@ -145,8 +145,8 @@ function flipAndDraw(firstGem, dir) {
   }, 1000);
 }
 
-function crushcrush() {
-  var listRemove = game.getGemCrushes();
+function crushStreaks() {
+  var listRemove = game.getGemStreaks();
   var canvas = document.getElementById("gameCanvas");
   var cxt = canvas.getContext("2d");
   const cellSize = 600 / board.dimension;
@@ -194,16 +194,11 @@ function crushcrush() {
 
     $("#mainColumn").html(drawBoard());
 
-    listRemove = game.getGemCrushes();
+    listRemove = game.getGemStreaks();
+
     if (listRemove.length == 0) {
-      // document.getElementById("crusher").disabled = true;
-      // document.getElementById("inputBox").disabled = false;
-      // document.getElementById("inputBox").focus();
-      // console.log('crush false');
       currentlyCrushing = false;
     } else {
-      // document.getElementById("inputBox").disabled = true;
-      // console.log('crush true');
       currentlyCrushing = true;
     }
   }, 550);
