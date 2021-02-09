@@ -207,4 +207,15 @@ const Board = function (dimension) {
       },
     ]);
   };
+
+  this.updateScoreColor = function (gem) {
+    let color = "black";
+    if (gem.letter === "gemA") color = "red";
+    if (gem.letter === "gemB") color = "green";
+    if (gem.letter === "gemC") color = "blue";
+    if (gem.letter === "gemD") color = "orange";
+    if (gem.letter === "gemE") color = "purple";
+    if (gem.letter === "gemF") color = "yellow";
+    document.getElementById("score").style.backgroundColor = color;
+  };
 };

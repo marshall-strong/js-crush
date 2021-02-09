@@ -164,9 +164,9 @@ function checkDrag() {
 ////////////////////////////////////////////////////////
 // everything below here is used in checkDrag
 
-let currentlyCrushing = false;
-// // initialize currentlyCrushing flag to true so that crushStreaksOrUpdateUI runs immediately
-// let currentlyCrushing = true;
+// let gameboardHasStreaks = false;
+// initialize gameboardHasStreaks flag to true so that the do-while loop/crushStreaksOrUpdateUI runs immediately
+let gameboardHasStreaks;
 
 function flipAndDraw(firstGem, dir) {
   board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
@@ -174,17 +174,24 @@ function flipAndDraw(firstGem, dir) {
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  crushStreaks();
+  // crushStreaks();
+  // const crushStreaksOrUpdateUI = setInterval(function () {
+  //   if (gameboardHasStreaks == true) {
+  //     crushStreaks();
+  //   } else {
+  //     clearInterval(crushStreaksOrUpdateUI);
+  //     document.getElementById("gameCanvas").style.pointerEvents = "auto";
+  //     document.getElementById("getHint").disabled = false;
+  //   }
+  // }, 1000);
 
-  const crushStreaksOrUpdateUI = setInterval(function () {
-    if (currentlyCrushing == true) {
-      crushStreaks();
-    } else {
-      clearInterval(crushStreaksOrUpdateUI);
-      document.getElementById("gameCanvas").style.pointerEvents = "auto";
-      document.getElementById("getHint").disabled = false;
-    }
-  }, 1000);
+  // continue to crush streaks (then adding gems) until no more streaks remain.
+  do {
+    crushStreaks();
+  } while (gameboardHasStreaks);
+  // update user interface
+  document.getElementById("gameCanvas").style.pointerEvents = "auto";
+  document.getElementById("getHint").disabled = false;
 }
 
 function crushStreaks() {
@@ -195,42 +202,6 @@ function crushStreaks() {
   var alphaCounter = 10;
   // debugger
   if (gemStreaks.length != 0) {
-    var numCrush = gemStreaks.length;
-    var crushLength = gemStreaks[0].length;
-
-    var alpha = setInterval(function () {
-      alphaCounter = alphaCounter - 1;
-      cxt.globalAlpha = alphaCounter / 10;
-      for (var i = 0; i < numCrush; i++) {
-        for (var j = 0; j < crushLength; j++) {
-          var letter = String(gemStreaks[i][j].letter);
-          var scoreLetter = gemStreaks[i][j].letter;
-          ctx.clearRect(
-            gemStreaks[i][j].col * cellSize,
-            gemStreaks[i][j].row * cellSize,
-            cellSize,
-            cellSize
-          );
-          cxt.drawImage(
-            document.getElementById(letter),
-            gemStreaks[i][j].col * cellSize,
-            gemStreaks[i][j].row * cellSize,
-            cellSize,
-            cellSize
-          );
-        }
-      }
-      changeScoreColor(scoreLetter);
-      if (alphaCounter <= 0) {
-        clearInterval(alpha);
-        // console.log('alpha cleared');
-      }
-    }, 50);
-  }
-
-  setTimeout(function () {
-    ctx.globalAlpha = 1.0;
-
     game.removeGemStreaks(gemStreaks);
 
     game.moveGemsDown();
@@ -239,9 +210,55 @@ function crushStreaks() {
 
     // recalculate gemStreaks
     if (game.getGemStreaks().length == 0) {
-      currentlyCrushing = false;
+      gameboardHasStreaks = false;
     } else {
-      currentlyCrushing = true;
+      gameboardHasStreaks = true;
     }
-  }, 550);
+
+    // const alpha = setInterval(function () {
+    //   alphaCounter = alphaCounter - 1;
+    //   cxt.globalAlpha = alphaCounter / 10;
+    //   for (let i = 0; i < gemStreaks.length; i++) {
+    //     for (let j = 0; j < gemStreaks[0].length; j++) {
+    //       const letter = String(gemStreaks[i][j].letter);
+    //       const scoreLetter = gemStreaks[i][j].letter;
+    //       ctxt.clearRect(
+    //         gemStreaks[i][j].col * cellSize,
+    //         gemStreaks[i][j].row * cellSize,
+    //         cellSize,
+    //         cellSize
+    //       );
+    //       cxt.drawImage(
+    //         document.getElementById(letter),
+    //         gemStreaks[i][j].col * cellSize,
+    //         gemStreaks[i][j].row * cellSize,
+    //         cellSize,
+    //         cellSize
+    //       );
+    //     }
+    //   }
+    //   changeScoreColor(scoreLetter);
+    //   if (alphaCounter <= 0) {
+    //     clearInterval(alpha);
+    //     // console.log('alpha cleared');
+    //   }
+    // }, 50);
+  }
+
+  // setTimeout(function () {
+  //   ctxt.globalAlpha = 1.0;
+
+  //   game.removeGemStreaks(gemStreaks);
+
+  //   game.moveGemsDown();
+
+  //   $("#mainColumn").html(game.drawBoard());
+
+  //   // recalculate gemStreaks
+  //   if (game.getGemStreaks().length == 0) {
+  //     gameboardHasStreaks = false;
+  //   } else {
+  //     gameboardHasStreaks = true;
+  //   }
+  // }, 550);
 }

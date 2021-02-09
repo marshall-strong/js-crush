@@ -330,6 +330,7 @@ const Game = function (gameboard) {
         gameboard.remove(gem);
         if (this.keepScore) {
           gameboard.incrementScore(gem, gem.row, gem.col);
+          gameboard.updateScoreColor(gem);
         }
       }
     }
