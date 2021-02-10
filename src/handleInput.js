@@ -33,7 +33,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   // original
   mouseUpLocation = game.getCanvasPos(mouseUp);
   // console.log("mouseUp: " + mouseUpLocation);
-  $("#mainColumn").html(game.drawBoard());
+  // $("#mainColumn").html(game.drawBoard());
   checkDrag();
 
   // new
@@ -72,10 +72,6 @@ function checkDrag() {
       : Number(mouseDownLocation.charAt(1) + mouseDownLocation.charAt(2)) - 1;
   const firstGem = board.gridCellGem(inputRow, inputCol);
 
-  const availableMove = (dir) => {
-    return game.isMoveTypeValid(firstGem, dir);
-  };
-
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
     const ctxt = canvas.getContext("2d");
@@ -86,7 +82,9 @@ function checkDrag() {
 
     var destRow, destCol, originRow, originCol;
 
+    // swap gems
     if (dir == "right" || dir == "left") {
+      // horizontal swap
       clearWidth = cellSize * 2;
       clearHeight = cellSize;
       var originLetter, destLetter;
@@ -105,7 +103,9 @@ function checkDrag() {
       originRow = firstGem.row * cellSize;
       var timer = 0;
 
-      var inter = setInterval(function () {
+      // TimingEvent
+      // horizontal swap animation
+      const horizontalSwap = setInterval(function () {
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
         ctxt.drawImage(
@@ -126,11 +126,12 @@ function checkDrag() {
         timer++;
         // console.log(timer);
         if (timer == 21) {
-          clearInterval(inter);
+          clearInterval(horizontalSwap);
           flipAndDraw(firstGem, dir);
         }
       }, 10);
     } else {
+      // vertical swap
       clearWidth = cellSize;
       clearHeight = cellSize * 2;
       if (firstGem.row > gemTo.row) {
@@ -148,7 +149,9 @@ function checkDrag() {
       originCol = firstGem.col * cellSize;
       var timer = 0;
 
-      var inter = setInterval(function () {
+      // TimingEvent
+      // vertical swap animation
+      const verticalSwap = setInterval(function () {
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
         ctxt.drawImage(
@@ -170,44 +173,47 @@ function checkDrag() {
 
         // console.log(timer);
         if (timer == 21) {
-          clearInterval(inter);
+          clearInterval(verticalSwap);
           flipAndDraw(firstGem, dir);
         }
       }, 10);
     }
   };
 
+  // check validity of move, then set the visibility of the "invalid" message
   if (originCol == destCol) {
-    //moving up or down
+    // moving up or down
     if (originRow < destRow) {
-      if (availableMove("down")) {
+      if (game.isMoveTypeValid(firstGem, "down")) {
         checkMove("down");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
-      if (availableMove("up")) {
+      if (game.isMoveTypeValid(firstGem, "up")) {
         checkMove("up");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     }
   } else {
+    // moving left or right
     if (originCol < destCol) {
-      if (availableMove("right")) {
+      if (game.isMoveTypeValid(firstGem, "right")) {
         checkMove("right");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
-      if (availableMove("left")) {
+      if (game.isMoveTypeValid(firstGem, "left")) {
         checkMove("left");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     }
-    //moving left or right
   }
 }
 
 ////////////////////////////////////////////////////////
 // everything below here is used in checkDrag
+
+let continueCrushing;
 
 function flipAndDraw(firstGem, dir) {
   board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
@@ -215,22 +221,80 @@ function flipAndDraw(firstGem, dir) {
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  let streaks = game.getGemStreaks();
-  while (streaks.length > 0) {
-    game.removeGemStreaks(streaks);
-    game.moveGemsDown();
-    $("#mainColumn").html(game.drawBoard());
-    streaks = game.getGemStreaks();
+  crushStreaks();
+
+  // TimingEvent
+  const gg = setInterval(function () {
+    if (continueCrushing == true) {
+      crushStreaks();
+    } else {
+      clearInterval(gg);
+      document.getElementById("gameCanvas").style.pointerEvents = "auto";
+      document.getElementById("getHint").disabled = false;
+    }
+  }, 1000);
+}
+
+function crushStreaks() {
+  const listRemove = game.getGemStreaks();
+  const canvas = document.getElementById("gameCanvas");
+  const ctxt = canvas.getContext("2d");
+  const cellSize = 600 / board.dimension;
+  if (listRemove.length != 0) {
+    // TimingEvent
+    let alphaCounter = 10;
+    const fadeOut = setInterval(function () {
+      // alphaCounter = alphaCounter - 1;
+      ctxt.globalAlpha = --alphaCounter / 10;
+      for (var i = 0; i < listRemove.length; i++) {
+        for (var j = 0; j < listRemove[0].length; j++) {
+          var letter = String(listRemove[i][j].letter);
+          var scoreLetter = listRemove[i][j].letter;
+          // debugger;
+          ctxt.clearRect(
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
+          );
+          ctxt.drawImage(
+            document.getElementById(letter),
+            listRemove[i][j].col * cellSize,
+            listRemove[i][j].row * cellSize,
+            cellSize,
+            cellSize
+          );
+        }
+      }
+      // game.gameboard.updateScoreColor(scoreLetter);
+      if (alphaCounter <= 0) {
+        clearInterval(fadeOut);
+        // console.log('alpha cleared');
+      }
+    }, 50);
   }
 
-  const remainingStreaks = game.getGemStreaks();
-  if (remainingStreaks.length > 0) {
-    console.log("error: there should not be any more streaks!!");
-    debugger;
-  } else {
-    console.log("no remaining streaks");
-    // update user interface
-    document.getElementById("gameCanvas").style.pointerEvents = "auto";
-    document.getElementById("getHint").disabled = false;
-  }
+  // pause after gems fade out, before moving gems down ??
+  // after swapping gems, pause before removing them ??
+  // TimingEvent
+  setTimeout(function () {
+    // debugger;
+    ctxt.globalAlpha = 1.0;
+
+    game.removeGemStreaks(listRemove);
+
+    game.moveGemsDown();
+
+    $("#mainColumn").html(game.drawBoard());
+
+    const newListRemove = game.getGemStreaks();
+
+    if (newListRemove.length == 0) {
+      continueCrushing = false;
+    } else {
+      continueCrushing = true;
+    }
+  }, 550);
 }
+
+// need to add an animation for moving gems down!!
