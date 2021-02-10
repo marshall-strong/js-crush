@@ -44,6 +44,7 @@ const Game = function (gameboard) {
     }
   };
 
+  // original
   // used by handleDrag to get mouseDownLocation and mouseUpLocation
   // outputs columns as a letter...
   this.getCanvasPos = function (mouseEvent) {
@@ -63,7 +64,7 @@ const Game = function (gameboard) {
     console.log({ col: xCol, row: yRow });
     return xCol + yRow;
   };
-
+  // new
   // this is a new version of getCanvasPos
   this.getGameboardColAndRow = function (mouseEvent) {
     const canvas = document.getElementById("gameCanvas");

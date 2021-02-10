@@ -12,19 +12,32 @@ $(document).on("mouseout", "#gameCanvas", function (event) {});
 $(document).on("keydown", function (event) {});
 $(document).keypress(function (event) {});
 
+// original
 let mouseDownLocation;
 let mouseUpLocation;
+// new
+let mouseDownColAndRow;
+let mouseUpColAndRow;
 
-// Click and Drag functionality
-$(document).on("mousedown", "#gameCanvas", function (event) {
-  mouseDownLocation = game.getCanvasPos(event);
-  console.log("mousedown: " + mouseDownLocation);
+// mouseEvent handlers
+$(document).on("mousedown", "#gameCanvas", function (mouseDown) {
+  // original
+  mouseDownLocation = game.getCanvasPos(mouseDown);
+  // console.log("mousedown: " + mouseDownLocation);
+
+  // new
+  mouseDownColAndRow = game.getGameboardColAndRow(mouseDown);
 });
-$(document).on("mouseup", "#gameCanvas", function (event) {
-  mouseUpLocation = game.getCanvasPos(event);
-  console.log("mouseUp: " + mouseUpLocation);
+
+$(document).on("mouseup", "#gameCanvas", function (mouseUp) {
+  // original
+  mouseUpLocation = game.getCanvasPos(mouseUp);
+  // console.log("mouseUp: " + mouseUpLocation);
   $("#mainColumn").html(game.drawBoard());
   checkDrag();
+
+  // new
+  mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
 });
 
 function checkDrag() {
