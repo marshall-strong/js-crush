@@ -30,9 +30,8 @@ $(document).on("mouseup", "#gameCanvas", function (event) {
 function checkDrag() {
   const originCol = col_array.indexOf(mouseDownLocation.charAt(0));
   const destCol = col_array.indexOf(mouseUpLocation.charAt(0));
-  const spliceSize = board.dimension > 9 ? 2 : 1;
-  const originRow = mouseDownLocation.substr(1, spliceSize);
-  const destRow = mouseUpLocation.substr(1, spliceSize);
+  const originRow = mouseDownLocation.substring(1);
+  const destRow = mouseUpLocation.substring(1);
 
   const inputCol = col_array.indexOf(mouseDownLocation.charAt(0));
   const inputRow =
