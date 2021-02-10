@@ -38,8 +38,25 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 
   // new
   mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
+  // defining this function inline for now...
+  function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
+    const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
+    const mouseInput = click ? "click" : "drag";
+    if (mouseInput === "click") {
+      console.log("click");
+    } else {
+      console.log("drag");
+    }
+  }
+  clickOrDrag(
+    mouseDownColAndRow.col,
+    mouseDownColAndRow.row,
+    mouseUpColAndRow.col,
+    mouseUpColAndRow.row
+  );
 });
 
+// original
 function checkDrag() {
   const originCol = col_array.indexOf(mouseDownLocation.charAt(0));
   const destCol = col_array.indexOf(mouseUpLocation.charAt(0));

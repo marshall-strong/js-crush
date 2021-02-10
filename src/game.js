@@ -61,7 +61,7 @@ const Game = function (gameboard) {
     xCol = col_array[Math.floor(xCanvas / cellSize)];
     yRow = Math.floor(yCanvas / cellSize) + 1;
     // log coordinate
-    console.log({ col: xCol, row: yRow });
+    // console.log({ col: xCol, row: yRow });
     return xCol + yRow;
   };
   // new
