@@ -8,6 +8,9 @@ const defaultSize = 8;
 const board = new Board(defaultSize);
 const game = new Game(board);
 
+// width and height (in pixels) of the gameCanvas
+const gameCanvasSize = 600;
+
 // game.setupGameboard();
 // game.drawBoard();
 // board.resetScore();

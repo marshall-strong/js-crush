@@ -46,16 +46,19 @@ const Game = function (gameboard) {
 
   // used by handleDrag to get mouseDownLocation and mouseUpLocation
   // outputs columns as a letter...
-  this.getCanvasPos = function (event) {
+  this.getCanvasPos = function (mouseEvent) {
     const canvas = document.getElementById("gameCanvas");
     const canvasRect = canvas.getBoundingClientRect();
-    // get relative position on canvas
-    var xPos = event.clientX - canvasRect.left;
-    var yPos = event.clientY - canvasRect.top;
+    // mouseEvent coordinates relative to application viewport
+    const xViewport = mouseEvent.clientX;
+    const yViewport = mouseEvent.clientY;
+    // mouseEvent coordinates relative to gameCanvas
+    const xCanvas = xViewport - canvasRect.left;
+    const yCanvas = yViewport - canvasRect.top;
     // get coordinate
     const cellSize = 600 / gameboard.dimension;
-    xCol = col_array[Math.floor(xPos / cellSize)];
-    yRow = Math.floor(yPos / cellSize) + 1;
+    xCol = col_array[Math.floor(xCanvas / cellSize)];
+    yRow = Math.floor(yCanvas / cellSize) + 1;
     // log coordinate
     console.log({ col: xCol, row: yRow });
     return xCol + yRow;
