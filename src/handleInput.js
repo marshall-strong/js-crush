@@ -39,6 +39,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   // new
   mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
   // defining this function inline for now...
+  // define clickOrDrag
   function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
     const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
     const mouseInput = click ? "click" : "drag";
@@ -48,6 +49,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
       console.log("drag");
     }
   }
+  // call clickOrDrag with mouseDownColAndRow and mouseUpColAndRow
   clickOrDrag(
     mouseDownColAndRow.col,
     mouseDownColAndRow.row,
