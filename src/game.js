@@ -64,6 +64,30 @@ const Game = function (gameboard) {
     return xCol + yRow;
   };
 
+  // this is a new version of getCanvasPos
+  this.getGameboardColAndRow = function (mouseEvent) {
+    const canvas = document.getElementById("gameCanvas");
+    const canvasRect = canvas.getBoundingClientRect();
+    // mouseEvent coordinates relative to application viewport
+    const xViewport = mouseEvent.clientX;
+    const yViewport = mouseEvent.clientY;
+    // mouseEvent coordinates relative to gameCanvas
+    const xCanvas = xViewport - canvasRect.left;
+    const yCanvas = yViewport - canvasRect.top;
+    // get the indexes of the gameboard col and row at (xCanvas, yCanvas)
+    const cellSize = 600 / gameboard.dimension;
+    colIndex = Math.floor(xCanvas / cellSize);
+    rowIndex = Math.floor(yCanvas / cellSize);
+    // log coordinate
+    console.log(`${mouseEvent.type} -- col: ${colIndex}, row: ${rowIndex}`);
+    // return an object
+    return {
+      eventType: mouseEvent.type,
+      col: colIndex,
+      row: rowIndex,
+    };
+  };
+
   ////////////////////////////////////////////////
   // GAME SETUP
 
