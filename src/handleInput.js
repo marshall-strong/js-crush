@@ -247,7 +247,7 @@ function crushStreaks() {
       // alphaCounter = alphaCounter - 1;
       ctxt.globalAlpha = --alphaCounter / 10;
       for (var i = 0; i < listRemove.length; i++) {
-        for (var j = 0; j < listRemove[0].length; j++) {
+        for (var j = 0; j < listRemove[i].length; j++) {
           var letter = String(listRemove[i][j].letter);
           var scoreLetter = listRemove[i][j].letter;
           // debugger;
