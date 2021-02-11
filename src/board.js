@@ -27,19 +27,19 @@ const Board = function (dimension) {
   ////////////////////////////////////////////////
   // square info
 
-  this.squareExists = function (row, col) {
+  this.squareExists = function (col, row) {
     const indexes = [...Array(this.dimension).keys()];
     const colExists = indexes.includes(col);
     const rowExists = indexes.includes(row);
     return colExists && rowExists;
   };
 
-  this.gemAtSquare = function (row, col) {
-    return this.squareExists(row, col) ? this.grid[row][col] : null;
+  this.gemAtSquare = function (col, row) {
+    return this.squareExists(col, row) ? this.grid[row][col] : null;
   };
 
-  this.squareIsEmpty = function (row, col) {
-    return this.gemAtSquare(row, col) ? false : true;
+  this.squareIsEmpty = function (col, row) {
+    return this.gemAtSquare(col, row) ? false : true;
   };
 
   ////////////////////////////////////////////////
@@ -59,22 +59,22 @@ const Board = function (dimension) {
     return newGem;
   };
 
-  this.addGemToBoard = function (row, col, spawnRow = row, spawnCol = col) {
-    if (this.squareIsEmpty(row, col)) {
+  this.addGemToBoard = function (col, row, spawnCol = col, spawnRow = row) {
+    if (this.squareIsEmpty(col, row)) {
       const newGem = this.createGem();
-      newGem.row = row;
       newGem.col = col;
+      newGem.row = row;
       this.grid[row][col] = newGem;
       const details = {
         gem: newGem,
-        toRow: row,
         toCol: col,
-        fromRow: spawnRow,
+        toRow: row,
         fromCol: spawnCol,
+        fromRow: spawnRow,
       };
       $(this).triggerHandler("add", details);
     } else {
-      console.log("add already found a gem at " + row + "," + col);
+      // console.log("add already found a gem at " + row + "," + col);
     }
   };
 
@@ -88,24 +88,24 @@ const Board = function (dimension) {
     // Swap the two gems simultaneously.
     const details1 = {
       gem: gem1,
-      toRow: gem2.row,
       toCol: gem2.col,
-      fromRow: gem1.row,
+      toRow: gem2.row,
       fromCol: gem1.col,
+      fromRow: gem1.row,
     };
     const details2 = {
       gem: gem2,
-      toRow: gem1.row,
       toCol: gem1.col,
-      fromRow: gem2.row,
+      toRow: gem1.row,
       fromCol: gem2.col,
+      fromRow: gem2.row,
     };
 
-    gem1.row = details1.toRow;
     gem1.col = details1.toCol;
+    gem1.row = details1.toRow;
     this.grid[details1.toRow][details1.toCol] = gem1;
-    gem2.row = details2.toRow;
     gem2.col = details2.toCol;
+    gem2.row = details2.toRow;
     this.grid[details2.toRow][details2.toCol] = gem2;
 
     // Trigger two move events.
@@ -120,19 +120,19 @@ const Board = function (dimension) {
   };
 
   // move gem from current squre to another square
-  this.moveTo = function (gem, toRow, toCol) {
-    if (this.squareIsEmpty(toRow, toCol)) {
+  this.moveTo = function (gem, toCol, toRow) {
+    if (this.squareIsEmpty(toCol, toRow)) {
       delete this.grid[gem.row][gem.col];
       this.grid[toRow][toCol] = gem;
-      gem.row = toRow;
       gem.col = toCol;
+      gem.row = toRow;
 
       const details = {
         gem: gem,
-        toRow: toRow,
         toCol: toCol,
-        fromRow: gem.row,
+        toRow: toRow,
         fromCol: gem.col,
+        fromRow: gem.row,
       };
 
       $(this).triggerHandler("move", details);
@@ -146,18 +146,19 @@ const Board = function (dimension) {
   this.remove = function (gem) {
     const details = {
       gem: gem,
-      fromRow: gem.row,
       fromCol: gem.col,
+      fromRow: gem.row,
     };
     delete this.grid[gem.row][gem.col];
-    gem.row = gem.col = null;
+    gem.col = null;
+    gem.row = null;
     $(this).triggerHandler("remove", details);
   };
 
   // remove gem at specified position from the board
-  this.removeAt = function (row, col) {
-    if (this.squareIsEmpty(row, col)) {
-      console.log("removeAt found no gem at " + row + "," + col);
+  this.removeAt = function (col, row) {
+    if (this.squareIsEmpty(col, row)) {
+      console.log(`!! removeAt found no gem at col ${col}, row ${row}.`);
     } else {
       this.remove(this.grid[row][col]);
     }
@@ -169,16 +170,16 @@ const Board = function (dimension) {
   this.getGemInDirection = function (fromGem, direction) {
     switch (direction) {
       case "up": {
-        return this.gemAtSquare(fromGem.row - 1, fromGem.col);
+        return this.gemAtSquare(fromGem.col, fromGem.row - 1);
       }
       case "down": {
-        return this.gemAtSquare(fromGem.row + 1, fromGem.col);
+        return this.gemAtSquare(fromGem.col, fromGem.row + 1);
       }
       case "left": {
-        return this.gemAtSquare(fromGem.row, fromGem.col - 1);
+        return this.gemAtSquare(fromGem.col - 1, fromGem.row);
       }
       case "right": {
-        return this.gemAtSquare(fromGem.row, fromGem.col + 1);
+        return this.gemAtSquare(fromGem.col + 1, fromGem.row);
       }
     }
   };
@@ -198,14 +199,14 @@ const Board = function (dimension) {
     $(this).triggerHandler("scoreUpdate", [{ score: 0 }]);
   };
 
-  this.incrementScore = function (gem, row, col) {
+  this.incrementScore = function (gem, col, row) {
     this.score += 1;
     $(this).triggerHandler("scoreUpdate", [
       {
         score: this.score,
         gem: gem,
-        row: row,
         col: col,
+        row: row,
       },
     ]);
   };

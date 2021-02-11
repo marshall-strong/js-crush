@@ -34,7 +34,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 
 // original
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-  const gemOne = board.gemAtSquare(mouseDownRow, mouseDownCol);
+  const gemOne = board.gemAtSquare(mouseDownCol, mouseDownRow);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");

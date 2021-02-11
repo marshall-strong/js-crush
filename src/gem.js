@@ -13,14 +13,14 @@ const Gem = function (letter, id) {
     value: id,
   });
 
-  Object.defineProperty(this, "row", {
+  Object.defineProperty(this, "col", {
     enumberable: false,
     configurable: true,
     writable: true,
     value: null,
   });
 
-  Object.defineProperty(this, "col", {
+  Object.defineProperty(this, "row", {
     enumberable: false,
     configurable: true,
     writable: true,
