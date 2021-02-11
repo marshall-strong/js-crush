@@ -79,11 +79,11 @@ const Game = function (gameboard) {
         }
       }
       // once all squares are filled, check gameboard for matches
-      const crushable = this.getGemStreaks();
+      const crushable = this.findMatches();
       // if no matches are found, exit setup and begin gameplay
       if (crushable.length == 0) break;
       // remove any matches found, then continue the loop to add more gems
-      this.removeGemStreaks(crushable);
+      this.removeMatchesFromBoard(crushable);
     }
     // enable scoring
     this.keepScore = true;
@@ -115,7 +115,7 @@ const Game = function (gameboard) {
       return [];
     }
     const swap = [fromGem, toGem];
-    const crushable = this.getGemStreaks(swap);
+    const crushable = this.findMatches(swap);
     // Only return crushable groups that involve the swapped gems.
     // If the gameboard has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
     const connected = crushable.filter(function (set) {
@@ -174,22 +174,22 @@ const Game = function (gameboard) {
   ////////////////////////////////////////////////
   // GAME LOGIC
   // There are 3 steps:
-  // #1: getGemStreaks
-  // #2: removeGemStreaks
+  // #1: findMatches
+  // #2: removeMatchesFromBoard
   // #3: moveGemsDown
 
-  // A streak occurs when 3 or more adjacent gems have the same letter.
-  // Streaks can be horizontal or vertical, and overlapping streaks are joined.
-  // Streaks are provided as arrays, where each element is a gem in the streak.
+  // A match occurs when 3 or more adjacent gems in a col or row have the same color.
+  // Overlapping horizontal and vertical matches of the same color are joined.
+  // Matches are provided as arrays, where each element is a gem in the match.
 
-  // `getGemStreaks` finds and returns all streaks on the gameboard.
+  // `findMatches` finds and returns all matches currently on the gameboard.
   // Results are output as an array of streaks (an array of arrays of gems).
 
-  // `getGemStreaks` accepts an optional parameter `swap` -- an array of two gems.
-  // if `swap` is not null, the positions of the two gems in it are swapped when computing streaks.
+  // `gem1` and `gem2` are optional parameters used by "Get Hint" and "Auto-Move".
+  // if provided, function returns the matches that WOULD exist on the board after swapping gem1 with gem2.
 
-  // The output of `getGemStreaks` is passed directly to `removeGemStreaks`.
-  this.getGemStreaks = function (swap) {
+  // The output of `findMatches` is passed directly to `removeMatchesFromBoard`.
+  this.findMatches = function (swap) {
     // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
     // Implementation of the classic union-find algorithm (unoptimized).
     // Allows any string keys to be unioned into a set of disjoint sets.
@@ -238,8 +238,8 @@ const Game = function (gameboard) {
     }
 
     // Get strips of length 3 (or more).
-    const horizontalStreaks = [];
-    const verticalStreaks = [];
+    const horizontalMatches = [];
+    const verticalMatches = [];
 
     // find horizontal streaks, iterating through each row
     for (let row = 0; row < gameboard.dimension; row++) {
@@ -248,15 +248,15 @@ const Game = function (gameboard) {
         const gem = getGemOrSwapAt(col, row);
         nextCol = col + 1;
         if (!gem) continue;
-        let matches = [gem];
+        let match = [gem];
         while (nextCol < gameboard.dimension) {
           const nextGem = getGemOrSwapAt(nextCol, row);
           if (!nextGem || nextGem.letter != gem.letter) break;
-          matches.push(nextGem);
+          match.push(nextGem);
           nextCol++;
         }
         // If there are at least 3 gems in the match, add it to streaks.
-        if (matches.length >= 3) horizontalStreaks.push(matches);
+        if (match.length >= 3) horizontalMatches.push(match);
       }
     }
 
@@ -267,19 +267,19 @@ const Game = function (gameboard) {
         const gem = getGemOrSwapAt(col, row);
         nextRow = row + 1;
         if (!gem) continue;
-        let matches = [gem];
+        let match = [gem];
         while (nextRow < gameboard.dimension) {
           const nextGem = getGemOrSwapAt(col, nextRow);
           if (!nextGem || nextGem.letter != gem.letter) break;
-          matches.push(nextGem);
+          match.push(nextGem);
           nextRow++;
         }
         // If there are at least 3 gems in the match, add it to streaks.
-        if (matches.length >= 3) verticalStreaks.push(matches);
+        if (match.length >= 3) verticalMatches.push(match);
       }
     }
 
-    let sets = horizontalStreaks.concat(verticalStreaks);
+    let sets = horizontalMatches.concat(verticalMatches);
 
     // Execute union of all the strips, possibly joining horizontal and vertical strips that intersect.
     for (let j = 0; j < sets.length; j++) {
@@ -314,9 +314,9 @@ const Game = function (gameboard) {
     return arr;
   };
 
-  // Deletes all the gems in arrayOfStreaks (which can be generated by getGemStreaks or by getGemsToCrushGivenMove)
+  // Deletes all the gems in arrayOfStreaks (which can be generated by findMatches or by getGemsToCrushGivenMove)
   // Does not shift gems down at all. Updates the score accordingly.
-  this.removeGemStreaks = function (arrayOfStreaks) {
+  this.removeMatchesFromBoard = function (arrayOfStreaks) {
     for (let j = 0; j < arrayOfStreaks.length; j++) {
       const streak = arrayOfStreaks[j];
       for (let k = 0; k < streak.length; k++) {

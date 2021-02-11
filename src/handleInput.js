@@ -1,7 +1,3 @@
-// // original
-// let mouseDownLocation;
-// let mouseUpLocation;
-// new
 let mouseDownColAndRow;
 let mouseUpColAndRow;
 
@@ -35,6 +31,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 // original
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   const gemOne = board.gemAtSquare(mouseDownCol, mouseDownRow);
+  const gemTwo = board.gemAtSquare(mouseUpCol, mouseUpRow);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
@@ -116,6 +113,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       // TimingEvent
       // vertical swap animation
       const verticalSwap = setInterval(function () {
+        // erase the two squares involved in the move
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
 
         ctxt.drawImage(
@@ -125,6 +123,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
           squareLength,
           squareLength
         );
+
         ctxt.drawImage(
           document.getElementById(destLetter),
           destCol,
@@ -179,7 +178,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
 ////////////////////////////////////////////////////////
 // everything below here is used in handleDrag
 
-let continueCrushing;
+let matchesExist;
 
 function flipAndDraw(gemOne, dir) {
   board.flipGems(gemOne, board.getGemInDirection(gemOne, dir));
@@ -187,12 +186,12 @@ function flipAndDraw(gemOne, dir) {
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
 
-  crushStreaks();
+  removeMatches();
 
   // TimingEvent
   const gg = setInterval(function () {
-    if (continueCrushing == true) {
-      crushStreaks();
+    if (matchesExist) {
+      removeMatches();
     } else {
       clearInterval(gg);
       document.getElementById("gameCanvas").style.pointerEvents = "auto";
@@ -201,8 +200,8 @@ function flipAndDraw(gemOne, dir) {
   }, 1000);
 }
 
-function crushStreaks() {
-  const listRemove = game.getGemStreaks();
+function removeMatches() {
+  const listRemove = game.findMatches();
   const canvas = document.getElementById("gameCanvas");
   const ctxt = canvas.getContext("2d");
   const squareLength = 600 / board.dimension;
@@ -241,25 +240,19 @@ function crushStreaks() {
   }
 
   // pause after gems fade out, before moving gems down ??
-  // after swapping gems, pause before removing them ??
   // TimingEvent
   setTimeout(function () {
-    // debugger;
+    // delete the (now 100% transparent) gems from the gameboard state
+    game.removeMatchesFromBoard(listRemove);
+    // reset transparency to 0%
     ctxt.globalAlpha = 1.0;
-
-    game.removeGemStreaks(listRemove);
-
+    // update the gameboard state by adding new gems and moving all gems down
     game.moveGemsDown();
-
+    // redraw the board in its updated state (no animation yet for moving down)
     $("#mainColumn").html(game.drawBoard());
-
-    const newListRemove = game.getGemStreaks();
-
-    if (newListRemove.length == 0) {
-      continueCrushing = false;
-    } else {
-      continueCrushing = true;
-    }
+    // check if any new streaks now exist
+    const newMatches = game.findMatches();
+    matchesExist = newMatches.length > 0 ? true : false;
   }, 550);
 }
 
