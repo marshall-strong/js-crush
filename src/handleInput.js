@@ -58,6 +58,8 @@ function handleClick(col, row) {
       return false;
     };
     if (isLegal()) {
+      // check for matches
+
       handleLegalMove();
     } else {
       handleIllegalMove();
@@ -106,7 +108,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       // horizontal swap
       clearWidth = squareLength * 2;
       clearHeight = squareLength;
-      var originLetter, destLetter;
+      let originLetter, destLetter;
       if (gemOne.col > gemTo.col) {
         destCol = gemOne.col * squareLength;
         originCol = gemTo.col * squareLength;
@@ -120,7 +122,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       }
       destRow = gemTo.row * squareLength;
       originRow = gemOne.row * squareLength;
-      var timer = 0;
+      let timer = 0;
 
       // TimingEvent
       // horizontal swap animation
@@ -166,7 +168,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       }
       destCol = gemTo.col * squareLength;
       originCol = gemOne.col * squareLength;
-      var timer = 0;
+      let timer = 0;
 
       // TimingEvent
       // vertical swap animation
@@ -269,10 +271,9 @@ function removeMatches() {
     const fadeOut = setInterval(function () {
       // alphaCounter = alphaCounter - 1;
       ctxt.globalAlpha = --alphaCounter / 10;
-      for (var i = 0; i < listRemove.length; i++) {
-        for (var j = 0; j < listRemove[i].length; j++) {
-          var letter = String(listRemove[i][j].letter);
-          var scoreLetter = listRemove[i][j].letter;
+      for (let i = 0; i < listRemove.length; i++) {
+        for (let j = 0; j < listRemove[i].length; j++) {
+          const letter = String(listRemove[i][j].letter);
           // debugger;
           ctxt.clearRect(
             listRemove[i][j].col * squareLength,
