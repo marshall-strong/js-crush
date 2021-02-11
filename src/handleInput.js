@@ -26,13 +26,14 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   // defining this function inline for now...
   // define clickOrDrag
   function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
+    // debugger
     const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
     const mouseInput = click ? "click" : "drag";
     if (mouseInput === "click") {
       console.log("click");
     } else {
       console.log("drag");
-      checkDrag();
+      checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow);
     }
   }
   // call clickOrDrag with mouseDownColAndRow and mouseUpColAndRow
@@ -45,18 +46,13 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 });
 
 // original
-function checkDrag() {
-  const originCol = col_array.indexOf(mouseDownLocation.charAt(0));
-  const destCol = col_array.indexOf(mouseUpLocation.charAt(0));
-  const originRow = mouseDownLocation.substring(1);
-  const destRow = mouseUpLocation.substring(1);
+function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
+  const originCol = mouseDownCol;
+  const destCol = mouseUpCol;
+  const originRow = mouseDownRow;
+  const destRow = mouseUpRow;
 
-  const inputCol = col_array.indexOf(mouseDownLocation.charAt(0));
-  const inputRow =
-    mouseDownLocation.length < 3
-      ? Number(mouseDownLocation.charAt(1)) - 1
-      : Number(mouseDownLocation.charAt(1) + mouseDownLocation.charAt(2)) - 1;
-  const gemOne = board.gridCellGem(inputRow, inputCol);
+  const gemOne = board.gridCellGem(mouseDownRow, mouseDownCol);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
