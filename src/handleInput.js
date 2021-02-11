@@ -7,6 +7,7 @@ function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   const mouseInput = click ? "click" : "drag";
   if (mouseInput === "click") {
     console.log("click");
+    handleClick(mouseDownCol, mouseDownRow);
   } else {
     console.log("drag");
     handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow);
@@ -28,7 +29,28 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   );
 });
 
-// original
+let lastClick;
+function handleClick(col, row) {
+  // const clickedGem = board.gemAtSquare(col, row);
+  const canvas = document.getElementById("gameCanvas");
+  const ctxt = canvas.getContext("2d");
+  const squareLength = 600 / board.dimension;
+  const squareX = col * squareLength;
+  const squareY = row * squareLength;
+
+  ctxt.globalAlpha = 0.3;
+  ctxt.fillStyle = "yellow";
+  ctxt.fillRect(squareX, squareY, squareLength, squareLength);
+  ctxt.globalAlpha = 1.0;
+
+  if (!lastClick) {
+    lastClick = { col: col, row: row };
+  } else {
+    lastClick = null;
+    setTimeout(() => game.drawBoard(), 550);
+  }
+}
+
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   const gemOne = board.gemAtSquare(mouseDownCol, mouseDownRow);
   const gemTwo = board.gemAtSquare(mouseUpCol, mouseUpRow);
