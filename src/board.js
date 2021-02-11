@@ -42,6 +42,19 @@ const Board = function (dimension) {
     return this.gemAtSquare(col, row) ? false : true;
   };
 
+  this.adjacentSquares = function (col, row) {
+    const above = { col: col, row: row - 1 };
+    const below = { col: col, row: row + 1 };
+    const left = { col: col - 1, row: row };
+    const right = { col: col + 1, row: row };
+    const adjacent = [];
+    if (this.squareExists(above.col, above.row)) adjacent.push(above);
+    if (this.squareExists(below.col, below.row)) adjacent.push(below);
+    if (this.squareExists(left.col, left.row)) adjacent.push(left);
+    if (this.squareExists(right.col, right.row)) adjacent.push(right);
+    return adjacent;
+  };
+
   ////////////////////////////////////////////////
   // CREATE GEMS
 
