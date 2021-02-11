@@ -29,7 +29,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   );
 });
 
-let lastClick;
+let firstClick;
 function handleClick(col, row) {
   // const clickedGem = board.gemAtSquare(col, row);
   const canvas = document.getElementById("gameCanvas");
@@ -43,12 +43,48 @@ function handleClick(col, row) {
   ctxt.fillRect(squareX, squareY, squareLength, squareLength);
   ctxt.globalAlpha = 1.0;
 
-  if (!lastClick) {
-    lastClick = { col: col, row: row };
+  if (!firstClick) {
+    handleFirstClick();
+    firstClick = { col: col, row: row };
   } else {
-    lastClick = null;
-    setTimeout(() => game.drawBoard(), 550);
+    const secondClick = { col: col, row: row };
+    const adjacent = board.adjacentSquares(firstClick.col, firstClick.row);
+    const isLegal = () => {
+      for (let i = 0; i < adjacent.length; i++) {
+        const sameCol = adjacent[i].col === secondClick.col;
+        const sameRow = adjacent[i].row === secondClick.row;
+        if (sameCol && sameRow) return true;
+      }
+      return false;
+    };
+    if (isLegal()) {
+      handleLegalMove();
+    } else {
+      handleIllegalMove();
+    }
+
+    setTimeout(() => {
+      // reset
+      game.drawBoard();
+      firstClick = null;
+    }, 550);
   }
+}
+
+function handleFirstClick() {
+  console.log("that was your first click...");
+}
+function handleMatchingMove() {
+  console.log("...that move will match!");
+}
+function handleNonMatchingMove() {
+  console.log("...that move will not match.");
+}
+function handleLegalMove() {
+  console.log("...that move is allowed!");
+}
+function handleIllegalMove() {
+  console.log("...that move is not allowed.");
 }
 
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
