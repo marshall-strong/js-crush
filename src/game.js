@@ -115,14 +115,14 @@ const Game = function (gameboard) {
       return [];
     }
     const swap = [fromGem, toGem];
-    const crushable = this.findMatches(swap);
+    const crushable = this.findMatches(fromGem, toGem);
+
     // Only return crushable groups that involve the swapped gems.
     // If the gameboard has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
     const connected = crushable.filter(function (set) {
-      for (let k = 0; k < swap.length; k++) {
-        if (set.indexOf(swap[k]) >= 0) return true;
-      }
-      return false;
+      const containsFromGem = set.indexOf(fromGem) >= 0;
+      const containsToGem = set.indexOf(toGem) >= 0;
+      return containsFromGem || containsToGem;
     });
 
     return [].concat.apply([], connected); //flatten nested lists
@@ -189,7 +189,7 @@ const Game = function (gameboard) {
   // if provided, function returns the matches that WOULD exist on the board after swapping gem1 with gem2.
 
   // The output of `findMatches` is passed directly to `removeMatchesFromBoard`.
-  this.findMatches = function (swap) {
+  this.findMatches = function (gem1, gem2) {
     // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
     // Implementation of the classic union-find algorithm (unoptimized).
     // Allows any string keys to be unioned into a set of disjoint sets.
@@ -225,14 +225,11 @@ const Game = function (gameboard) {
 
     // takes the swap parameter into account
     function getGemOrSwapAt(col, row) {
-      // Retrieve the gem at a row and column (depending on vertical)
       const theGem = gameboard.gemAtSquare(col, row);
-      if (swap) {
+      if (gem1 && gem2) {
         // If theGem is one of the two gems in the `swap`, return the other gem.
-        let index = swap.indexOf(theGem);
-        if (index >= 0) {
-          return swap[index ^ 1];
-        }
+        if (theGem === gem1) return gem2;
+        if (theGem === gem2) return gem1;
       }
       return theGem;
     }
