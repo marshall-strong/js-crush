@@ -1,13 +1,13 @@
-const Game = function (board) {
+const Game = function (gameboard) {
   ////////////////////////////////////////////////
   // GAME PROPERTIES
 
-  Object.defineProperty(this, "gameboard", {
-    enumerable: false,
-    configurable: true,
-    writable: true,
-    value: board,
-  });
+  // Object.defineProperty(this, "gameboard", {
+  //   enumerable: false,
+  //   configurable: true,
+  //   writable: true,
+  //   value: board,
+  // });
 
   Object.defineProperty(this, "keepScore", {
     enumerable: false,
@@ -17,12 +17,85 @@ const Game = function (board) {
   });
 
   ////////////////////////////////////////////////
+  // new part
+
+  // used during game setup, newGame button, getHint button, handleDrag
+  this.drawBoard = function () {
+    const cellSize = 600 / gameboard.dimension;
+    const canvas = document.getElementById("gameCanvas");
+    ctxt = canvas.getContext("2d");
+    // draw grid container
+    ctxt.clearRect(0, 0, canvas.width, canvas.height);
+    ctxt.strokeStyle = "white";
+    // iterate through gridCells
+    for (let row = 0; row < gameboard.dimension; row++) {
+      for (let col = 0; col < gameboard.dimension; col++) {
+        const dx = col * cellSize;
+        const dy = row * cellSize;
+        const dWidth = cellSize;
+        const dHeight = cellSize;
+        // draw cell outline
+        ctxt.strokeRect(dx, dy, dWidth, dHeight);
+        const gem = gameboard.gridCellGem(row, col);
+        const gemImage = document.getElementById(gem.letter);
+        // draw gemImage
+        ctxt.drawImage(gemImage, dx, dy, dWidth, dHeight);
+      }
+    }
+  };
+
+  // original
+  // used by handleDrag to get mouseDownLocation and mouseUpLocation
+  // outputs columns as a letter...
+  this.getCanvasPos = function (mouseEvent) {
+    const canvas = document.getElementById("gameCanvas");
+    const canvasRect = canvas.getBoundingClientRect();
+    // mouseEvent coordinates relative to application viewport
+    const xViewport = mouseEvent.clientX;
+    const yViewport = mouseEvent.clientY;
+    // mouseEvent coordinates relative to gameCanvas
+    const xCanvas = xViewport - canvasRect.left;
+    const yCanvas = yViewport - canvasRect.top;
+    // get coordinate
+    const cellSize = 600 / gameboard.dimension;
+    xCol = col_array[Math.floor(xCanvas / cellSize)];
+    yRow = Math.floor(yCanvas / cellSize) + 1;
+    // log coordinate
+    // console.log({ col: xCol, row: yRow });
+    return xCol + yRow;
+  };
+  // new
+  // this is a new version of getCanvasPos
+  this.getGameboardColAndRow = function (mouseEvent) {
+    const canvas = document.getElementById("gameCanvas");
+    const canvasRect = canvas.getBoundingClientRect();
+    // mouseEvent coordinates relative to application viewport
+    const xViewport = mouseEvent.clientX;
+    const yViewport = mouseEvent.clientY;
+    // mouseEvent coordinates relative to gameCanvas
+    const xCanvas = xViewport - canvasRect.left;
+    const yCanvas = yViewport - canvasRect.top;
+    // get the indexes of the gameboard col and row at (xCanvas, yCanvas)
+    const cellSize = 600 / gameboard.dimension;
+    colIndex = Math.floor(xCanvas / cellSize);
+    rowIndex = Math.floor(yCanvas / cellSize);
+    // log coordinate
+    console.log(`${mouseEvent.type} -- col: ${colIndex}, row: ${rowIndex}`);
+    // return an object
+    return {
+      eventType: mouseEvent.type,
+      col: colIndex,
+      row: rowIndex,
+    };
+  };
+
+  ////////////////////////////////////////////////
   // GAME SETUP
 
   this.clearGameboard = function () {
-    for (let col = 0; col < board.dimension; col++) {
-      for (let row = 0; row < board.dimension; row++) {
-        board.removeAt(row, col);
+    for (let col = 0; col < gameboard.dimension; col++) {
+      for (let row = 0; row < gameboard.dimension; row++) {
+        gameboard.removeAt(row, col);
       }
     }
   };
@@ -33,10 +106,10 @@ const Game = function (board) {
     // populate gameboard
     while (true) {
       // iterate through gameboard, adding gems to empty cells
-      for (let col = 0; col < board.dimension; col++) {
-        for (let row = 0; row < board.dimension; row++) {
-          if (board.gridCellGem(row, col) == null)
-            board.addGemToBoard(row, col);
+      for (let col = 0; col < gameboard.dimension; col++) {
+        for (let row = 0; row < gameboard.dimension; row++) {
+          if (gameboard.gridCellGem(row, col) == null)
+            gameboard.addGemToBoard(row, col);
         }
       }
       // once all cells are filled, check gameboard for matches
@@ -70,7 +143,7 @@ const Game = function (board) {
   // (['up', 'down', 'left', 'right'])
   // If move would result in no crushed gems, an empty list is returned.
   this.getGemsToCrushGivenMove = function (fromGem, direction) {
-    const toGem = board.getGemInDirection(fromGem, direction);
+    const toGem = gameboard.getGemInDirection(fromGem, direction);
 
     if (!toGem || toGem.letter == fromGem.letter) {
       return [];
@@ -78,7 +151,7 @@ const Game = function (board) {
     const swap = [fromGem, toGem];
     const crushable = this.getGemStreaks(swap);
     // Only return crushable groups that involve the swapped gems.
-    // If the board has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
+    // If the gameboard has incompletely-resolved crushes, there can be many crushable gems that are not touching the swapped ones.
     const connected = crushable.filter(function (set) {
       for (let k = 0; k < swap.length; k++) {
         if (set.indexOf(swap[k]) >= 0) return true;
@@ -99,11 +172,11 @@ const Game = function (board) {
     let validMovesThreeCrush = [];
     let validMovesMoreThanThreeCrush = [];
 
-    // For each cell in the board, check to see if moving it in any of the four directions would result in a crush.
+    // For each cell on the gameboard, check to see if moving it in any of the four directions would result in a crush.
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes where setSize === 3, validMoves_moreThanThreeCrush for crushes where setSize > 3)
-    for (let row = 0; row < board.dimension; row++) {
-      for (let col = 0; col < board.dimension; col++) {
-        const fromGem = board.gridCellGem(row, col);
+    for (let row = 0; row < gameboard.dimension; row++) {
+      for (let col = 0; col < gameboard.dimension; col++) {
+        const fromGem = gameboard.gridCellGem(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
           const direction = directions[i];
@@ -143,7 +216,7 @@ const Game = function (board) {
   // Streaks can be horizontal or vertical, and overlapping streaks are joined.
   // Streaks are provided as arrays, where each element is a gem in the streak.
 
-  // `getGemStreaks` finds and returns all streaks on the board.
+  // `getGemStreaks` finds and returns all streaks on the gameboard.
   // Results are output as an array of streaks (an array of arrays of gems).
 
   // `getGemStreaks` accepts an optional parameter `swap` -- an array of two gems.
@@ -187,7 +260,7 @@ const Game = function (board) {
     // takes the swap parameter into account
     function getGemOrSwapAt(row, col) {
       // Retrieve the gem at a row and column (depending on vertical)
-      const theGem = board.gridCellGem(row, col);
+      const theGem = gameboard.gridCellGem(row, col);
       if (swap) {
         // If theGem is one of the two gems in the `swap`, return the other gem.
         let index = swap.indexOf(theGem);
@@ -203,14 +276,14 @@ const Game = function (board) {
     const verticalStreaks = [];
 
     // find horizontal streaks, iterating through each row
-    for (let row = 0; row < board.dimension; row++) {
-      for (let nextCol, col = 0; col < board.dimension; col = nextCol) {
+    for (let row = 0; row < gameboard.dimension; row++) {
+      for (let nextCol, col = 0; col < gameboard.dimension; col = nextCol) {
         // Scan row for matches, starting at col
         const gem = getGemOrSwapAt(row, col);
         nextCol = col + 1;
         if (!gem) continue;
         let matches = [gem];
-        while (nextCol < board.dimension) {
+        while (nextCol < gameboard.dimension) {
           const nextGem = getGemOrSwapAt(row, nextCol);
           if (!nextGem || nextGem.letter != gem.letter) break;
           matches.push(nextGem);
@@ -222,14 +295,14 @@ const Game = function (board) {
     }
 
     // find vertical streaks, iterating through each column
-    for (let col = 0; col < board.dimension; col++) {
-      for (let nextRow, row = 0; row < board.dimension; row = nextRow) {
+    for (let col = 0; col < gameboard.dimension; col++) {
+      for (let nextRow, row = 0; row < gameboard.dimension; row = nextRow) {
         // Scan col for matches, starting at row
         const gem = getGemOrSwapAt(row, col);
         nextRow = row + 1;
         if (!gem) continue;
         let matches = [gem];
-        while (nextRow < board.dimension) {
+        while (nextRow < gameboard.dimension) {
           const nextGem = getGemOrSwapAt(nextRow, col);
           if (!nextGem || nextGem.letter != gem.letter) break;
           matches.push(nextGem);
@@ -252,9 +325,9 @@ const Game = function (board) {
 
     // Pass 2: list out resulting sets of minSize or larger.
     let results = {};
-    for (row = 0; row < board.dimension; row++) {
-      for (col = 0; col < board.dimension; col++) {
-        const gem = board.gridCellGem(row, col);
+    for (row = 0; row < gameboard.dimension; row++) {
+      for (col = 0; col < gameboard.dimension; col++) {
+        const gem = gameboard.gridCellGem(row, col);
         if (gem) {
           const p = find(gem.id);
           if (setSize(p) >= 3) {
@@ -282,38 +355,39 @@ const Game = function (board) {
       const streak = arrayOfStreaks[j];
       for (let k = 0; k < streak.length; k++) {
         const gem = streak[k];
-        board.remove(gem);
+        gameboard.remove(gem);
         if (this.keepScore) {
-          board.incrementScore(gem, gem.row, gem.col);
+          gameboard.incrementScore(gem, gem.row, gem.col);
+          gameboard.updateScoreColor(gem);
         }
       }
     }
   };
 
   // Moves gems down as far as there are empty spaces.
-  // Issues calls to board.moveTo, which generate "move" events to listen for.
+  // Issues calls to gameboard.moveTo, which generate "move" events to listen for.
   // If there are holes created by moving the gems down, populates the holes with random gems, and issues "add" events for these gems.
   this.moveGemsDown = function () {
     // Collapse each column
-    for (let col = 0; col < board.dimension; col++) {
+    for (let col = 0; col < gameboard.dimension; col++) {
       let emptyRow = null;
       // In each column, scan for the bottom most empty row
-      for (let row = board.dimension - 1; row >= 0; row--) {
+      for (let row = gameboard.dimension - 1; row >= 0; row--) {
         emptyRow = row;
-        if (board.gridCellGem(row, col) == null) break;
+        if (gameboard.gridCellGem(row, col) == null) break;
       }
       // Then shift any nonempty rows up
       for (let row = emptyRow - 1; row >= 0; row--) {
-        const gem = board.gridCellGem(row, col);
+        const gem = gameboard.gridCellGem(row, col);
         if (gem != null) {
-          board.moveTo(gem, emptyRow, col);
+          gameboard.moveTo(gem, emptyRow, col);
           emptyRow--;
         }
       }
       for (let spawnRow = -1; emptyRow >= 0; emptyRow--, spawnRow--) {
         // We report spawnRow as the (negative) position where
         // the gem "would have" started in order to fall into place.
-        board.addGemToBoard(emptyRow, col, spawnRow, col);
+        gameboard.addGemToBoard(emptyRow, col, spawnRow, col);
       }
     }
   };
