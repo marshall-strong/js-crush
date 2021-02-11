@@ -207,13 +207,13 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   if (mouseDownCol == mouseUpCol) {
     if (mouseDownRow < mouseUpRow) {
       // DOWN
-      if (game.isMoveTypeValid(gemOne, "down")) {
+      if (game.getGemsToCrushGivenMove(gemOne, "down").length > 0) {
         checkMove("down");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
       // UP
-      if (game.isMoveTypeValid(gemOne, "up")) {
+      if (game.getGemsToCrushGivenMove(gemOne, "up").length > 0) {
         checkMove("up");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
@@ -221,13 +221,13 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   } else {
     if (mouseDownCol < mouseUpCol) {
       // RIGHT
-      if (game.isMoveTypeValid(gemOne, "right")) {
+      if (game.getGemsToCrushGivenMove(gemOne, "right").length > 0) {
         checkMove("right");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
       // LEFT
-      if (game.isMoveTypeValid(gemOne, "left")) {
+      if (game.getGemsToCrushGivenMove(gemOne, "left").length > 0) {
         checkMove("left");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";

@@ -114,7 +114,6 @@ const Game = function (gameboard) {
     if (!toGem || toGem.letter == fromGem.letter) {
       return [];
     }
-    const swap = [fromGem, toGem];
     const crushable = this.findMatches(fromGem, toGem);
 
     // Only return crushable groups that involve the swapped gems.
