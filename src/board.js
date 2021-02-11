@@ -27,17 +27,19 @@ const Board = function (dimension) {
   ////////////////////////////////////////////////
   // square info
 
-  this.squareIsValid = function (row, col) {
-    const validValues = [...Array(this.dimension).keys()];
-    return validValues.includes(row) && validValues.includes(col);
+  this.squareExists = function (row, col) {
+    const indexes = [...Array(this.dimension).keys()];
+    const colExists = indexes.includes(col);
+    const rowExists = indexes.includes(row);
+    return colExists && rowExists;
+  };
+
+  this.gemAtSquare = function (row, col) {
+    return this.squareExists(row, col) ? this.grid[row][col] : null;
   };
 
   this.squareIsEmpty = function (row, col) {
-    return this.squareGem(row, col) ? false : true;
-  };
-
-  this.squareGem = function (row, col) {
-    return this.squareIsValid(row, col) ? this.grid[row][col] : null;
+    return this.gemAtSquare(row, col) ? false : true;
   };
 
   ////////////////////////////////////////////////
@@ -167,16 +169,16 @@ const Board = function (dimension) {
   this.getGemInDirection = function (fromGem, direction) {
     switch (direction) {
       case "up": {
-        return this.squareGem(fromGem.row - 1, fromGem.col);
+        return this.gemAtSquare(fromGem.row - 1, fromGem.col);
       }
       case "down": {
-        return this.squareGem(fromGem.row + 1, fromGem.col);
+        return this.gemAtSquare(fromGem.row + 1, fromGem.col);
       }
       case "left": {
-        return this.squareGem(fromGem.row, fromGem.col - 1);
+        return this.gemAtSquare(fromGem.row, fromGem.col - 1);
       }
       case "right": {
-        return this.squareGem(fromGem.row, fromGem.col + 1);
+        return this.gemAtSquare(fromGem.row, fromGem.col + 1);
       }
     }
   };

@@ -36,7 +36,7 @@ const Game = function (gameboard) {
         const dHeight = squareLength;
         // draw square outline
         ctxt.strokeRect(dx, dy, dWidth, dHeight);
-        const gem = gameboard.squareGem(row, col);
+        const gem = gameboard.gemAtSquare(row, col);
         const gemImage = document.getElementById(gem.letter);
         // draw gemImage
         ctxt.drawImage(gemImage, dx, dy, dWidth, dHeight);
@@ -87,7 +87,7 @@ const Game = function (gameboard) {
       // iterate through gameboard, adding gems to empty squares
       for (let col = 0; col < gameboard.dimension; col++) {
         for (let row = 0; row < gameboard.dimension; row++) {
-          if (gameboard.squareGem(row, col) == null)
+          if (gameboard.gemAtSquare(row, col) == null)
             gameboard.addGemToBoard(row, col);
         }
       }
@@ -155,7 +155,7 @@ const Game = function (gameboard) {
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes where setSize === 3, validMoves_moreThanThreeCrush for crushes where setSize > 3)
     for (let row = 0; row < gameboard.dimension; row++) {
       for (let col = 0; col < gameboard.dimension; col++) {
-        const fromGem = gameboard.squareGem(row, col);
+        const fromGem = gameboard.gemAtSquare(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
           const direction = directions[i];
@@ -239,7 +239,7 @@ const Game = function (gameboard) {
     // takes the swap parameter into account
     function getGemOrSwapAt(row, col) {
       // Retrieve the gem at a row and column (depending on vertical)
-      const theGem = gameboard.squareGem(row, col);
+      const theGem = gameboard.gemAtSquare(row, col);
       if (swap) {
         // If theGem is one of the two gems in the `swap`, return the other gem.
         let index = swap.indexOf(theGem);
@@ -306,7 +306,7 @@ const Game = function (gameboard) {
     let results = {};
     for (row = 0; row < gameboard.dimension; row++) {
       for (col = 0; col < gameboard.dimension; col++) {
-        const gem = gameboard.squareGem(row, col);
+        const gem = gameboard.gemAtSquare(row, col);
         if (gem) {
           const p = find(gem.id);
           if (setSize(p) >= 3) {
@@ -353,11 +353,11 @@ const Game = function (gameboard) {
       // In each column, scan for the bottom most empty row
       for (let row = gameboard.dimension - 1; row >= 0; row--) {
         emptyRow = row;
-        if (gameboard.squareGem(row, col) == null) break;
+        if (gameboard.gemAtSquare(row, col) == null) break;
       }
       // Then shift any nonempty rows up
       for (let row = emptyRow - 1; row >= 0; row--) {
-        const gem = gameboard.squareGem(row, col);
+        const gem = gameboard.gemAtSquare(row, col);
         if (gem != null) {
           gameboard.moveTo(gem, emptyRow, col);
           emptyRow--;
