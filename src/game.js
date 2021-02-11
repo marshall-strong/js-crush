@@ -92,19 +92,6 @@ const Game = function (gameboard) {
   ////////////////////////////////////////////////
   // GAME MOVES
 
-  // Returns true if swapping the `fromGem` with the gem in the specified
-  //   direction is a valid move according to the game rules.
-  // direction = ['up', 'down', 'left', 'right']
-  this.isMoveTypeValid = function (fromGem, direction) {
-    return this.numberGemsCrushedByMove(fromGem, direction) > 0;
-  };
-  // Helper method for game.isMoveTypeValid
-  // Returns the number of gems that would be crushed if the gem provided by fromGem were to be flipped in the direction specified(['up', 'down', 'left', 'right'])
-  // If move is not valid, return 0
-  this.numberGemsCrushedByMove = function (fromGem, direction) {
-    return this.getGemsToCrushGivenMove(fromGem, direction).length;
-  };
-  // Helper method for game.numberGemsCrushedByMove
   // Returns a list of gems that would be "crushed" (i.e. removed) if fromGem were to be moved in the specified direction
   // (['up', 'down', 'left', 'right'])
   // If move would result in no crushed gems, an empty list is returned.
@@ -123,8 +110,21 @@ const Game = function (gameboard) {
       const containsToGem = set.indexOf(toGem) >= 0;
       return containsFromGem || containsToGem;
     });
-
+    debugger;
     return [].concat.apply([], connected); //flatten nested lists
+  };
+
+  this.findMatchesMadeBySwap = function (gem1, gem2) {
+    if (gem1.letter === gem2.letter) return [];
+    const matches = this.findMatches(gem1, gem2);
+    // filter out any matches that do not involve either gem being moved
+    // (avoids unexpected errors caused by incompletely-resolved board states)
+    const gemMatches = matches.filter((match) => {
+      const containsGem1 = match.indexOf(gem1) >= 0;
+      const containsGem2 = match.indexOf(gem2) >= 0;
+      return containsGem1 || containsGem2;
+    });
+    return gemMatches;
   };
 
   // If there is a valid move, returns an object with two properties:
@@ -145,10 +145,10 @@ const Game = function (gameboard) {
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
           const direction = directions[i];
-          const numGemsCrushed = this.numberGemsCrushedByMove(
+          const numGemsCrushed = this.getGemsToCrushGivenMove(
             fromGem,
             direction
-          );
+          ).length;
           if (numGemsCrushed == 3) {
             validMovesThreeCrush.push({ gem: fromGem, direction: direction });
           } else if (numGemsCrushed > 3) {
@@ -353,4 +353,9 @@ const Game = function (gameboard) {
       }
     }
   };
+};
+
+// flatten nested lists
+Game.flattenMatchesIntoGems = function (matches) {
+  return [].concat.apply([], matches);
 };

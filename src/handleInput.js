@@ -49,20 +49,26 @@ function handleClick(col, row) {
   } else {
     const secondClick = { col: col, row: row };
     const adjacent = board.adjacentSquares(firstClick.col, firstClick.row);
-    const isLegal = () => {
-      for (let i = 0; i < adjacent.length; i++) {
-        const sameCol = adjacent[i].col === secondClick.col;
-        const sameRow = adjacent[i].row === secondClick.row;
-        if (sameCol && sameRow) return true;
-      }
-      return false;
-    };
-    if (isLegal()) {
-      // check for matches
 
-      handleLegalMove();
-    } else {
-      handleIllegalMove();
+    let isLegalMove = false;
+    for (let i = 0; i < adjacent.length; i++) {
+      const sameCol = adjacent[i].col === secondClick.col;
+      const sameRow = adjacent[i].row === secondClick.row;
+      if (sameCol && sameRow) isLegalMove = true;
+    }
+
+    if (!isLegalMove) handleIllegalMove();
+    if (isLegalMove) {
+      // get the gems
+      const firstGem = board.gemAtSquare(firstClick.col, firstClick.row);
+      const secondGem = board.gemAtSquare(secondClick.col, secondClick.row);
+      // check if swapping the gems creates any matches
+      const matchesMadeByMove = game.findMatchesMadeBySwap(firstGem, secondGem);
+      if (matchesMadeByMove.length > 0) {
+        handleMatchingMove();
+      } else {
+        handleNonMatchingMove();
+      }
     }
 
     setTimeout(() => {
