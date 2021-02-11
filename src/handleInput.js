@@ -1,17 +1,3 @@
-// // New Game button
-// $(document).on("click", "#newGame", function (event) {
-//   game.clearGameboard();
-//   game.setupGameboard();
-//   $("#mainColumn").html(game.drawBoard());
-//   board.resetScore();
-// });
-
-// unused
-$(document).on("mousemove", "#gameCanvas", function (event) {});
-$(document).on("mouseout", "#gameCanvas", function (event) {});
-$(document).on("keydown", function (event) {});
-$(document).keypress(function (event) {});
-
 // original
 let mouseDownLocation;
 let mouseUpLocation;
@@ -70,12 +56,12 @@ function checkDrag() {
     mouseDownLocation.length < 3
       ? Number(mouseDownLocation.charAt(1)) - 1
       : Number(mouseDownLocation.charAt(1) + mouseDownLocation.charAt(2)) - 1;
-  const firstGem = board.gridCellGem(inputRow, inputCol);
+  const gemOne = board.gridCellGem(inputRow, inputCol);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
     const ctxt = canvas.getContext("2d");
-    const gemTo = board.getGemInDirection(firstGem, dir);
+    const gemTo = board.getGemInDirection(gemOne, dir);
     const cellSize = 600 / board.dimension;
 
     var clearWidth, clearHeight;
@@ -88,19 +74,19 @@ function checkDrag() {
       clearWidth = cellSize * 2;
       clearHeight = cellSize;
       var originLetter, destLetter;
-      if (firstGem.col > gemTo.col) {
-        destCol = firstGem.col * cellSize;
+      if (gemOne.col > gemTo.col) {
+        destCol = gemOne.col * cellSize;
         originCol = gemTo.col * cellSize;
         originLetter = gemTo.letter;
-        destLetter = firstGem.letter;
+        destLetter = gemOne.letter;
       } else {
         destCol = gemTo.col * cellSize;
-        originCol = firstGem.col * cellSize;
-        originLetter = firstGem.letter;
+        originCol = gemOne.col * cellSize;
+        originLetter = gemOne.letter;
         destLetter = gemTo.letter;
       }
       destRow = gemTo.row * cellSize;
-      originRow = firstGem.row * cellSize;
+      originRow = gemOne.row * cellSize;
       var timer = 0;
 
       // TimingEvent
@@ -127,26 +113,26 @@ function checkDrag() {
         // console.log(timer);
         if (timer == 21) {
           clearInterval(horizontalSwap);
-          flipAndDraw(firstGem, dir);
+          flipAndDraw(gemOne, dir);
         }
       }, 10);
     } else {
       // vertical swap
       clearWidth = cellSize;
       clearHeight = cellSize * 2;
-      if (firstGem.row > gemTo.row) {
-        destRow = firstGem.row * cellSize;
+      if (gemOne.row > gemTo.row) {
+        destRow = gemOne.row * cellSize;
         originRow = gemTo.row * cellSize;
         originLetter = gemTo.letter;
-        destLetter = firstGem.letter;
+        destLetter = gemOne.letter;
       } else {
         destRow = gemTo.row * cellSize;
-        originRow = firstGem.row * cellSize;
-        originLetter = firstGem.letter;
+        originRow = gemOne.row * cellSize;
+        originLetter = gemOne.letter;
         destLetter = gemTo.letter;
       }
       destCol = gemTo.col * cellSize;
-      originCol = firstGem.col * cellSize;
+      originCol = gemOne.col * cellSize;
       var timer = 0;
 
       // TimingEvent
@@ -174,7 +160,7 @@ function checkDrag() {
         // console.log(timer);
         if (timer == 21) {
           clearInterval(verticalSwap);
-          flipAndDraw(firstGem, dir);
+          flipAndDraw(gemOne, dir);
         }
       }, 10);
     }
@@ -184,12 +170,12 @@ function checkDrag() {
   if (originCol == destCol) {
     // moving up or down
     if (originRow < destRow) {
-      if (game.isMoveTypeValid(firstGem, "down")) {
+      if (game.isMoveTypeValid(gemOne, "down")) {
         checkMove("down");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
-      if (game.isMoveTypeValid(firstGem, "up")) {
+      if (game.isMoveTypeValid(gemOne, "up")) {
         checkMove("up");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
@@ -197,12 +183,12 @@ function checkDrag() {
   } else {
     // moving left or right
     if (originCol < destCol) {
-      if (game.isMoveTypeValid(firstGem, "right")) {
+      if (game.isMoveTypeValid(gemOne, "right")) {
         checkMove("right");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
-      if (game.isMoveTypeValid(firstGem, "left")) {
+      if (game.isMoveTypeValid(gemOne, "left")) {
         checkMove("left");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
@@ -215,8 +201,8 @@ function checkDrag() {
 
 let continueCrushing;
 
-function flipAndDraw(firstGem, dir) {
-  board.flipGems(firstGem, board.getGemInDirection(firstGem, dir));
+function flipAndDraw(gemOne, dir) {
+  board.flipGems(gemOne, board.getGemInDirection(gemOne, dir));
   $("#mainColumn").html(game.drawBoard());
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;
