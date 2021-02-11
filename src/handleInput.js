@@ -34,7 +34,6 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
   mouseUpLocation = game.getCanvasPos(mouseUp);
   // console.log("mouseUp: " + mouseUpLocation);
   // $("#mainColumn").html(game.drawBoard());
-  checkDrag();
 
   // new
   mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
@@ -47,6 +46,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
       console.log("click");
     } else {
       console.log("drag");
+      checkDrag();
     }
   }
   // call clickOrDrag with mouseDownColAndRow and mouseUpColAndRow
