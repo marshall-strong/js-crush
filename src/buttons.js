@@ -9,20 +9,20 @@ $(document).on("click", "#newGame", function (event) {
 // Get Hint button
 $(document).on("click", "#getHint", function (event) {
   const helpMove = game.getRandomValidMove();
-  const cellSize = 600 / board.dimension;
-  const arrowLength = cellSize / 4;
+  const squareLength = 600 / board.dimension;
+  const arrowLength = squareLength / 4;
   const canvas = document.getElementById("gameCanvas");
   const ctxt = canvas.getContext("2d");
   ctxt.beginPath();
-  posY = (helpMove.gem.row + 1) * cellSize;
-  posX = helpMove.gem.col * cellSize;
+  posY = (helpMove.gem.row + 1) * squareLength;
+  posX = helpMove.gem.col * squareLength;
   ctxt.strokeStyle = "black";
 
   switch (helpMove.direction) {
     case "right":
       $("#mainColumn").html(game.drawBoard());
-      posX = posX + cellSize * 1.2;
-      posY = posY - cellSize / 2;
+      posX = posX + squareLength * 1.2;
+      posY = posY - squareLength / 2;
       ctxt.moveTo(posX, posY);
       ctxt.lineTo(posX - arrowLength, posY - arrowLength);
       ctxt.lineTo(posX - arrowLength, posY + arrowLength);
@@ -37,8 +37,8 @@ $(document).on("click", "#getHint", function (event) {
       break;
     case "left":
       $("#mainColumn").html(game.drawBoard());
-      posX = posX - cellSize / 4;
-      posY = posY - cellSize / 2;
+      posX = posX - squareLength / 4;
+      posY = posY - squareLength / 2;
       ctxt.moveTo(posX, posY);
       ctxt.lineTo(posX + arrowLength, posY + arrowLength);
       ctxt.lineTo(posX + arrowLength, posY - arrowLength);
@@ -53,8 +53,8 @@ $(document).on("click", "#getHint", function (event) {
       break;
     case "up":
       $("#mainColumn").html(game.drawBoard());
-      posY = posY - cellSize * 1.2;
-      posX = posX + cellSize / 2;
+      posY = posY - squareLength * 1.2;
+      posX = posX + squareLength / 2;
       ctxt.moveTo(posX, posY);
       ctxt.lineTo(posX - arrowLength, posY + arrowLength);
       ctxt.lineTo(posX + arrowLength, posY + arrowLength);
@@ -69,8 +69,8 @@ $(document).on("click", "#getHint", function (event) {
       break;
     case "down":
       $("#mainColumn").html(game.drawBoard());
-      posY = posY + cellSize / 4;
-      posX = posX + cellSize / 2;
+      posY = posY + squareLength / 4;
+      posX = posX + squareLength / 2;
       ctxt.moveTo(posX, posY);
       ctxt.lineTo(posX + arrowLength, posY - arrowLength);
       ctxt.lineTo(posX - arrowLength, posY - arrowLength);

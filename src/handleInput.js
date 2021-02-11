@@ -34,13 +34,13 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 
 // original
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-  const gemOne = board.gridCellGem(mouseDownRow, mouseDownCol);
+  const gemOne = board.squareGem(mouseDownRow, mouseDownCol);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
     const ctxt = canvas.getContext("2d");
     const gemTo = board.getGemInDirection(gemOne, dir);
-    const cellSize = 600 / board.dimension;
+    const squareLength = 600 / board.dimension;
 
     let clearWidth, clearHeight;
 
@@ -49,22 +49,22 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
     // swap gems
     if (dir == "right" || dir == "left") {
       // horizontal swap
-      clearWidth = cellSize * 2;
-      clearHeight = cellSize;
+      clearWidth = squareLength * 2;
+      clearHeight = squareLength;
       var originLetter, destLetter;
       if (gemOne.col > gemTo.col) {
-        destCol = gemOne.col * cellSize;
-        originCol = gemTo.col * cellSize;
+        destCol = gemOne.col * squareLength;
+        originCol = gemTo.col * squareLength;
         originLetter = gemTo.letter;
         destLetter = gemOne.letter;
       } else {
-        destCol = gemTo.col * cellSize;
-        originCol = gemOne.col * cellSize;
+        destCol = gemTo.col * squareLength;
+        originCol = gemOne.col * squareLength;
         originLetter = gemOne.letter;
         destLetter = gemTo.letter;
       }
-      destRow = gemTo.row * cellSize;
-      originRow = gemOne.row * cellSize;
+      destRow = gemTo.row * squareLength;
+      originRow = gemOne.row * squareLength;
       var timer = 0;
 
       // TimingEvent
@@ -74,17 +74,17 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
 
         ctxt.drawImage(
           document.getElementById(originLetter),
-          originCol + (timer * cellSize) / 20,
+          originCol + (timer * squareLength) / 20,
           originRow,
-          cellSize,
-          cellSize
+          squareLength,
+          squareLength
         );
         ctxt.drawImage(
           document.getElementById(destLetter),
-          destCol - (timer * cellSize) / 20,
+          destCol - (timer * squareLength) / 20,
           destRow,
-          cellSize,
-          cellSize
+          squareLength,
+          squareLength
         );
 
         timer++;
@@ -96,21 +96,21 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       }, 10);
     } else {
       // vertical swap
-      clearWidth = cellSize;
-      clearHeight = cellSize * 2;
+      clearWidth = squareLength;
+      clearHeight = squareLength * 2;
       if (gemOne.row > gemTo.row) {
-        destRow = gemOne.row * cellSize;
-        originRow = gemTo.row * cellSize;
+        destRow = gemOne.row * squareLength;
+        originRow = gemTo.row * squareLength;
         originLetter = gemTo.letter;
         destLetter = gemOne.letter;
       } else {
-        destRow = gemTo.row * cellSize;
-        originRow = gemOne.row * cellSize;
+        destRow = gemTo.row * squareLength;
+        originRow = gemOne.row * squareLength;
         originLetter = gemOne.letter;
         destLetter = gemTo.letter;
       }
-      destCol = gemTo.col * cellSize;
-      originCol = gemOne.col * cellSize;
+      destCol = gemTo.col * squareLength;
+      originCol = gemOne.col * squareLength;
       var timer = 0;
 
       // TimingEvent
@@ -121,16 +121,16 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
         ctxt.drawImage(
           document.getElementById(originLetter),
           originCol,
-          originRow + (timer * cellSize) / 20,
-          cellSize,
-          cellSize
+          originRow + (timer * squareLength) / 20,
+          squareLength,
+          squareLength
         );
         ctxt.drawImage(
           document.getElementById(destLetter),
           destCol,
-          destRow - (timer * cellSize) / 20,
-          cellSize,
-          cellSize
+          destRow - (timer * squareLength) / 20,
+          squareLength,
+          squareLength
         );
 
         timer++;
@@ -205,7 +205,7 @@ function crushStreaks() {
   const listRemove = game.getGemStreaks();
   const canvas = document.getElementById("gameCanvas");
   const ctxt = canvas.getContext("2d");
-  const cellSize = 600 / board.dimension;
+  const squareLength = 600 / board.dimension;
   if (listRemove.length != 0) {
     // TimingEvent
     let alphaCounter = 10;
@@ -218,17 +218,17 @@ function crushStreaks() {
           var scoreLetter = listRemove[i][j].letter;
           // debugger;
           ctxt.clearRect(
-            listRemove[i][j].col * cellSize,
-            listRemove[i][j].row * cellSize,
-            cellSize,
-            cellSize
+            listRemove[i][j].col * squareLength,
+            listRemove[i][j].row * squareLength,
+            squareLength,
+            squareLength
           );
           ctxt.drawImage(
             document.getElementById(letter),
-            listRemove[i][j].col * cellSize,
-            listRemove[i][j].row * cellSize,
-            cellSize,
-            cellSize
+            listRemove[i][j].col * squareLength,
+            listRemove[i][j].row * squareLength,
+            squareLength,
+            squareLength
           );
         }
       }

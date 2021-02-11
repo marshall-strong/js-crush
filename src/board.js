@@ -25,19 +25,19 @@ const Board = function (dimension) {
   });
 
   ////////////////////////////////////////////////
-  // gridCell info
+  // square info
 
-  this.gridCellIsValid = function (row, col) {
+  this.squareIsValid = function (row, col) {
     const validValues = [...Array(this.dimension).keys()];
     return validValues.includes(row) && validValues.includes(col);
   };
 
-  this.gridCellIsEmpty = function (row, col) {
-    return this.gridCellGem(row, col) ? false : true;
+  this.squareIsEmpty = function (row, col) {
+    return this.squareGem(row, col) ? false : true;
   };
 
-  this.gridCellGem = function (row, col) {
-    return this.gridCellIsValid(row, col) ? this.grid[row][col] : null;
+  this.squareGem = function (row, col) {
+    return this.squareIsValid(row, col) ? this.grid[row][col] : null;
   };
 
   ////////////////////////////////////////////////
@@ -58,7 +58,7 @@ const Board = function (dimension) {
   };
 
   this.addGemToBoard = function (row, col, spawnRow = row, spawnCol = col) {
-    if (this.gridCellIsEmpty(row, col)) {
+    if (this.squareIsEmpty(row, col)) {
       const newGem = this.createGem();
       newGem.row = row;
       newGem.col = col;
@@ -119,7 +119,7 @@ const Board = function (dimension) {
 
   // move gem from current squre to another square
   this.moveTo = function (gem, toRow, toCol) {
-    if (this.gridCellIsEmpty(toRow, toCol)) {
+    if (this.squareIsEmpty(toRow, toCol)) {
       delete this.grid[gem.row][gem.col];
       this.grid[toRow][toCol] = gem;
       gem.row = toRow;
@@ -154,7 +154,7 @@ const Board = function (dimension) {
 
   // remove gem at specified position from the board
   this.removeAt = function (row, col) {
-    if (this.gridCellIsEmpty(row, col)) {
+    if (this.squareIsEmpty(row, col)) {
       console.log("removeAt found no gem at " + row + "," + col);
     } else {
       this.remove(this.grid[row][col]);
@@ -167,16 +167,16 @@ const Board = function (dimension) {
   this.getGemInDirection = function (fromGem, direction) {
     switch (direction) {
       case "up": {
-        return this.gridCellGem(fromGem.row - 1, fromGem.col);
+        return this.squareGem(fromGem.row - 1, fromGem.col);
       }
       case "down": {
-        return this.gridCellGem(fromGem.row + 1, fromGem.col);
+        return this.squareGem(fromGem.row + 1, fromGem.col);
       }
       case "left": {
-        return this.gridCellGem(fromGem.row, fromGem.col - 1);
+        return this.squareGem(fromGem.row, fromGem.col - 1);
       }
       case "right": {
-        return this.gridCellGem(fromGem.row, fromGem.col + 1);
+        return this.squareGem(fromGem.row, fromGem.col + 1);
       }
     }
   };

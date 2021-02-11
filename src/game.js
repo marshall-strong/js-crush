@@ -21,22 +21,22 @@ const Game = function (gameboard) {
 
   // used during game setup, newGame button, getHint button, handleDrag
   this.drawBoard = function () {
-    const cellSize = 600 / gameboard.dimension;
+    const squareLength = 600 / gameboard.dimension;
     const canvas = document.getElementById("gameCanvas");
     ctxt = canvas.getContext("2d");
     // draw grid container
     ctxt.clearRect(0, 0, canvas.width, canvas.height);
     ctxt.strokeStyle = "white";
-    // iterate through gridCells
+    // iterate through squares
     for (let row = 0; row < gameboard.dimension; row++) {
       for (let col = 0; col < gameboard.dimension; col++) {
-        const dx = col * cellSize;
-        const dy = row * cellSize;
-        const dWidth = cellSize;
-        const dHeight = cellSize;
-        // draw cell outline
+        const dx = col * squareLength;
+        const dy = row * squareLength;
+        const dWidth = squareLength;
+        const dHeight = squareLength;
+        // draw square outline
         ctxt.strokeRect(dx, dy, dWidth, dHeight);
-        const gem = gameboard.gridCellGem(row, col);
+        const gem = gameboard.squareGem(row, col);
         const gemImage = document.getElementById(gem.letter);
         // draw gemImage
         ctxt.drawImage(gemImage, dx, dy, dWidth, dHeight);
@@ -55,9 +55,9 @@ const Game = function (gameboard) {
     const xCanvas = xViewport - canvasRect.left;
     const yCanvas = yViewport - canvasRect.top;
     // get the indexes of the gameboard col and row at (xCanvas, yCanvas)
-    const cellSize = 600 / gameboard.dimension;
-    colIndex = Math.floor(xCanvas / cellSize);
-    rowIndex = Math.floor(yCanvas / cellSize);
+    const squareLength = 600 / gameboard.dimension;
+    colIndex = Math.floor(xCanvas / squareLength);
+    rowIndex = Math.floor(yCanvas / squareLength);
     // log coordinate
     console.log(`${mouseEvent.type} -- col: ${colIndex}, row: ${rowIndex}`);
     // return an object
@@ -84,14 +84,14 @@ const Game = function (gameboard) {
     this.keepScore = false;
     // populate gameboard
     while (true) {
-      // iterate through gameboard, adding gems to empty cells
+      // iterate through gameboard, adding gems to empty squares
       for (let col = 0; col < gameboard.dimension; col++) {
         for (let row = 0; row < gameboard.dimension; row++) {
-          if (gameboard.gridCellGem(row, col) == null)
+          if (gameboard.squareGem(row, col) == null)
             gameboard.addGemToBoard(row, col);
         }
       }
-      // once all cells are filled, check gameboard for matches
+      // once all squares are filled, check gameboard for matches
       const crushable = this.getGemStreaks();
       // if no matches are found, exit setup and begin gameplay
       if (crushable.length == 0) break;
@@ -151,11 +151,11 @@ const Game = function (gameboard) {
     let validMovesThreeCrush = [];
     let validMovesMoreThanThreeCrush = [];
 
-    // For each cell on the gameboard, check to see if moving it in any of the four directions would result in a crush.
+    // For each square on the gameboard, check to see if moving it in any of the four directions would result in a crush.
     // If yes, add it to the appropriate list (validMoves_threeCrush for crushes where setSize === 3, validMoves_moreThanThreeCrush for crushes where setSize > 3)
     for (let row = 0; row < gameboard.dimension; row++) {
       for (let col = 0; col < gameboard.dimension; col++) {
-        const fromGem = gameboard.gridCellGem(row, col);
+        const fromGem = gameboard.squareGem(row, col);
         if (!fromGem) continue;
         for (i = 0; i < 4; i++) {
           const direction = directions[i];
@@ -239,7 +239,7 @@ const Game = function (gameboard) {
     // takes the swap parameter into account
     function getGemOrSwapAt(row, col) {
       // Retrieve the gem at a row and column (depending on vertical)
-      const theGem = gameboard.gridCellGem(row, col);
+      const theGem = gameboard.squareGem(row, col);
       if (swap) {
         // If theGem is one of the two gems in the `swap`, return the other gem.
         let index = swap.indexOf(theGem);
@@ -306,7 +306,7 @@ const Game = function (gameboard) {
     let results = {};
     for (row = 0; row < gameboard.dimension; row++) {
       for (col = 0; col < gameboard.dimension; col++) {
-        const gem = gameboard.gridCellGem(row, col);
+        const gem = gameboard.squareGem(row, col);
         if (gem) {
           const p = find(gem.id);
           if (setSize(p) >= 3) {
@@ -353,11 +353,11 @@ const Game = function (gameboard) {
       // In each column, scan for the bottom most empty row
       for (let row = gameboard.dimension - 1; row >= 0; row--) {
         emptyRow = row;
-        if (gameboard.gridCellGem(row, col) == null) break;
+        if (gameboard.squareGem(row, col) == null) break;
       }
       // Then shift any nonempty rows up
       for (let row = emptyRow - 1; row >= 0; row--) {
-        const gem = gameboard.gridCellGem(row, col);
+        const gem = gameboard.squareGem(row, col);
         if (gem != null) {
           gameboard.moveTo(gem, emptyRow, col);
           emptyRow--;
