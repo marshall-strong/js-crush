@@ -47,11 +47,6 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 
 // original
 function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-  const originCol = mouseDownCol;
-  const destCol = mouseUpCol;
-  const originRow = mouseDownRow;
-  const destRow = mouseUpRow;
-
   const gemOne = board.gridCellGem(mouseDownRow, mouseDownCol);
 
   const checkMove = (dir) => {
@@ -60,9 +55,9 @@ function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
     const gemTo = board.getGemInDirection(gemOne, dir);
     const cellSize = 600 / board.dimension;
 
-    var clearWidth, clearHeight;
+    let clearWidth, clearHeight;
 
-    var destRow, destCol, originRow, originCol;
+    let destRow, destCol, originRow, originCol;
 
     // swap gems
     if (dir == "right" || dir == "left") {
@@ -163,9 +158,9 @@ function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   };
 
   // check validity of move, then set the visibility of the "invalid" message
-  if (originCol == destCol) {
+  if (mouseDownCol == mouseUpCol) {
     // moving up or down
-    if (originRow < destRow) {
+    if (mouseDownRow < mouseUpRow) {
       if (game.isMoveTypeValid(gemOne, "down")) {
         checkMove("down");
         document.getElementById("invalid").style.visibility = "hidden";
@@ -178,7 +173,7 @@ function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
     }
   } else {
     // moving left or right
-    if (originCol < destCol) {
+    if (mouseDownCol < mouseUpCol) {
       if (game.isMoveTypeValid(gemOne, "right")) {
         checkMove("right");
         document.getElementById("invalid").style.visibility = "hidden";
