@@ -1,42 +1,29 @@
-// original
-let mouseDownLocation;
-let mouseUpLocation;
+// // original
+// let mouseDownLocation;
+// let mouseUpLocation;
 // new
 let mouseDownColAndRow;
 let mouseUpColAndRow;
 
+// define clickOrDrag
+function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
+  const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
+  const mouseInput = click ? "click" : "drag";
+  if (mouseInput === "click") {
+    console.log("click");
+  } else {
+    console.log("drag");
+    handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow);
+  }
+}
+
 // mouseEvent handlers
 $(document).on("mousedown", "#gameCanvas", function (mouseDown) {
-  // original
-  mouseDownLocation = game.getCanvasPos(mouseDown);
-  // console.log("mousedown: " + mouseDownLocation);
-
-  // new
   mouseDownColAndRow = game.getGameboardColAndRow(mouseDown);
 });
 
 $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
-  // original
-  mouseUpLocation = game.getCanvasPos(mouseUp);
-  // console.log("mouseUp: " + mouseUpLocation);
-  // $("#mainColumn").html(game.drawBoard());
-
-  // new
   mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
-  // defining this function inline for now...
-  // define clickOrDrag
-  function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-    // debugger
-    const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
-    const mouseInput = click ? "click" : "drag";
-    if (mouseInput === "click") {
-      console.log("click");
-    } else {
-      console.log("drag");
-      checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow);
-    }
-  }
-  // call clickOrDrag with mouseDownColAndRow and mouseUpColAndRow
   clickOrDrag(
     mouseDownColAndRow.col,
     mouseDownColAndRow.row,
@@ -46,7 +33,7 @@ $(document).on("mouseup", "#gameCanvas", function (mouseUp) {
 });
 
 // original
-function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
+function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   const gemOne = board.gridCellGem(mouseDownRow, mouseDownCol);
 
   const checkMove = (dir) => {
@@ -159,26 +146,28 @@ function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
 
   // check validity of move, then set the visibility of the "invalid" message
   if (mouseDownCol == mouseUpCol) {
-    // moving up or down
     if (mouseDownRow < mouseUpRow) {
+      // DOWN
       if (game.isMoveTypeValid(gemOne, "down")) {
         checkMove("down");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
+      // UP
       if (game.isMoveTypeValid(gemOne, "up")) {
         checkMove("up");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     }
   } else {
-    // moving left or right
     if (mouseDownCol < mouseUpCol) {
+      // RIGHT
       if (game.isMoveTypeValid(gemOne, "right")) {
         checkMove("right");
         document.getElementById("invalid").style.visibility = "hidden";
       } else document.getElementById("invalid").style.visibility = "visible";
     } else {
+      // LEFT
       if (game.isMoveTypeValid(gemOne, "left")) {
         checkMove("left");
         document.getElementById("invalid").style.visibility = "hidden";
@@ -188,7 +177,7 @@ function checkDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
 }
 
 ////////////////////////////////////////////////////////
-// everything below here is used in checkDrag
+// everything below here is used in handleDrag
 
 let continueCrushing;
 
