@@ -183,7 +183,8 @@ function animateSwap(gem1, gem2) {
     // exit once animation has run 21 times
     if (timer > 20) {
       clearInterval(animation);
-      // flipAndDraw
+      board.swapGems(gem1, gem2);
+      $("#mainColumn").html(game.drawBoard());
     }
   }, 10);
 }
@@ -198,16 +199,21 @@ function handleIllegalMove(gem1, gem2) {
 function handleMatchingMove(gem1, gem2) {
   console.log("...that move will match!");
   animateSwap(gem1, gem2);
+  // board.swapGems(gem1, gem2);
   // Move gems
   // Delete the gems
 }
 function handleNonMatchingMove(gem1, gem2) {
   console.log("...that move will not match.");
+  // animate swap
   animateSwap(gem1, gem2);
   // Move gems
-  // Error animation
-  // animateSwap back to original position
-  // move gems back to original position
+  // board.swapGems(gem1, gem2);
+  // // Error animation
+  // // animateSwap back to original position
+  // animateSwap(gem1, gem2);
+  // // move gems back to original position
+  // board.swapGems(gem1, gem2);
 }
 
 function handleDrag(mouseDown, mouseUp) {
@@ -362,7 +368,7 @@ function handleDrag(mouseDown, mouseUp) {
 let matchesExist;
 
 function flipAndDraw(gemOne, dir) {
-  board.flipGems(gemOne, board.getGemInDirection(gemOne, dir));
+  board.swapGems(gemOne, board.getGemInDirection(gemOne, dir));
   $("#mainColumn").html(game.drawBoard());
   document.getElementById("gameCanvas").style.pointerEvents = "none";
   document.getElementById("getHint").disabled = true;

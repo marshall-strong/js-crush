@@ -103,7 +103,7 @@ const Board = function (dimension) {
   // Flip gem1 with gem2 in one step, firing two move events.
   // Does not verify the validity of the flip.
   // Does not crush gems produced by flip.
-  this.flipGems = function (gem1, gem2) {
+  this.swapGems = function (gem1, gem2) {
     // Swap the two gems simultaneously.
     const details1 = {
       gem: gem1,
@@ -135,7 +135,7 @@ const Board = function (dimension) {
   this.doAutoMove = function () {
     const move = game.getRandomValidMove();
     const toGem = board.getGemInDirection(move.gem, move.direction);
-    this.flipGems(move.gem, toGem);
+    this.swapGems(move.gem, toGem);
   };
 
   // move gem from current squre to another square
