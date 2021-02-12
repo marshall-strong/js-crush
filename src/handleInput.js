@@ -98,42 +98,106 @@ function animateSwap(gem1, gem2) {
   let direction;
   const dx = gem2.col - gem1.col;
   const dy = gem2.row - gem1.row;
-  if ((dx, dy) === (1, 0)) direction = "right";
-  if ((dx, dy) === (0, 1)) direction = "down";
-  if ((dx, dy) === (-1, 0)) direction = "left";
-  if ((dx, dy) === (0, -1)) direction = "up";
+  if (dx === 1 && dy === 0) direction = "right";
+  if (dx === 0 && dy === 1) direction = "down";
+  if (dx === -1 && dy === 0) direction = "left";
+  if (dx === 0 && dy === -1) direction = "up";
+  console.log(direction);
 
   // ctxt.clearRect(rectX, rectY, rectWidth, rectHeight)
   // rectX and rectY use the left/top gem
   let rectX, rectY, rectWidth, rectHeight;
 
-  if (direction === "right") {
-    // ctxt.clearRect
-    rectX = gem1.col * squareLength;
-    rectY = gem1.row * squareLength;
-    rectWidth = 2 * squareLength;
-    rectHeight = squareLength;
-  } else if (direction === "down") {
-    // ctxt.clearRect
-    rectX = gem1.col * squareLength;
-    rectY = gem1.row * squareLength;
-    rectWidth = squareLength;
-    rectHeight = 2 * squareLength;
-  } else if (direction === "left") {
-    // ctxt.clearRect
-    rectX = gem2.col * squareLength;
-    rectY = gem2.row * squareLength;
-    rectWidth = 2 * squareLength;
-    rectHeight = squareLength;
-  } else if (direction === "up") {
-    // ctxt.clearRect
-    rectX = gem2.col * squareLength;
-    rectY = gem2.row * squareLength;
-    rectWidth = squareLength;
-    rectHeight = 2 * squareLength;
-  }
+  // ctxt.drawImage
+  let gem1Animation, gem2Animation;
 
-  ctxt.clearRect(rectX, rectY, rectWidth, rectHeight);
+  // animations for moving in each direction
+  const moveRightAnimation = (gem, timer) =>
+    ctxt.drawImage(
+      document.getElementById(gem.letter),
+      gem.col * squareLength + (timer * squareLength) / 20,
+      gem.row * squareLength,
+      squareLength,
+      squareLength
+    );
+
+  const moveDownAnimation = (gem, timer) =>
+    ctxt.drawImage(
+      document.getElementById(gem.letter),
+      gem.col * squareLength,
+      gem.row * squareLength + (timer * squareLength) / 20,
+      squareLength,
+      squareLength
+    );
+
+  const moveLeftAnimation = (gem, timer) =>
+    ctxt.drawImage(
+      document.getElementById(gem.letter),
+      gem.col * squareLength - (timer * squareLength) / 20,
+      gem.row * squareLength,
+      squareLength,
+      squareLength
+    );
+
+  const moveUpAnimation = (gem, timer) =>
+    ctxt.drawImage(
+      document.getElementById(gem.letter),
+      gem.col * squareLength,
+      gem.row * squareLength - (timer * squareLength) / 20,
+      squareLength,
+      squareLength
+    );
+
+  // run animation
+  let timer = 0;
+  const animation = setInterval(function () {
+    // set animation parameters based on direction
+    // direction describes gem2's initial position relative to gem1's initial position
+    // (it is also the direction that gem1 will move in)
+    if (direction === "right") {
+      rectX = gem1.col * squareLength;
+      rectY = gem1.row * squareLength;
+      rectWidth = 2 * squareLength;
+      rectHeight = squareLength;
+      gem1Animation = moveRightAnimation;
+      gem2Animation = moveLeftAnimation;
+    } else if (direction === "down") {
+      rectX = gem1.col * squareLength;
+      rectY = gem1.row * squareLength;
+      rectWidth = squareLength;
+      rectHeight = 2 * squareLength;
+      gem1Animation = moveDownAnimation;
+      gem2Animation = moveUpAnimation;
+    } else if (direction === "left") {
+      rectX = gem2.col * squareLength;
+      rectY = gem2.row * squareLength;
+      rectWidth = 2 * squareLength;
+      rectHeight = squareLength;
+      gem1Animation = moveLeftAnimation;
+      gem2Animation = moveRightAnimation;
+    } else if (direction === "up") {
+      rectX = gem2.col * squareLength;
+      rectY = gem2.row * squareLength;
+      rectWidth = squareLength;
+      rectHeight = 2 * squareLength;
+      gem1Animation = moveUpAnimation;
+      gem2Animation = moveDownAnimation;
+    }
+
+    // erase the swapping squares
+    ctxt.clearRect(rectX, rectY, rectWidth, rectHeight);
+    // draw gem1 in updated position
+    gem1Animation(gem1, timer);
+    // draw gem2 in updated position
+    gem2Animation(gem2, timer);
+    // increment timer
+    timer++;
+    // exit once animation has run 21 times
+    if (timer > 20) {
+      clearInterval(animation);
+      // flipAndDraw
+    }
+  }, 10);
 }
 
 function handleFirstClick() {
@@ -188,9 +252,9 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       }
       destRow = gemTo.row * squareLength;
       originRow = gemOne.row * squareLength;
-      let timer = 0;
 
       // TimingEvent
+      let timer = 0;
       // horizontal swap animation
       const horizontalSwap = setInterval(function () {
         ctxt.clearRect(originCol, originRow, clearWidth, clearHeight);
