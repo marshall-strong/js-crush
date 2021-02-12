@@ -65,8 +65,10 @@ function handleClick(col, row) {
       // check if swapping the gems creates any matches
       const matchesMadeByMove = game.findMatchesMadeBySwap(firstGem, secondGem);
       if (matchesMadeByMove.length > 0) {
+        handleLegalMove(firstGem, secondGem);
         handleMatchingMove();
       } else {
+        handleLegalMove(firstGem, secondGem);
         handleNonMatchingMove();
       }
     }
@@ -79,20 +81,69 @@ function handleClick(col, row) {
   }
 }
 
+// refactored version of checkMove
+function animateSwap(gem1, gem2) {
+  const canvas = document.getElementById("gameCanvas");
+  const ctxt = canvas.getContext("2d");
+  const squareLength = 600 / board.dimension;
+
+  // direction describes gem2 relative to gem1
+  let direction;
+  const dx = gem2.col - gem1.col;
+  const dy = gem2.row - gem1.row;
+  if ((dx, dy) === (1, 0)) direction = "right";
+  if ((dx, dy) === (0, 1)) direction = "down";
+  if ((dx, dy) === (-1, 0)) direction = "left";
+  if ((dx, dy) === (0, -1)) direction = "up";
+
+  // ctxt.clearRect(rectX, rectY, rectWidth, rectHeight)
+  // rectX and rectY use the left/top gem
+  let rectX, rectY, rectWidth, rectHeight;
+
+  if (direction === "right") {
+    // ctxt.clearRect
+    rectX = gem1.col * squareLength;
+    rectY = gem1.row * squareLength;
+    rectWidth = 2 * squareLength;
+    rectHeight = squareLength;
+  } else if (direction === "down") {
+    // ctxt.clearRect
+    rectX = gem1.col * squareLength;
+    rectY = gem1.row * squareLength;
+    rectWidth = squareLength;
+    rectHeight = 2 * squareLength;
+  } else if (direction === "left") {
+    // ctxt.clearRect
+    rectX = gem2.col * squareLength;
+    rectY = gem2.row * squareLength;
+    rectWidth = 2 * squareLength;
+    rectHeight = squareLength;
+  } else if (direction === "up") {
+    // ctxt.clearRect
+    rectX = gem2.col * squareLength;
+    rectY = gem2.row * squareLength;
+    rectWidth = squareLength;
+    rectHeight = 2 * squareLength;
+  }
+
+  ctxt.clearRect(rectX, rectY, rectWidth, rectHeight);
+}
+
 function handleFirstClick() {
   console.log("that was your first click...");
+}
+function handleIllegalMove() {
+  console.log("...that move is not allowed.");
+}
+function handleLegalMove(gem1, gem2) {
+  console.log("...that move is allowed!");
+  animateSwap(gem1, gem2);
 }
 function handleMatchingMove() {
   console.log("...that move will match!");
 }
 function handleNonMatchingMove() {
   console.log("...that move will not match.");
-}
-function handleLegalMove() {
-  console.log("...that move is allowed!");
-}
-function handleIllegalMove() {
-  console.log("...that move is not allowed.");
 }
 
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
