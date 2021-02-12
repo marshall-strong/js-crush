@@ -72,10 +72,7 @@ function handleClick(mouseEvent) {
       if (matches.length == 0) handleNonMatchingMove(firstGem, secondGem);
     }
     // pause for half a second before drawing updated board
-    setTimeout(() => {
-      // reset
-      game.drawBoard();
-    }, 550);
+    setTimeout(() => game.drawBoard(), 550);
   }
 }
 

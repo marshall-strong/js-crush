@@ -28,4 +28,4 @@ const Gem = function (letter, id) {
   });
 };
 
-Gem.letters = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];
+Gem.letters = ["github", "react", "javascript", "nodejs", "webpack", "jquery"];

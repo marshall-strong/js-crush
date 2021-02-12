@@ -231,13 +231,13 @@ const Board = function (dimension) {
   };
 
   this.updateScoreColor = function (gem) {
-    let color = "black";
-    if (gem.letter === "gemA") color = "red";
-    if (gem.letter === "gemB") color = "green";
-    if (gem.letter === "gemC") color = "blue";
-    if (gem.letter === "gemD") color = "orange";
-    if (gem.letter === "gemE") color = "purple";
-    if (gem.letter === "gemF") color = "yellow";
+    let color;
+    if (gem.letter === "github") color = "#424242";
+    if (gem.letter === "react") color = "#529F41";
+    if (gem.letter === "javascript") color = "#F7DF1E";
+    if (gem.letter === "nodejs") color = "#529E41";
+    if (gem.letter === "webpack") color = "#8FD6FA";
+    if (gem.letter === "jquery") color = "#193556";
     document.getElementById("score").style.backgroundColor = color;
   };
 };
