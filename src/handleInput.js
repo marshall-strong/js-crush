@@ -44,32 +44,39 @@ function handleClick(col, row) {
   ctxt.globalAlpha = 1.0;
 
   if (!firstClick) {
+    // handleFirstClicks
     handleFirstClick();
     firstClick = { col: col, row: row };
   } else {
+    // handleSecondClick
     const secondClick = { col: col, row: row };
     const adjacent = board.adjacentSquares(firstClick.col, firstClick.row);
-
     let isLegalMove = false;
+    // iterate through adjacent moves --
+    // if any have same col & row as secondClick, isLegalMove = false
     for (let i = 0; i < adjacent.length; i++) {
       const sameCol = adjacent[i].col === secondClick.col;
       const sameRow = adjacent[i].row === secondClick.row;
       if (sameCol && sameRow) isLegalMove = true;
     }
-
-    if (!isLegalMove) handleIllegalMove();
+    // get the gems
+    const firstGem = board.gemAtSquare(firstClick.col, firstClick.row);
+    const secondGem = board.gemAtSquare(secondClick.col, secondClick.row);
+    // handleIllegalMoves
+    if (!isLegalMove) handleIllegalMove(firstGem, secondGem);
+    // handleLegalMoves
     if (isLegalMove) {
-      // get the gems
-      const firstGem = board.gemAtSquare(firstClick.col, firstClick.row);
-      const secondGem = board.gemAtSquare(secondClick.col, secondClick.row);
       // check if swapping the gems creates any matches
       const matchesMadeByMove = game.findMatchesMadeBySwap(firstGem, secondGem);
+      // handleMatchingMoves
       if (matchesMadeByMove.length > 0) {
         handleLegalMove(firstGem, secondGem);
-        handleMatchingMove();
-      } else {
+        handleMatchingMove(firstGem, secondGem);
+      }
+      // handleNonMatchingMoves
+      if (matchesMadeByMove.length === 0) {
         handleLegalMove(firstGem, secondGem);
-        handleNonMatchingMove();
+        handleNonMatchingMove(firstGem, secondGem);
       }
     }
 
@@ -132,18 +139,20 @@ function animateSwap(gem1, gem2) {
 function handleFirstClick() {
   console.log("that was your first click...");
 }
-function handleIllegalMove() {
+function handleIllegalMove(gem1, gem2) {
   console.log("...that move is not allowed.");
 }
 function handleLegalMove(gem1, gem2) {
   console.log("...that move is allowed!");
   animateSwap(gem1, gem2);
 }
-function handleMatchingMove() {
+function handleMatchingMove(gem1, gem2) {
   console.log("...that move will match!");
+  // Go delete the gems
 }
-function handleNonMatchingMove() {
+function handleNonMatchingMove(gem1, gem2) {
   console.log("...that move will not match.");
+  // Move the gems back
 }
 
 function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
