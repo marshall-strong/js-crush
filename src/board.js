@@ -55,6 +55,12 @@ const Board = function (dimension) {
     return adjacent;
   };
 
+  this.adjacentGems = function (col, row) {
+    const squares = this.adjacentSquares(col, row);
+    const gems = squares.map((sqr) => this.gemAtSquare(sqr.col, sqr.row));
+    return gems;
+  };
+
   ////////////////////////////////////////////////
   // CREATE GEMS
 

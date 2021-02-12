@@ -1,89 +1,80 @@
-let mouseDownColAndRow;
-let mouseUpColAndRow;
+// track mouseDown and mouseUp
+let mouseDown = { col: null, row: null };
+let mouseUp = { col: null, row: null };
 
-// define clickOrDrag
-function clickOrDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-  const click = mouseDownCol === mouseUpCol && mouseDownRow === mouseUpRow;
-  const mouseInput = click ? "click" : "drag";
-  if (mouseInput === "click") {
+// update mouseDown on mousedownEvent
+$(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
+  mouseDown = game.getGameboardColAndRow(mousedownEvent);
+});
+
+// update mouseUp on mouseupEvent
+// check if event was a click or a drag, then handle accordingly
+$(document).on("mouseup", "#gameCanvas", function (mouseupEvent) {
+  mouseUp = game.getGameboardColAndRow(mouseupEvent);
+  if (mouseDown.col === mouseUp.col && mouseDown.row === mouseUp.row) {
     console.log("click");
-    handleClick(mouseDownCol, mouseDownRow);
+    handleClick(mouseDown);
   } else {
     console.log("drag");
-    handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow);
+    handleDrag(mouseDown, mouseUp);
   }
-}
-
-// mouseEvent handlers
-$(document).on("mousedown", "#gameCanvas", function (mouseDown) {
-  mouseDownColAndRow = game.getGameboardColAndRow(mouseDown);
 });
 
-$(document).on("mouseup", "#gameCanvas", function (mouseUp) {
-  mouseUpColAndRow = game.getGameboardColAndRow(mouseUp);
-  clickOrDrag(
-    mouseDownColAndRow.col,
-    mouseDownColAndRow.row,
-    mouseUpColAndRow.col,
-    mouseUpColAndRow.row
-  );
-});
-
+// Click handling
+// need two clicks for a move, so store the first click
 let firstClick;
-function handleClick(col, row) {
-  // const clickedGem = board.gemAtSquare(col, row);
+//
+function handleClick(mouseEvent) {
+  const col = mouseEvent.col;
+  const row = mouseEvent.row;
+
+  // provide visual response to indicate to user that square has been clicked:
+  // fill the clicked square with transparent yellow
   const canvas = document.getElementById("gameCanvas");
   const ctxt = canvas.getContext("2d");
   const squareLength = 600 / board.dimension;
-  const squareX = col * squareLength;
-  const squareY = row * squareLength;
-
   ctxt.globalAlpha = 0.3;
   ctxt.fillStyle = "yellow";
-  ctxt.fillRect(squareX, squareY, squareLength, squareLength);
+  const squareX = col * squareLength;
+  const squareY = row * squareLength;
+  const squareWidth = squareLength;
+  const squareHeight = squareLength;
+  ctxt.fillRect(squareX, squareY, squareWidth, squareHeight);
   ctxt.globalAlpha = 1.0;
 
+  // if this is the first click, save the col and row of the click.
+  // if this is the second click, check the move and handle accordingly.
   if (!firstClick) {
-    // handleFirstClicks
-    handleFirstClick();
     firstClick = { col: col, row: row };
+    handleFirstClick();
   } else {
-    // handleSecondClick
-    const secondClick = { col: col, row: row };
-    const adjacent = board.adjacentSquares(firstClick.col, firstClick.row);
-    let isLegalMove = false;
-    // iterate through adjacent moves --
-    // if any have same col & row as secondClick, isLegalMove = false
-    for (let i = 0; i < adjacent.length; i++) {
-      const sameCol = adjacent[i].col === secondClick.col;
-      const sameRow = adjacent[i].row === secondClick.row;
-      if (sameCol && sameRow) isLegalMove = true;
-    }
-    // get the gems
+    // get firstGem, then reset firstClick
     const firstGem = board.gemAtSquare(firstClick.col, firstClick.row);
-    const secondGem = board.gemAtSquare(secondClick.col, secondClick.row);
-    // handleIllegalMoves
-    if (!isLegalMove) handleIllegalMove(firstGem, secondGem);
-    // handleLegalMoves
-    if (isLegalMove) {
-      // check if swapping the gems creates any matches
-      const matchesMadeByMove = game.findMatchesMadeBySwap(firstGem, secondGem);
-      // handleMatchingMoves
-      if (matchesMadeByMove.length > 0) {
-        handleLegalMove(firstGem, secondGem);
-        handleMatchingMove(firstGem, secondGem);
-      }
-      // handleNonMatchingMoves
-      if (matchesMadeByMove.length === 0) {
-        handleLegalMove(firstGem, secondGem);
-        handleNonMatchingMove(firstGem, secondGem);
-      }
-    }
+    firstClick = null;
 
+    // get gems adjacent to firstGem
+    const adjacentGems = board.adjacentGems(firstGem.col, firstGem.row);
+
+    // get secondGem
+    const secondClick = { col: col, row: row };
+    const secondGem = board.gemAtSquare(secondClick.col, secondClick.row);
+
+    // check if secondGem is adjacent to firstGem
+    const isAdjacent = adjacentGems.indexOf(secondGem) >= 0;
+
+    // handleIllegalMoves
+    if (!isAdjacent) handleIllegalMove(firstGem, secondGem);
+
+    // check if swapping the gems creates any matches
+    if (isAdjacent) {
+      const matches = game.findMatchesMadeBySwap(firstGem, secondGem);
+      if (matches.length > 0) handleMatchingMove(firstGem, secondGem);
+      if (matches.length == 0) handleNonMatchingMove(firstGem, secondGem);
+    }
+    // pause for half a second before drawing updated board
     setTimeout(() => {
       // reset
       game.drawBoard();
-      firstClick = null;
     }, 550);
   }
 }
@@ -205,23 +196,26 @@ function handleFirstClick() {
 }
 function handleIllegalMove(gem1, gem2) {
   console.log("...that move is not allowed.");
-}
-function handleLegalMove(gem1, gem2) {
-  console.log("...that move is allowed!");
-  animateSwap(gem1, gem2);
+  // Error animation
 }
 function handleMatchingMove(gem1, gem2) {
   console.log("...that move will match!");
-  // Go delete the gems
+  animateSwap(gem1, gem2);
+  // Move gems
+  // Delete the gems
 }
 function handleNonMatchingMove(gem1, gem2) {
   console.log("...that move will not match.");
-  // Move the gems back
+  animateSwap(gem1, gem2);
+  // Move gems
+  // Error animation
+  // animateSwap back to original position
+  // move gems back to original position
 }
 
-function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
-  const gemOne = board.gemAtSquare(mouseDownCol, mouseDownRow);
-  const gemTwo = board.gemAtSquare(mouseUpCol, mouseUpRow);
+function handleDrag(mouseDown, mouseUp) {
+  const gemOne = board.gemAtSquare(mouseDown.col, mouseDown.row);
+  const gemTwo = board.gemAtSquare(mouseUp.col, mouseUp.row);
 
   const checkMove = (dir) => {
     const canvas = document.getElementById("gameCanvas");
@@ -334,8 +328,8 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
   };
 
   // check validity of move, then set the visibility of the "invalid" message
-  if (mouseDownCol == mouseUpCol) {
-    if (mouseDownRow < mouseUpRow) {
+  if (mouseDown.col == mouseUp.col) {
+    if (mouseDown.row < mouseUp.row) {
       // DOWN
       if (game.getGemsToCrushGivenMove(gemOne, "down").length > 0) {
         checkMove("down");
@@ -349,7 +343,7 @@ function handleDrag(mouseDownCol, mouseDownRow, mouseUpCol, mouseUpRow) {
       } else document.getElementById("invalid").style.visibility = "visible";
     }
   } else {
-    if (mouseDownCol < mouseUpCol) {
+    if (mouseDown.col < mouseUp.col) {
       // RIGHT
       if (game.getGemsToCrushGivenMove(gemOne, "right").length > 0) {
         checkMove("right");

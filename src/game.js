@@ -42,7 +42,7 @@ const Game = function (gameboard) {
     console.log(`${mouseEvent.type} -- col: ${colIndex}, row: ${rowIndex}`);
     // return an object
     return {
-      eventType: mouseEvent.type,
+      // eventType: mouseEvent.type,
       col: colIndex,
       row: rowIndex,
     };
