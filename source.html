@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>JS Gem Crush</title>
+    <link rel="icon" href="./graphics/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="index.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.2/seedrandom.js"></script>
+    <script src="source/gem.js"></script>
+    <script src="source/grid.js"></script>
+    <script src="source/game.js"></script>
+    <script src="source/themes.js"></script>
+    <script src="source/index.js"></script>
+  </head>
+
+  <body>
+    <b>JS Gem Crush</b>
+    Get three like gems in a row. Click and drag into place.
+
+    <div id="mainColumn">
+      <button id="newGame">New Game</button>
+      <button id="getHint">Get Hint</button>
+      <div>
+        SCORE:
+        <div id="score">this will be replaced by `board.score`</div>
+      </div>
+      <script language="javascript">
+        // game.setupGameboard();
+      </script>
+      <canvas id="gameCanvas" width="600" height="600">
+        Sorry, your browser does not support Canvas. Try using Chrome!
+        <img id="github" src="./graphics/github.png" />
+        <img id="react" src="./graphics/react.png" />
+        <img id="javascript" src="./graphics/javascript.png" />
+        <img id="nodejs" src="./graphics/nodejs.png" />
+        <img id="webpack" src="./graphics/webpack.png" />
+        <img id="jquery" src="./graphics/jquery.png" />
+      </canvas>
+      <script language="javascript">
+        // game.drawBoard();
+      </script>
+      <script language="javascript">
+        // board.resetScore();
+      </script>
+      <p id="invalid">Invalid Move!</p>
+    </div>
+
+    <a href="https://github.com/marshall-strong/js-crush">
+      GitHub repository
+    </a>
+
+    <div style="display: none">
+      <h2>Move:</h2>
+      <input type="text" id="inputBox" />
+      <button id="crusher" disabled style="display: none">Crush Once</button>
+      <div>
+        <button id="up" disabled>&uarr;</button>
+      </div>
+      <div>
+        <button id="left" disabled>&larr;</button>
+        <button id="right" disabled>&rarr;</button>
+      </div>
+      <div>
+        <button id="down" disabled>&darr;</button>
+      </div>
+    </div>
+  </body>
+</html>
