@@ -110,7 +110,6 @@ const Game = function (gameboard) {
       const containsToGem = set.indexOf(toGem) >= 0;
       return containsFromGem || containsToGem;
     });
-    // debugger;
     return [].concat.apply([], connected); //flatten nested lists
   };
 

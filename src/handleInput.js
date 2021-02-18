@@ -401,7 +401,6 @@ function removeMatches() {
       for (let i = 0; i < listRemove.length; i++) {
         for (let j = 0; j < listRemove[i].length; j++) {
           const letter = String(listRemove[i][j].letter);
-          // debugger;
           ctxt.clearRect(
             listRemove[i][j].col * squareLength,
             listRemove[i][j].row * squareLength,
