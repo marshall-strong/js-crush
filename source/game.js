@@ -222,10 +222,7 @@ class Game {
   }
 
   handleMatchingMove(gem1, gem2) {
-    setTimeout(() => {
-      this.swap(gem1, gem2);
-      this.run();
-    }, 550);
+    setTimeout(() => this.swap(gem1, gem2), 550);
   }
 
   ////////////////////////////////////////////////
@@ -317,11 +314,6 @@ class Game {
         delete setSizes[parent2];
       }
     }
-
-    // // Returns the gem found at `col` and `row` on `gameboard`
-    // function gemAt(col, row) {
-    //   return this.gameboard.gem(col, row);
-    // }
 
     // Iterates through each `gameboard` row and adds streaks of 2+ gems to `horizontalStreaks`.
     for (let row = 0; row < this.gridSize; row++) {
@@ -472,6 +464,7 @@ class Game {
     } else {
       this.matchesExist = false;
       this.status = "ready";
+      console.log("ready for next move");
     }
   }
 
@@ -605,6 +598,7 @@ class Game {
         this.gameboard.exchange(gem1, gem2);
         // redraw the gameboard
         $("#mainColumn").html(this.drawGameboard());
+        this.run();
       }
     }, 10);
   }
@@ -668,6 +662,7 @@ class Game {
         this.gameboard.exchange(gem1, gem2);
         // redraw the gameboard
         $("#mainColumn").html(this.drawGameboard());
+        this.run();
       }
     }, 10);
   }
@@ -679,25 +674,26 @@ class Game {
   }
 
   fadeOut(gems) {
-    // const canvas = document.getElementById("gameCanvas");
-    // const context = canvas.getContext("2d");
-    // let counter = 10;
-    // context.save();
-    // const fade = setInterval(() => {
-    //   counter--;
-    //   context.globalAlpha = counter / 10;
-    //   for (let i = 0; i < gems.length; i++) {
-    //     const gem = gems[i];
-    //     const x = gem.col() * this.squareWidth;
-    //     const y = gem.row() * this.squareHeight;
-    //     const width = this.squareWidth;
-    //     const height = this.squareHeight;
-    //     context.clearRect(x, y, width, height);
-    //     const image = document.getElementById(gem.value);
-    //     context.drawImage(image, x, y, width, height);
-    //   }
-    //   if (counter <= 0) clearInterval(fade);
-    // }, 50);
-    // context.restore();
+    const canvas = document.getElementById("gameCanvas");
+    const context = canvas.getContext("2d");
+    let counter = 10;
+    context.save();
+    const fade = setInterval(() => {
+      counter--;
+      context.globalAlpha = counter / 10;
+      for (let i = 0; i < gems.length; i++) {
+        const gem = gems[i];
+        const x = gem.col() * this.squareWidth;
+        const y = gem.row() * this.squareHeight;
+        const width = this.squareWidth;
+        const height = this.squareHeight;
+        context.clearRect(x, y, width, height);
+        const gemTheme = this.theme[gem.value];
+        const gemImage = document.getElementById(gemTheme);
+        context.drawImage(gemImage, x, y, width, height);
+      }
+      if (counter <= 0) clearInterval(fade);
+    }, 500);
+    context.restore();
   }
 }
