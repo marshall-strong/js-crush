@@ -2,7 +2,9 @@
 // import themes from "./themes";
 
 class Game {
-  constructor() {
+  constructor(gameCanvas) {
+    this.canvas = gameCanvas;
+    this.context = this.canvas.getContext("2d");
     this.canvasWidth = 600;
     this.canvasHeight = 600;
 

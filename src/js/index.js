@@ -10,24 +10,25 @@ let game;
 
 // need canvas element before creating game
 window.addEventListener("DOMContentLoaded", () => {
-  game = new Game();
+  const canvas = document.getElementById("gameCanvas");
+  const game = new Game(canvas);
   game.startNewGame();
-});
 
-// jQuery handles user input
-$(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
-  game.setMousedownGem(mousedownEvent);
-});
+  // handles user input
+  $(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
+    game.setMousedownGem(mousedownEvent);
+  });
 
-$(document).on("mouseup", "#gameCanvas", function (mouseupEvent) {
-  game.setMouseupGem(mouseupEvent);
-  game.checkMouseEvent();
-});
+  $(document).on("mouseup", "#gameCanvas", function (mouseupEvent) {
+    game.setMouseupGem(mouseupEvent);
+    game.checkMouseEvent();
+  });
 
-$(document).on("click", "#newGame", function () {
-  game.startNewGame();
-});
+  $(document).on("click", "#newGame", function () {
+    game.startNewGame();
+  });
 
-$(document).on("click", "#getHint", function () {
-  game.getHint();
+  $(document).on("click", "#getHint", function () {
+    game.getHint();
+  });
 });
