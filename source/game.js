@@ -213,6 +213,7 @@ class Game {
   handleNonAdjacentMove(gem1, gem2) {
     setTimeout(() => {
       this.shake(gem1, gem2);
+      this.drawGameboard();
     }, 550);
   }
 
