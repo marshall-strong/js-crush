@@ -251,10 +251,8 @@ class Game {
 
   drawGameboard() {
     // draw grid container
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
-    context.clearRect(0, 0, 600, 600);
-    context.strokeStyle = "white";
+    this.context.clearRect(0, 0, 600, 600);
+    this.context.strokeStyle = "white";
     // iterate through grid squares
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
@@ -263,13 +261,13 @@ class Game {
         const width = this.squareWidth;
         const height = this.squareHeight;
         // draw square outline
-        context.strokeRect(x, y, width, height);
+        this.context.strokeRect(x, y, width, height);
         // draw gem, if it exists
         const gem = this.gameboard.gem(col, row);
         if (gem) {
           const themeValue = this.theme[gem.value];
           const image = document.getElementById(themeValue);
-          context.drawImage(image, x, y, width, height);
+          this.context.drawImage(image, x, y, width, height);
         }
       }
     }
@@ -497,15 +495,18 @@ class Game {
   ////////////////////////////////////////////////
   // GEM ANIMATIONS
   highlight(gem) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
-    context.save();
-    context.globalAlpha = 0.3;
-    context.fillStyle = "yellow";
+    this.context.save();
+    this.context.globalAlpha = 0.3;
+    this.context.fillStyle = "yellow";
     const squareX = gem.col() * this.squareWidth;
     const squareY = gem.row() * this.squareHeight;
-    context.fillRect(squareX, squareY, this.squareWidth, this.squareHeight);
-    context.restore();
+    this.context.fillRect(
+      squareX,
+      squareY,
+      this.squareWidth,
+      this.squareHeight
+    );
+    this.context.restore();
   }
 
   swap(gem1, gem2) {
@@ -518,8 +519,6 @@ class Game {
   }
 
   clearHorizontal(gem1, gem2, gem1Movement) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
     let left;
     const top = gem1.row() * this.squareHeight;
     const width = 2 * this.squareWidth;
@@ -529,12 +528,10 @@ class Game {
     } else if (gem1Movement === "left") {
       left = gem2.col() * this.squareWidth;
     }
-    context.clearRect(left, top, width, height);
+    this.context.clearRect(left, top, width, height);
   }
 
   clearVertical(gem1, gem2, gem1Movement) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
     const left = gem1.col() * this.squareWidth;
     let top;
     const width = this.squareWidth;
@@ -544,12 +541,10 @@ class Game {
     } else if (gem1Movement === "up") {
       top = gem2.row() * this.squareHeight;
     }
-    context.clearRect(left, top, width, height);
+    this.context.clearRect(left, top, width, height);
   }
 
   horizontalSwap(gem1, gem2, gem1Movement) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
     // set gem parameters that are constant during animation
     const gem1Theme = this.theme[gem1.value];
     const gem1Image = document.getElementById(gem1Theme);
@@ -584,7 +579,7 @@ class Game {
       // increment timer (first animation frame is for timer=1)
       timer++;
       // draw gem1 with updated parameters
-      context.drawImage(
+      this.context.drawImage(
         gem1Image,
         gem1Left,
         gem1Top,
@@ -592,7 +587,7 @@ class Game {
         this.squareHeight
       );
       // draw gem2 with updated parameters
-      context.drawImage(
+      this.context.drawImage(
         gem2Image,
         gem2Left,
         gem2Top,
@@ -612,8 +607,6 @@ class Game {
   }
 
   verticalSwap(gem1, gem2, gem1Movement) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
     // set gem parameters that are constant during animation
     const gem1Theme = this.theme[gem1.value];
     const gem1Image = document.getElementById(gem1Theme);
@@ -648,7 +641,7 @@ class Game {
       // increment timer (first animation frame is for timer=1)
       timer++;
       // draw gem1 with updated parameters
-      context.drawImage(
+      this.context.drawImage(
         gem1Image,
         gem1Left,
         gem1Top,
@@ -656,7 +649,7 @@ class Game {
         this.squareHeight
       );
       // draw gem2 with updated parameters
-      context.drawImage(
+      this.context.drawImage(
         gem2Image,
         gem2Left,
         gem2Top,
@@ -682,26 +675,24 @@ class Game {
   }
 
   fadeOut(gems) {
-    const canvas = document.getElementById("gameCanvas");
-    const context = canvas.getContext("2d");
     let counter = 10;
-    context.save();
+    this.context.save();
     const fade = setInterval(() => {
       counter--;
-      context.globalAlpha = counter / 10;
+      this.context.globalAlpha = counter / 10;
       for (let i = 0; i < gems.length; i++) {
         const gem = gems[i];
         const x = gem.col() * this.squareWidth;
         const y = gem.row() * this.squareHeight;
         const width = this.squareWidth;
         const height = this.squareHeight;
-        context.clearRect(x, y, width, height);
+        this.context.clearRect(x, y, width, height);
         const gemTheme = this.theme[gem.value];
         const gemImage = document.getElementById(gemTheme);
-        context.drawImage(gemImage, x, y, width, height);
+        this.context.drawImage(gemImage, x, y, width, height);
       }
       if (counter <= 0) clearInterval(fade);
     }, 500);
-    context.restore();
+    this.context.restore();
   }
 }
