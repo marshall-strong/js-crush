@@ -437,6 +437,9 @@ class Game {
   shiftGemsDown(col, rowInitial) {
     for (let row = rowInitial; row > 0; row--) {
       const gem = this.gameboard.gem(col, row - 1);
+      console.log(`in col ${col}, move gem at row ${row - 1} to row ${row}.`);
+      console.log(gem);
+      console.log("---");
       this.gameboard.setGemPosition(gem, col, row);
     }
   }
@@ -446,7 +449,7 @@ class Game {
   // a new gem is added to the top row, and the game pauses before redrawing,
   // making the gems appear to fall downward.
   gravity() {
-    for (let row = 0; row <= this.gridSize; row++) {
+    for (let row = 0; row < this.gridSize; row++) {
       let gapFound = false;
       for (let col = 0; col < this.gridSize; col++) {
         if (this.gameboard.gem(col, row)) {
@@ -458,9 +461,7 @@ class Game {
         }
       }
       const delay = gapFound ? 500 : null;
-      setTimeout(function () {
-        $("#mainColumn").html(this.drawGameboard());
-      }, delay);
+      setTimeout(() => $("#mainColumn").html(this.drawGameboard()), delay);
     }
   }
 
@@ -549,10 +550,12 @@ class Game {
     const canvas = document.getElementById("gameCanvas");
     const context = canvas.getContext("2d");
     // set gem parameters that are constant during animation
-    const gem1Image = document.getElementById(gem1.value);
+    const gem1Theme = this.theme[gem1.value];
+    const gem1Image = document.getElementById(gem1Theme);
     const gem1LeftInitial = gem1.col() * this.squareWidth;
     const gem1Top = gem1.row() * this.squareHeight;
-    const gem2Image = document.getElementById(gem2.value);
+    const gem2Theme = this.theme[gem2.value];
+    const gem2Image = document.getElementById(gem2Theme);
     const gem2LeftInitial = gem2.col() * this.squareWidth;
     const gem2Top = gem2.row() * this.squareHeight;
     // initialize gem parameters that change during animation
@@ -560,7 +563,7 @@ class Game {
     let gem1LeftOffset, gem1Left;
     let gem2LeftOffset, gem2Left;
     // horizontal swap animation
-    const hSwap = setInterval(function () {
+    const hSwap = setInterval(() => {
       // update gem1 parameters
       if (gem1Movement === "right") {
         gem1LeftOffset = (timer * this.squareWidth) / 20;
@@ -610,10 +613,12 @@ class Game {
     const canvas = document.getElementById("gameCanvas");
     const context = canvas.getContext("2d");
     // set gem parameters that are constant during animation
-    const gem1Image = document.getElementById(gem1.value);
+    const gem1Theme = this.theme[gem1.value];
+    const gem1Image = document.getElementById(gem1Theme);
     const gem1Left = gem1.col() * this.squareWidth;
     const gem1TopInitial = gem1.row() * this.squareHeight;
-    const gem2Image = document.getElementById(gem2.value);
+    const gem2Theme = this.theme[gem2.value];
+    const gem2Image = document.getElementById(gem2Theme);
     const gem2Left = gem2.col() * this.squareWidth;
     const gem2TopInitial = gem2.row() * this.squareHeight;
     // initialize gem parameters that change during animation
@@ -621,7 +626,7 @@ class Game {
     let gem1TopOffset, gem1Top;
     let gem2TopOffset, gem2Top;
     // vertical swap animation
-    const vSwap = setInterval(function () {
+    const vSwap = setInterval(() => {
       // update gem1 parameters
       if (gem1Movement === "down") {
         gem1TopOffset = (timer * this.squareHeight) / 20;
@@ -678,7 +683,7 @@ class Game {
     // const context = canvas.getContext("2d");
     // let counter = 10;
     // context.save();
-    // const fade = setInterval(function () {
+    // const fade = setInterval(() => {
     //   counter--;
     //   context.globalAlpha = counter / 10;
     //   for (let i = 0; i < gems.length; i++) {
