@@ -11,7 +11,9 @@ class Game {
     this.squareWidth = this.canvasWidth / this.gridSize;
     this.squareHeight = this.canvasHeight / this.gridSize;
 
-    this.status = "ready";
+    // initializing, running, ready
+    this.status = "initializing";
+
     this.matchesExist = false;
 
     this.mousedownGem = null;
@@ -203,7 +205,7 @@ class Game {
       if (matchesMade.length > 0) {
         this.handleMatchingMove(gem1, gem2);
       } else {
-        this.handleNonAdjacentMove(gem1, gem2);
+        this.handleNonMatchingMove(gem1, gem2);
       }
     }
   }
@@ -422,9 +424,7 @@ class Game {
     const gems = [].concat.apply([], matches);
     // // this.fadeOut(gems);
     // // pause briefly before removing the gems and continuing on
-    // setTimeout(function () {
-    //   this.gameboard.removeGems(gems);
-    // }, 500);
+    // setTimeout(() => this.gameboard.removeGems(gems), 500);
     this.gameboard.removeGems(gems);
   }
 
@@ -671,9 +671,9 @@ class Game {
   }
 
   shake(gem1, gem2) {
-    setTimeout(function () {
-      console.log("shake");
-    }, 500);
+    $(gameCanvas).addClass("shake");
+    console.log("shake");
+    setTimeout(() => $(gameCanvas).removeClass("shake"), 200);
   }
 
   fadeOut(gems) {

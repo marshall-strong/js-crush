@@ -11,7 +11,7 @@ let game;
 // need canvas element before creating game
 window.addEventListener("DOMContentLoaded", () => {
   game = new Game();
-  $("#mainColumn").html(game.drawGameboard());
+  game.startNewGame();
 });
 
 // jQuery handles user input
