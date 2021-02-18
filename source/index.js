@@ -5,8 +5,14 @@ Math.seedrandom(0);
 
 // const canvas = document.getElementById("gameCanvas");
 // const game = new Game(canvas);
-const game = new Game();
-// game.startNewGame();
+
+let game;
+
+// need canvas element before creating game
+window.addEventListener("DOMContentLoaded", () => {
+  game = new Game();
+  $("#mainColumn").html(game.drawGameboard());
+});
 
 // jQuery handles user input
 $(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
