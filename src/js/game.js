@@ -282,11 +282,13 @@ class Game {
 
   // `findMatches` accepts a `gameboard` to search for matches
   // `findMatches` returns all matches on the `gameboard` as an array of arrays.
+
+  // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
+  // Implementation of the classic union-find algorithm (unoptimized).
+  // Allows any string keys to be unioned into a set of disjoint sets.
+  // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
   findMatches(gameboard) {
-    // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
-    // Implementation of the classic union-find algorithm (unoptimized).
-    // Allows any string keys to be unioned into a set of disjoint sets.
-    // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
     let unioned = {};
     let setSizes = {};
     let col, row;
