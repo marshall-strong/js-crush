@@ -23,7 +23,7 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
-    this.theme = themes.jsCrush;
+    this.theme = themes.animals;
   }
 
   // triggered by jQuery functions in `index.js`

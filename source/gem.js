@@ -1,11 +1,4 @@
-const values = [
-  "gemValue1",
-  "gemValue2",
-  "gemValue3",
-  "gemValue4",
-  "gemValue5",
-  "gemValue6",
-];
+const values = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];
 
 class Gem {
   constructor(gemId, getCol, getRow) {
@@ -23,5 +16,3 @@ class Gem {
     return this.getRow(this.id);
   }
 }
-
-// export default Gem;
