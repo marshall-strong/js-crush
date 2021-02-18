@@ -161,11 +161,14 @@ class Game {
   }
 
   checkMouseEvent() {
-    // determines if the mouseEvent was a click or a drag
-    if (this.mousedownGem === this.mouseupGem) {
-      this.handleClick();
-    } else {
-      this.handleDrag();
+    // only checks mouse events if there are gems on the board
+    if (this.mousedownGem && this.mouseupGem) {
+      // determines if the mouseEvent was a click or a drag
+      if (this.mousedownGem === this.mouseupGem) {
+        this.handleClick();
+      } else {
+        this.handleDrag();
+      }
     }
   }
 
@@ -183,10 +186,10 @@ class Game {
   }
 
   handleDrag() {
-    const firstGem = this.mousedownGem;
-    const secondGem = this.mouseupGem;
-    this.firstGem = null;
-    this.checkMove(firstGem, secondGem);
+    if (this.mousedownGem && this.mouseupGem) {
+      this.firstGem = null;
+      this.checkMove(this.mousedownGem, this.mouseupGem);
+    }
   }
 
   ////////////////////////////////////////////////
