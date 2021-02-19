@@ -1,4 +1,4 @@
-// theme dictates the images to use when drawing the gems
+// The selected theme determines which images to use when drawing the gems.
 const themes = {
   animals: {
     gemA: "11-goose",
@@ -28,8 +28,8 @@ window.addEventListener("DOMContentLoaded", () => {
   game.reset();
 
   $(document).on("click", "#newGame", () => game.reset());
-  $(document).on("click", "#getHint", () => game.getHint());
-  $(document).on("click", "#autoMove", () => game.autoMove());
+  $(document).on("click", "#getHint", () => game.showRandomMove());
+  $(document).on("click", "#autoMove", () => game.makeRandomMove());
   $(document).on("click", "#shuffleBoard", () => game.shuffle());
 
   $(document).on("mousedown", "#gameCanvas", (mousedown) => {

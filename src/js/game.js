@@ -1,6 +1,3 @@
-// import Board from "./grid";
-// import themes from "./themes";
-
 class Game {
   constructor(gameCanvas) {
     this.canvas = gameCanvas;
@@ -17,6 +14,7 @@ class Game {
     this.status = "initializing";
 
     this.matchesExist = false;
+    this.matchingMoves = [];
 
     this.mousedownGem = null;
     this.mouseupGem = null;
@@ -52,8 +50,10 @@ class Game {
         emptySquares = false;
       }
     }
+
     this.clearScore();
     $("#mainColumn").html(this.drawGameboard());
+    this.checkForMoves();
   }
 
   ////////////////////////////////////////////////
@@ -413,9 +413,129 @@ class Game {
       this.matchesExist = true;
     } else {
       this.matchesExist = false;
+      this.checkForMoves();
+    }
+  }
+
+  // Gets called at the very end of the game logic cycle.
+  // Triggers `game.shuffle()` if no more matches can be made.
+  checkForMoves() {
+    const matchingMoves = this.getAllMatchingMoves();
+    if (matchingMoves.length > 0) {
+      this.matchingMoves = matchingMoves;
       this.status = "ready";
       console.log("ready for next move");
+    } else {
+      this.matchingMoves = [];
+      console.log("no remaining moves -- shuffling!");
+      this.shuffle();
     }
+  }
+
+  // Iterates through every gameboard square and checks each direction.
+  // Returns an array of all matching moves that can be made.
+  // Each move is represented as an object: move = { gem1, gem2 }
+  getAllMatchingMoves() {
+    const matchingMoves = [];
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        const gem1 = this.gameboard.gem(col, row);
+        const gem1Adjacent = this.gameboard.adjacent(gem1);
+        for (let i = 0; i < gem1Adjacent.length; i++) {
+          const gem2 = gem1Adjacent[i];
+          const matchesMade = this.findMatchesMade(gem1, gem2);
+          if (matchesMade.length > 0) {
+            const matchingMove = { gem1: gem1, gem2: gem2 };
+            matchingMoves.push(matchingMove);
+          }
+        }
+      }
+    }
+    return matchingMoves;
+  }
+
+  // used by the "Get Hint" button
+  showRandomMove() {
+    this.context.clearRect(0, 0, 600, 600);
+    $("#mainColumn").html(this.drawGameboard());
+
+    const i = Math.floor(this.matchingMoves.length * Math.random());
+    const move = this.matchingMoves[i];
+    const { gem1, gem2 } = move;
+    console.log(
+      `swap gem1 at (col ${gem1.col()}, row ${gem1.row()}) with gem2 at (col ${gem2.col()}, row ${gem2.row()})`
+    );
+
+    const xGem1 = this.squareWidth * gem1.col();
+    const yGem1 = this.squareHeight * gem1.row();
+    const quad = 0.25 * this.squareWidth;
+    let xStart, yStart;
+
+    this.context.save();
+
+    this.context.clearRect(0, 0, 600, 600);
+    $("#mainColumn").html(this.drawGameboard());
+
+    this.context.strokeStyle = "black";
+    const moveDir = this.gameboard.relativePosition(gem1, gem2);
+
+    if (moveDir === "right") {
+      xStart = 1.2 * this.squareWidth + xGem1;
+      yStart = -0.5 * this.squareHeight + yGem1;
+      this.context.beginPath();
+      this.context.moveTo(xStart, yStart);
+      this.context.lineTo(xStart - quad, yStart - quad);
+      this.context.lineTo(xStart - quad, yStart + quad);
+      this.context.fill();
+      this.context.rect(-2 * quad + xStart, -0.5 * quad + yStart, quad, quad);
+      this.context.fill();
+      this.context.closePath();
+    } else if (moveDir === "left") {
+      xStart = -0.25 * this.squareWidth + xGem1;
+      yStart = -0.5 * this.squareHeight + yGem1;
+      this.context.beginPath();
+      this.context.moveTo(xStart, yStart);
+      this.context.lineTo(xStart + quad, yStart + quad);
+      this.context.lineTo(xStart + quad, yStart - quad);
+      this.context.fill();
+      this.context.rect(quad + xStart, -0.5 * quad + yStart, quad, quad);
+      this.context.fill();
+      this.context.closePath();
+    } else if (moveDir === "down") {
+      xStart = 0.5 * this.squareWidth + xGem1;
+      yStart = 0.25 * this.squareHeight + yGem1;
+      this.context.beginPath();
+      this.context.moveTo(xStart, yStart);
+      this.context.lineTo(xStart + quad, yStart - quad);
+      this.context.lineTo(xStart - quad, yStart - quad);
+      this.context.fill();
+      this.context.rect(-0.5 * quad + xStart, -2 * quad + yStart, quad, quad);
+      this.context.fill();
+      this.context.closePath();
+    } else if (moveDir === "up") {
+      xStart = 0.5 * this.squareWidth + xGem1;
+      yStart = -1.2 * this.squareHeight + yGem1;
+      this.context.beginPath();
+      this.context.moveTo(xStart, yStart);
+      this.context.lineTo(xStart - quad, yStart + quad);
+      this.context.lineTo(xStart + quad, yStart + quad);
+      this.context.fill();
+      this.context.rect(-0.5 * quad + xStart, quad + yStart, quad, quad);
+      this.context.fill();
+      this.context.closePath();
+    }
+
+    this.context.restore();
+  }
+
+  // used by the "I'm Lazy" button
+  makeRandomMove() {
+    const i = Math.floor(this.matchingMoves.length * Math.random());
+    const move = this.matchingMoves[i];
+    const { gem1, gem2 } = move;
+    this.handleMatchingMove(gem1, gem2);
+    this.matchesExist = true;
+    this.removeMatchesUntilStable();
   }
 
   // Continually checks for matches until the gameboard reaches a stable state.
@@ -432,11 +552,10 @@ class Game {
     }, 1000);
   }
 
-  autoMove() {}
-
   shuffle() {
     this.gameboard.randomize();
     $("#mainColumn").html(this.drawGameboard());
+    this.checkForMoves();
   }
 
   ////////////////////////////////////////////////

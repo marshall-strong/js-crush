@@ -2,15 +2,13 @@ class Board {
   constructor(gridSize) {
     this.size = gridSize;
     this.nextGemId = 0;
-    // create game board
-    const grid = new Array(this.size);
+    this.grid = new Array(this.size);
     for (let row = 0; row < this.size; row++) {
-      grid[row] = new Array(this.size);
+      this.grid[row] = new Array(this.size);
       for (let col = 0; col < this.size; col++) {
-        grid[row][col] = null;
+        this.grid[row][col] = null;
       }
     }
-    this.grid = grid;
   }
 
   getCol(gemId) {
