@@ -51,98 +51,18 @@ class Game {
           if (!this.gameboard.gem(col, row)) this.gameboard.addGem(col, row);
         }
       }
+      $("#mainColumn").html(this.drawGameboard());
       // removes any matches
       const matches = this.findMatches(this.gameboard);
       if (matches.length > 0) {
-        this.removeMatches(matches);
+        const gems = [].concat.apply([], matches);
+        this.gameboard.removeGems(gems);
       } else {
         emptySquares = false;
       }
     }
     this.resetScore();
     $("#mainColumn").html(this.drawGameboard());
-  }
-
-  getHint() {
-    console.log("get hint / shuffle");
-    this.shuffle();
-    // const helpMove = game.getRandomValidMove();
-    // const squareLength = 600 / board.dimension;
-    // const arrowLength = squareLength / 4;
-    // const canvas = document.getElementById("gameCanvas");
-    // const ctxt = canvas.getContext("2d");
-    // ctxt.beginPath();
-    // posY = (helpMove.gem.row() + 1) * squareLength;
-    // posX = helpMove.gem.col() * squareLength;
-    // ctxt.strokeStyle = "black";
-
-    // switch (helpMove.direction) {
-    //   case "right":
-    //     $("#mainColumn").html(game.drawGameboard());
-    //     posX = posX + squareLength * 1.2;
-    //     posY = posY - squareLength / 2;
-    //     ctxt.moveTo(posX, posY);
-    //     ctxt.lineTo(posX - arrowLength, posY - arrowLength);
-    //     ctxt.lineTo(posX - arrowLength, posY + arrowLength);
-    //     ctxt.fill();
-    //     ctxt.rect(
-    //       posX - arrowLength * 2,
-    //       posY - arrowLength / 2,
-    //       arrowLength,
-    //       arrowLength
-    //     );
-    //     ctxt.fill();
-    //     break;
-    //   case "left":
-    //     $("#mainColumn").html(game.drawGameboard());
-    //     posX = posX - squareLength / 4;
-    //     posY = posY - squareLength / 2;
-    //     ctxt.moveTo(posX, posY);
-    //     ctxt.lineTo(posX + arrowLength, posY + arrowLength);
-    //     ctxt.lineTo(posX + arrowLength, posY - arrowLength);
-    //     ctxt.fill();
-    //     ctxt.rect(
-    //       posX + arrowLength,
-    //       posY - arrowLength / 2,
-    //       arrowLength,
-    //       arrowLength
-    //     );
-    //     ctxt.fill();
-    //     break;
-    //   case "up":
-    //     $("#mainColumn").html(game.drawGameboard());
-    //     posY = posY - squareLength * 1.2;
-    //     posX = posX + squareLength / 2;
-    //     ctxt.moveTo(posX, posY);
-    //     ctxt.lineTo(posX - arrowLength, posY + arrowLength);
-    //     ctxt.lineTo(posX + arrowLength, posY + arrowLength);
-    //     ctxt.fill();
-    //     ctxt.rect(
-    //       posX - arrowLength / 2,
-    //       posY + arrowLength,
-    //       arrowLength,
-    //       arrowLength
-    //     );
-    //     ctxt.fill();
-    //     break;
-    //   case "down":
-    //     $("#mainColumn").html(game.drawGameboard());
-    //     posY = posY + squareLength / 4;
-    //     posX = posX + squareLength / 2;
-    //     ctxt.moveTo(posX, posY);
-    //     ctxt.lineTo(posX + arrowLength, posY - arrowLength);
-    //     ctxt.lineTo(posX - arrowLength, posY - arrowLength);
-    //     ctxt.fill();
-    //     ctxt.rect(
-    //       posX - arrowLength / 2,
-    //       posY - arrowLength * 2,
-    //       arrowLength,
-    //       arrowLength
-    //     );
-    //     ctxt.fill();
-    //     break;
-    // }
-    // ctxt.closePath();
   }
 
   ////////////////////////////////////////////////
@@ -206,6 +126,8 @@ class Game {
       const matchesMade = this.findMatchesMade(gem1, gem2);
       if (matchesMade.length > 0) {
         this.handleMatchingMove(gem1, gem2);
+        this.matchesExist = true;
+        this.removeMatchesUntilStable();
       } else {
         this.handleNonMatchingMove(gem1, gem2);
       }
@@ -420,19 +342,49 @@ class Game {
     return this.findMatches(newGameboard);
   }
 
+  fadeOutMatches(matches) {
+    const gems = [].concat.apply([], matches);
+
+    this.context.save();
+    let counter = 10;
+
+    const fade = setInterval(() => {
+      // every time the counter decreases, we increase the gems' transparency
+      counter--;
+      this.context.globalAlpha = counter / 10;
+      // draw each gem
+      for (let i = 0; i < gems.length; i++) {
+        const gem = gems[i];
+        const x = gem.col() * this.squareWidth;
+        const y = gem.row() * this.squareHeight;
+        const width = this.squareWidth;
+        const height = this.squareHeight;
+        // erase the current image
+        this.context.clearRect(x, y, width, height);
+        const gemTheme = this.theme[gem.value];
+        const gemImage = document.getElementById(gemTheme);
+        // draw the new image @ +10% transparency
+        this.context.drawImage(gemImage, x, y, width, height);
+      }
+      if (counter <= 0) {
+        clearInterval(fade);
+        this.context.restore();
+        this.removeMatches(matches);
+      }
+    }, 50);
+  }
+
   // Removes gems in `matches` from `this.gameboard` and updates score.
   // Does not replace removed gems or move remaining gems down.
   removeMatches(matches) {
-    if (this.keepScore) this.updateScore(matches);
     const gems = [].concat.apply([], matches);
-    // // this.fadeOut(gems);
-    // // pause briefly before removing the gems and continuing on
-    // setTimeout(() => this.gameboard.removeGems(gems), 500);
     this.gameboard.removeGems(gems);
+    $("#mainColumn").html(this.drawGameboard());
+    this.gravity();
   }
 
   // Shifts all gems above the specified square down one row.
-  shiftGemsDown(col, rowInitial) {
+  shiftColDown(col, rowInitial) {
     for (let row = rowInitial; row > 0; row--) {
       const gem = this.gameboard.gem(col, row - 1);
       console.log(`in col ${col}, move gem at row ${row - 1} to row ${row}.`);
@@ -453,7 +405,7 @@ class Game {
         if (this.gameboard.gem(col, row)) {
           continue;
         } else {
-          this.shiftGemsDown(col, row);
+          this.shiftColDown(col, row);
           this.gameboard.addGem(col, 0);
           gapFound = true;
         }
@@ -461,6 +413,7 @@ class Game {
       const delay = gapFound ? 500 : null;
       setTimeout(() => $("#mainColumn").html(this.drawGameboard()), delay);
     }
+    this.checkForMatches();
   }
 
   checkForMatches() {
@@ -474,15 +427,18 @@ class Game {
     }
   }
 
-  // Runs the game logic cycle until the gameboard reaches a stable state with no more matches.
-  run() {
-    do {
-      this.status = "running";
-      const matches = this.findMatches(this.gameboard);
-      this.removeMatches(matches);
-      this.gravity();
-      this.checkForMatches();
-    } while (this.matchesExist);
+  // Continually checks for matches until the gameboard reaches a stable state.
+  removeMatchesUntilStable() {
+    const keepChecking = setInterval(() => {
+      if (this.matchesExist) {
+        const matches = this.findMatches(this.gameboard);
+        // cascades all the other actions as well
+        this.fadeOutMatches(matches);
+        // culminates with `checkForMatches()`, which sets `this.matchesExist`
+      } else {
+        clearInterval(keepChecking);
+      }
+    }, 1000);
   }
 
   autoMove() {}
@@ -554,6 +510,8 @@ class Game {
     const gem2Image = document.getElementById(gem2Theme);
     const gem2LeftInitial = gem2.col() * this.squareWidth;
     const gem2Top = gem2.row() * this.squareHeight;
+    const width = this.squareWidth;
+    const height = this.squareHeight;
     // initialize gem parameters that change during animation
     let timer = 0;
     let gem1LeftOffset, gem1Left;
@@ -579,21 +537,9 @@ class Game {
       // increment timer (first animation frame is for timer=1)
       timer++;
       // draw gem1 with updated parameters
-      this.context.drawImage(
-        gem1Image,
-        gem1Left,
-        gem1Top,
-        this.squareWidth,
-        this.squareHeight
-      );
+      this.context.drawImage(gem1Image, gem1Left, gem1Top, width, height);
       // draw gem2 with updated parameters
-      this.context.drawImage(
-        gem2Image,
-        gem2Left,
-        gem2Top,
-        this.squareWidth,
-        this.squareHeight
-      );
+      this.context.drawImage(gem2Image, gem2Left, gem2Top, width, height);
       // exit after 20 intervals, once the gems have swapped positions
       if (timer >= 20) {
         clearInterval(hSwap);
@@ -601,7 +547,6 @@ class Game {
         this.gameboard.exchange(gem1, gem2);
         // redraw the gameboard
         $("#mainColumn").html(this.drawGameboard());
-        this.run();
       }
     }, 10);
   }
@@ -616,6 +561,8 @@ class Game {
     const gem2Image = document.getElementById(gem2Theme);
     const gem2Left = gem2.col() * this.squareWidth;
     const gem2TopInitial = gem2.row() * this.squareHeight;
+    const width = this.squareWidth;
+    const height = this.squareHeight;
     // initialize gem parameters that change during animation
     let timer = 0;
     let gem1TopOffset, gem1Top;
@@ -641,21 +588,9 @@ class Game {
       // increment timer (first animation frame is for timer=1)
       timer++;
       // draw gem1 with updated parameters
-      this.context.drawImage(
-        gem1Image,
-        gem1Left,
-        gem1Top,
-        this.squareWidth,
-        this.squareHeight
-      );
+      this.context.drawImage(gem1Image, gem1Left, gem1Top, width, height);
       // draw gem2 with updated parameters
-      this.context.drawImage(
-        gem2Image,
-        gem2Left,
-        gem2Top,
-        this.squareWidth,
-        this.squareHeight
-      );
+      this.context.drawImage(gem2Image, gem2Left, gem2Top, width, height);
       // exit after 20 intervals, once the gems have swapped positions
       if (timer >= 20) {
         clearInterval(vSwap);
@@ -663,7 +598,6 @@ class Game {
         this.gameboard.exchange(gem1, gem2);
         // redraw the gameboard
         $("#mainColumn").html(this.drawGameboard());
-        this.run();
       }
     }, 10);
   }
@@ -672,27 +606,5 @@ class Game {
     $(gameCanvas).addClass("shake");
     console.log("shake");
     setTimeout(() => $(gameCanvas).removeClass("shake"), 200);
-  }
-
-  fadeOut(gems) {
-    let counter = 10;
-    this.context.save();
-    const fade = setInterval(() => {
-      counter--;
-      this.context.globalAlpha = counter / 10;
-      for (let i = 0; i < gems.length; i++) {
-        const gem = gems[i];
-        const x = gem.col() * this.squareWidth;
-        const y = gem.row() * this.squareHeight;
-        const width = this.squareWidth;
-        const height = this.squareHeight;
-        this.context.clearRect(x, y, width, height);
-        const gemTheme = this.theme[gem.value];
-        const gemImage = document.getElementById(gemTheme);
-        this.context.drawImage(gemImage, x, y, width, height);
-      }
-      if (counter <= 0) clearInterval(fade);
-    }, 500);
-    this.context.restore();
   }
 }
