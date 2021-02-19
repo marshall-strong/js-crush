@@ -27,30 +27,17 @@ window.addEventListener("DOMContentLoaded", () => {
   const game = new Game(canvas);
   game.reset();
 
-  // handles users clicking on buttons
-  $(document).on("click", "#newGame", function () {
-    game.reset();
+  $(document).on("click", "#newGame", () => game.reset());
+  $(document).on("click", "#getHint", () => game.getHint());
+  $(document).on("click", "#autoMove", () => game.autoMove());
+  $(document).on("click", "#shuffleBoard", () => game.shuffle());
+
+  $(document).on("mousedown", "#gameCanvas", (mousedown) => {
+    game.mousedownGem = game.getMouseEventGem(mousedown);
   });
 
-  $(document).on("click", "#getHint", function () {
-    game.getHint();
-  });
-
-  $(document).on("click", "#autoMove", function () {
-    game.autoMove();
-  });
-
-  $(document).on("click", "#shuffleBoard", function () {
-    game.shuffle();
-  });
-
-  // handles users clicking/dragging gems on the board
-  $(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
-    game.setMousedownGem(mousedownEvent);
-  });
-
-  $(document).on("mouseup", "#gameCanvas", function (mouseupEvent) {
-    game.setMouseupGem(mouseupEvent);
+  $(document).on("mouseup", "#gameCanvas", (mouseup) => {
+    game.mouseupGem = game.getMouseEventGem(mouseup);
     game.checkMouseEvent();
   });
 });
