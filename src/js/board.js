@@ -1,4 +1,4 @@
-class Grid {
+class Board {
   constructor(gridSize) {
     this.size = gridSize;
     this.nextGemId = 0;
@@ -35,9 +35,6 @@ class Grid {
     return null;
   }
 
-  // returns `gem` if square contains a gem
-  // returns `null` if square does not contain a gem
-  // returns `undefined` if square does not exist on grid
   gem(col, row) {
     if (col >= 0 && col < this.size && row >= 0 && row < this.size) {
       return this.matrix[row][col];
@@ -46,22 +43,19 @@ class Grid {
     }
   }
 
-  newGem() {
+  addNewGem(col, row) {
     const id = this.nextGemId++;
     const getCol = this.getCol.bind(this);
     const getRow = this.getRow.bind(this);
-    return new Gem(id, getCol, getRow);
+    const newGem = new Gem(id, getCol, getRow);
+    this.matrix[row][col] = newGem;
   }
 
-  addGem(col, row) {
-    this.matrix[row][col] = this.newGem();
-  }
-
-  setGemPosition(gem, newCol, newRow) {
+  updateGem(gem, newCol, newRow) {
     this.matrix[newRow][newCol] = gem;
   }
 
-  exchange(gem1, gem2) {
+  swapGems(gem1, gem2) {
     const gem1Col = this.getCol(gem1.id);
     const gem1Row = this.getRow(gem1.id);
     const gem2Col = this.getCol(gem2.id);
@@ -147,7 +141,7 @@ class Grid {
     for (let row = 0; row < this.size; row++) {
       for (let col = 0; col < this.size; col++) {
         const gem = array.pop();
-        this.setGemPosition(gem, col, row);
+        this.updateGem(gem, col, row);
       }
     }
   }

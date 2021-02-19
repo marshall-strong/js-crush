@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", () => {
     game.autoMove();
   });
 
-  $(document).on("click", "#shuffleGrid", function () {
+  $(document).on("click", "#shuffleBoard", function () {
     game.shuffle();
   });
 

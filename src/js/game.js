@@ -1,4 +1,4 @@
-// import Grid from "./grid";
+// import Board from "./grid";
 // import themes from "./themes";
 
 class Game {
@@ -9,7 +9,7 @@ class Game {
     this.canvasHeight = 600;
 
     this.gridSize = 8;
-    this.gameboard = new Grid(this.gridSize);
+    this.gameboard = new Board(this.gridSize);
     this.squareWidth = this.canvasWidth / this.gridSize;
     this.squareHeight = this.canvasHeight / this.gridSize;
 
@@ -41,14 +41,14 @@ class Game {
 
   reset() {
     $("#mainColumn").html(this.drawGameboard());
-    this.gameboard = new Grid(this.gridSize);
+    this.gameboard = new Board(this.gridSize);
     this.keepScore = false;
     let emptySquares = true;
     while (emptySquares) {
       // iterates through gameboard and add gems to empty squares
       for (let row = 0; row < this.gridSize; row++) {
         for (let col = 0; col < this.gridSize; col++) {
-          if (!this.gameboard.gem(col, row)) this.gameboard.addGem(col, row);
+          if (!this.gameboard.gem(col, row)) this.gameboard.addNewGem(col, row);
         }
       }
       $("#mainColumn").html(this.drawGameboard());
@@ -245,7 +245,7 @@ class Game {
       }
     }
 
-    // Iterates through each `gameboard` row and adds streaks of 2+ gems to `horizontalStreaks`.
+    // Iterates through each `gameboard` row and adds streaks of 3+ gems to `horizontalStreaks`.
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
         const gem = gameboard.gem(col, row);
@@ -263,7 +263,7 @@ class Game {
               nextCol++;
             }
           }
-          if (streak.length >= 2) horizontalStreaks.push(streak);
+          if (streak.length >= 3) horizontalStreaks.push(streak);
         }
       }
     }
@@ -331,14 +331,14 @@ class Game {
 
   // Duplicates `this.gameboard`, exchanges the two gems, then finds matches.
   findMatchesMade(gem1, gem2) {
-    const newGameboard = new Grid(this.gridSize);
+    const newGameboard = new Board(this.gridSize);
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
         const gem = this.gameboard.gem(col, row);
-        newGameboard.setGemPosition(gem, col, row);
+        newGameboard.updateGem(gem, col, row);
       }
     }
-    newGameboard.exchange(gem1, gem2);
+    newGameboard.swapGems(gem1, gem2);
     return this.findMatches(newGameboard);
   }
 
@@ -390,7 +390,7 @@ class Game {
       console.log(`in col ${col}, move gem at row ${row - 1} to row ${row}.`);
       console.log(gem);
       console.log("---");
-      this.gameboard.setGemPosition(gem, col, row);
+      this.gameboard.updateGem(gem, col, row);
     }
   }
 
@@ -406,7 +406,7 @@ class Game {
           continue;
         } else {
           this.shiftColDown(col, row);
-          this.gameboard.addGem(col, 0);
+          this.gameboard.addNewGem(col, 0);
           gapFound = true;
         }
       }
@@ -501,110 +501,80 @@ class Game {
   }
 
   horizontalSwap(gem1, gem2, gem1Movement) {
-    // set gem parameters that are constant during animation
-    const gem1Theme = this.theme[gem1.value];
-    const gem1Image = document.getElementById(gem1Theme);
-    const gem1LeftInitial = gem1.col() * this.squareWidth;
-    const gem1Top = gem1.row() * this.squareHeight;
-    const gem2Theme = this.theme[gem2.value];
-    const gem2Image = document.getElementById(gem2Theme);
-    const gem2LeftInitial = gem2.col() * this.squareWidth;
-    const gem2Top = gem2.row() * this.squareHeight;
     const width = this.squareWidth;
     const height = this.squareHeight;
-    // initialize gem parameters that change during animation
+
+    const gem1Dir = gem1Movement === "right" ? 1 : -1;
+    const gem1Theme = this.theme[gem1.value];
+    const gem1Image = document.getElementById(gem1Theme);
+    const gem1LeftInitial = gem1.col() * width;
+    const gem1Top = gem1.row() * height;
+
+    const gem2Dir = gem1Movement === "right" ? -1 : 1;
+    const gem2Theme = this.theme[gem2.value];
+    const gem2Image = document.getElementById(gem2Theme);
+    const gem2LeftInitial = gem2.col() * width;
+    const gem2Top = gem2.row() * height;
+
+    // swap animation
     let timer = 0;
-    let gem1LeftOffset, gem1Left;
-    let gem2LeftOffset, gem2Left;
-    // horizontal swap animation
     const hSwap = setInterval(() => {
-      // update gem1 parameters
-      if (gem1Movement === "right") {
-        gem1LeftOffset = (timer * this.squareWidth) / 20;
-      } else if (gem1Movement === "left") {
-        gem1LeftOffset = (-1 * timer * this.squareWidth) / 20;
-      }
-      gem1Left = gem1LeftInitial + gem1LeftOffset;
-      // update gem2 parameters
-      if (gem1Movement === "right") {
-        gem2LeftOffset = (-1 * timer * this.squareWidth) / 20;
-      } else if (gem1Movement === "left") {
-        gem2LeftOffset = (timer * this.squareWidth) / 20;
-      }
-      gem2Left = gem2LeftInitial + gem2LeftOffset;
-      // clear previous drawings
       this.clearHorizontal(gem1, gem2, gem1Movement);
-      // increment timer (first animation frame is for timer=1)
-      timer++;
-      // draw gem1 with updated parameters
+
+      const leftOffset = (++timer * width) / 20;
+      const gem1Left = gem1LeftInitial + leftOffset * gem1Dir;
+      const gem2Left = gem2LeftInitial + leftOffset * gem2Dir;
+
       this.context.drawImage(gem1Image, gem1Left, gem1Top, width, height);
-      // draw gem2 with updated parameters
       this.context.drawImage(gem2Image, gem2Left, gem2Top, width, height);
-      // exit after 20 intervals, once the gems have swapped positions
+
       if (timer >= 20) {
         clearInterval(hSwap);
-        // update the gems' positions in the gameboard state
-        this.gameboard.exchange(gem1, gem2);
-        // redraw the gameboard
+        this.gameboard.swapGems(gem1, gem2);
         $("#mainColumn").html(this.drawGameboard());
       }
     }, 10);
   }
 
   verticalSwap(gem1, gem2, gem1Movement) {
-    // set gem parameters that are constant during animation
-    const gem1Theme = this.theme[gem1.value];
-    const gem1Image = document.getElementById(gem1Theme);
-    const gem1Left = gem1.col() * this.squareWidth;
-    const gem1TopInitial = gem1.row() * this.squareHeight;
-    const gem2Theme = this.theme[gem2.value];
-    const gem2Image = document.getElementById(gem2Theme);
-    const gem2Left = gem2.col() * this.squareWidth;
-    const gem2TopInitial = gem2.row() * this.squareHeight;
     const width = this.squareWidth;
     const height = this.squareHeight;
-    // initialize gem parameters that change during animation
+
+    const gem1Dir = gem1Movement === "down" ? 1 : -1;
+    const gem1Theme = this.theme[gem1.value];
+    const gem1Image = document.getElementById(gem1Theme);
+    const gem1Left = gem1.col() * width;
+    const gem1TopInitial = gem1.row() * this.squareHeight;
+
+    const gem2Dir = gem1Movement === "down" ? -1 : 1;
+    const gem2Theme = this.theme[gem2.value];
+    const gem2Image = document.getElementById(gem2Theme);
+    const gem2Left = gem2.col() * width;
+    const gem2TopInitial = gem2.row() * this.squareHeight;
+
+    // swap animation
     let timer = 0;
-    let gem1TopOffset, gem1Top;
-    let gem2TopOffset, gem2Top;
-    // vertical swap animation
     const vSwap = setInterval(() => {
-      // update gem1 parameters
-      if (gem1Movement === "down") {
-        gem1TopOffset = (timer * this.squareHeight) / 20;
-      } else if (gem1Movement === "up") {
-        gem1TopOffset = (-1 * timer * this.squareHeight) / 20;
-      }
-      gem1Top = gem1TopInitial + gem1TopOffset;
-      // update gem2 parameters
-      if (gem1Movement === "down") {
-        gem2TopOffset = (-1 * timer * this.squareHeight) / 20;
-      } else if (gem1Movement === "up") {
-        gem2TopOffset = (timer * this.squareHeight) / 20;
-      }
-      gem2Top = gem2TopInitial + gem2TopOffset;
-      // clear previous drawings
       this.clearVertical(gem1, gem2, gem1Movement);
-      // increment timer (first animation frame is for timer=1)
-      timer++;
-      // draw gem1 with updated parameters
+
+      const topOffset = (++timer * height) / 20;
+      const gem1Top = gem1TopInitial + topOffset * gem1Dir;
+      const gem2Top = gem2TopInitial + topOffset * gem2Dir;
+
       this.context.drawImage(gem1Image, gem1Left, gem1Top, width, height);
-      // draw gem2 with updated parameters
       this.context.drawImage(gem2Image, gem2Left, gem2Top, width, height);
-      // exit after 20 intervals, once the gems have swapped positions
+
       if (timer >= 20) {
         clearInterval(vSwap);
-        // update the gems' positions in the gameboard state
-        this.gameboard.exchange(gem1, gem2);
-        // redraw the gameboard
+        this.gameboard.swapGems(gem1, gem2);
         $("#mainColumn").html(this.drawGameboard());
       }
     }, 10);
   }
 
-  shake(gem1, gem2) {
+  shake() {
     $(gameCanvas).addClass("shake");
     console.log("shake");
-    setTimeout(() => $(gameCanvas).removeClass("shake"), 200);
+    setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
   }
 }
