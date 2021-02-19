@@ -34,14 +34,12 @@ class Game {
     this.keepScore = false;
     let emptySquares = true;
     while (emptySquares) {
-      // iterates through gameboard and add gems to empty squares
       for (let row = 0; row < this.gridSize; row++) {
         for (let col = 0; col < this.gridSize; col++) {
           if (!this.gameboard.gem(col, row)) this.gameboard.addNewGem(col, row);
         }
       }
       $("#mainColumn").html(this.drawGameboard());
-      // removes any matches
       const matches = this.findMatches(this.gameboard);
       if (matches.length > 0) {
         const gems = [].concat.apply([], matches);
@@ -552,12 +550,6 @@ class Game {
     }, 1000);
   }
 
-  shuffle() {
-    this.gameboard.randomize();
-    $("#mainColumn").html(this.drawGameboard());
-    this.checkForMoves();
-  }
-
   ////////////////////////////////////////////////
   // GEM ANIMATIONS
   highlight(gem) {
@@ -686,5 +678,11 @@ class Game {
     $(gameCanvas).addClass("shake");
     console.log("shake");
     setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
+  }
+
+  shuffle() {
+    this.gameboard.randomize();
+    $("#mainColumn").html(this.drawGameboard());
+    this.checkForMoves();
   }
 }
