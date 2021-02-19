@@ -106,19 +106,6 @@ class Board {
     return gems;
   }
 
-  // adjacent(col, row) {
-  //   const squares = [];
-  //   const right = this.gem(col + 1, row);
-  //   const down = this.gem(col, row + 1);
-  //   const left = this.gem(col - 1, row);
-  //   const up = this.gem(col, row - 1);
-  //   if (right) squares.push([this.getCol(right.id), this.getRow(right.id)]);
-  //   if (down) squares.push([this.getCol(down.id), this.getRow(down.id)]);
-  //   if (left) squares.push([this.getCol(left.id), this.getRow(left.id)]);
-  //   if (up) squares.push([this.getCol(up.id), this.getRow(up.id)]);
-  //   return squares;
-  // }
-
   randomize() {
     // flatten the grid into a single array of gems
     const array = [].concat.apply([], this.grid);
