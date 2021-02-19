@@ -19,18 +19,19 @@
 
   <body>
     <b>JS Gem Crush</b>
-    Get three like gems in a row. Click and drag into place.
+    Click or drag two adjacent gems to swap.
+    <br />
+    Remove gems by getting 3 or more in a row.
 
     <div id="mainColumn">
       <button id="newGame">New Game</button>
-      <button id="getHint">Get Hint</button>
+      <!-- <button id="getHint">Get Hint</button> -->
       <button id="autoMove">I'm Lazy!</button>
-      <button id="shuffleBoard">Shuffle</button>
+      <!-- <button id="shuffleBoard">Shuffle</button> -->
       <div>
-        SCORE:
-        <div id="score">this will be replaced by `board.score`</div>
+        <div id="score" />
       </div>
-
+      <br />
       <canvas id="gameCanvas" class="" width="600" height="600">
         <!-- error message for older browsers -->
         Sorry, your browser does not support Canvas. Try using Chrome!
