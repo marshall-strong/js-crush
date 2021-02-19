@@ -30,15 +30,6 @@ class Game {
     this.theme = themes.animals;
   }
 
-  // triggered by jQuery functions in `index.js`
-  setMousedownGem(mousedownEvent) {
-    this.mousedownGem = this.getMouseEventGem(mousedownEvent);
-  }
-
-  setMouseupGem(mouseupEvent) {
-    this.mouseupGem = this.getMouseEventGem(mouseupEvent);
-  }
-
   reset() {
     $("#mainColumn").html(this.drawGameboard());
     this.gameboard = new Board(this.gridSize);
