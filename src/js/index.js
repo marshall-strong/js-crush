@@ -1,20 +1,30 @@
-// import $ from "jquery";
-// import Game from "./game";
-
+// ensures I get the same gems every reset (nice during development)
 Math.seedrandom(0);
 
-// const canvas = document.getElementById("gameCanvas");
-// const game = new Game(canvas);
-
-let game;
-
-// need canvas element before creating game
+// waits for the canvas element to load before creating a new game
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
-  game.startNewGame();
+  game.reset();
 
-  // handles user input
+  // handles users clicking on buttons
+  $(document).on("click", "#newGame", function () {
+    game.reset();
+  });
+
+  $(document).on("click", "#getHint", function () {
+    game.getHint();
+  });
+
+  $(document).on("click", "#autoMove", function () {
+    game.autoMove();
+  });
+
+  $(document).on("click", "#shuffleGrid", function () {
+    game.shuffle();
+  });
+
+  // handles users clicking/dragging gems on the board
   $(document).on("mousedown", "#gameCanvas", function (mousedownEvent) {
     game.setMousedownGem(mousedownEvent);
   });
@@ -22,13 +32,5 @@ window.addEventListener("DOMContentLoaded", () => {
   $(document).on("mouseup", "#gameCanvas", function (mouseupEvent) {
     game.setMouseupGem(mouseupEvent);
     game.checkMouseEvent();
-  });
-
-  $(document).on("click", "#newGame", function () {
-    game.startNewGame();
-  });
-
-  $(document).on("click", "#getHint", function () {
-    game.getHint();
   });
 });

@@ -39,7 +39,7 @@ class Game {
     this.mouseupGem = this.getMouseEventGem(mouseupEvent);
   }
 
-  startNewGame() {
+  reset() {
     $("#mainColumn").html(this.drawGameboard());
     this.gameboard = new Grid(this.gridSize);
     this.keepScore = false;
@@ -61,7 +61,7 @@ class Game {
         emptySquares = false;
       }
     }
-    this.resetScore();
+    this.clearScore();
     $("#mainColumn").html(this.drawGameboard());
   }
 
@@ -165,7 +165,7 @@ class Game {
     this.lastGemValue = gems[0].value;
   }
 
-  resetScore() {
+  clearScore() {
     this.points = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
