@@ -3,20 +3,20 @@ class Board {
     this.size = gridSize;
     this.nextGemId = 0;
     // create game board
-    const matrix = new Array(this.size);
+    const grid = new Array(this.size);
     for (let row = 0; row < this.size; row++) {
-      matrix[row] = new Array(this.size);
+      grid[row] = new Array(this.size);
       for (let col = 0; col < this.size; col++) {
-        matrix[row][col] = null;
+        grid[row][col] = null;
       }
     }
-    this.matrix = matrix;
+    this.grid = grid;
   }
 
   getCol(gemId) {
     for (let row = 0; row < this.size; row++) {
       for (let col = 0; col < this.size; col++) {
-        if (this.matrix[row][col] && this.matrix[row][col].id === gemId) {
+        if (this.grid[row][col] && this.grid[row][col].id === gemId) {
           return col;
         }
       }
@@ -27,7 +27,7 @@ class Board {
   getRow(gemId) {
     for (let row = 0; row < this.size; row++) {
       for (let col = 0; col < this.size; col++) {
-        if (this.matrix[row][col] && this.matrix[row][col].id === gemId) {
+        if (this.grid[row][col] && this.grid[row][col].id === gemId) {
           return row;
         }
       }
@@ -37,7 +37,7 @@ class Board {
 
   gem(col, row) {
     if (col >= 0 && col < this.size && row >= 0 && row < this.size) {
-      return this.matrix[row][col];
+      return this.grid[row][col];
     } else {
       return undefined;
     }
@@ -48,11 +48,11 @@ class Board {
     const getCol = this.getCol.bind(this);
     const getRow = this.getRow.bind(this);
     const newGem = new Gem(id, getCol, getRow);
-    this.matrix[row][col] = newGem;
+    this.grid[row][col] = newGem;
   }
 
   updateGem(gem, newCol, newRow) {
-    this.matrix[newRow][newCol] = gem;
+    this.grid[newRow][newCol] = gem;
   }
 
   swapGems(gem1, gem2) {
@@ -60,8 +60,8 @@ class Board {
     const gem1Row = this.getRow(gem1.id);
     const gem2Col = this.getCol(gem2.id);
     const gem2Row = this.getRow(gem2.id);
-    this.matrix[gem1Row][gem1Col] = gem2;
-    this.matrix[gem2Row][gem2Col] = gem1;
+    this.grid[gem1Row][gem1Col] = gem2;
+    this.grid[gem2Row][gem2Col] = gem1;
   }
 
   relativePosition(gem1, gem2) {
@@ -78,7 +78,7 @@ class Board {
   removeGem(gem) {
     const col = this.getCol(gem.id);
     const row = this.getRow(gem.id);
-    this.matrix[row][col] = null;
+    this.grid[row][col] = null;
   }
 
   removeGems(gems) {
@@ -120,8 +120,8 @@ class Board {
   // }
 
   randomize() {
-    // flatten the grid matrix into a single array of gems
-    const array = [].concat.apply([], this.matrix);
+    // flatten the grid into a single array of gems
+    const array = [].concat.apply([], this.grid);
 
     // shuffle array (https://github.com/coolaj86/knuth-shuffle)
     let currentIndex = array.length;
