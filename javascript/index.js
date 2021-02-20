@@ -25,7 +25,7 @@ Math.seedrandom(0);
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
-  game.reset();
+
   $(game).on("scoreUpdate", () => {
     $("#pointsEarned").html(game.pointsEarned);
     $("#totalPoints").html(game.totalPoints);
@@ -44,4 +44,6 @@ window.addEventListener("DOMContentLoaded", () => {
     game.mouseupGem = game.getMouseEventGem(mouseup);
     game.checkMouseEvent();
   });
+
+  setTimeout(() => game.reset(), 30);
 });
