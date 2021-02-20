@@ -37,7 +37,7 @@ html javascript css gem crush game
 
 `removeGems(gems)`
 
-`adjacent(gem)`
+`adjacentGems(gem)`
 
 `randomize()`
 
@@ -47,13 +47,13 @@ html javascript css gem crush game
 
 `resetGame()`
 
-### get a move from the player
+### get move from player
 
 `setMouseEventGem(mouseEvent)`
 
 `checkMouseEvent()`
 
-### trigger the appropriate animation for a move
+### handle move
 
 `checkMove(gem1, gem2)`
 
@@ -63,13 +63,11 @@ html javascript css gem crush game
 
 `clearScore()`
 
-`drawGameboard()`
+###
 
-`findMatches(gameboard)`
+`findMatches(gameboard)` - used to find all matches on the board passed to it
 
 `findMatchesMade(gem1, gem2)`
-
-`fadeOutMatches(matches)`
 
 `removeMatches(matches)`
 
@@ -79,17 +77,27 @@ html javascript css gem crush game
 
 `checkForMatches()`
 
+`removeMatchesUntilStable()`
+
 `checkForMoves()`
 
 `getAllMatchingMoves()`
+
+### hint / autoMove
 
 `showRandomMove()`
 
 `makeRandomMove()`
 
-`removeMatchesUntilStable()`
+### game canvas - board
 
-### gem animations
+`drawGameboard()`
+
+`shake()`
+
+`shuffle()`
+
+### game canvas - gems
 
 `highlight(gem)`
 
@@ -103,9 +111,7 @@ html javascript css gem crush game
 
 `verticalSwap(gem1, gem2, gem1Movement)`
 
-`shake()`
-
-`shuffle()`
+`fadeOutMatches(matches)`
 
 ## index.js
 

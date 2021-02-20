@@ -105,7 +105,7 @@ class Game {
   // Triggered by checkMouseEvent,
   // triggers the appropriate animations.
   checkMove(gem1, gem2) {
-    const gem1Adjacent = this.gameboard.adjacent(gem1);
+    const gem1Adjacent = this.gameboard.adjacentGems(gem1);
     if (!(gem1Adjacent.indexOf(gem2) >= 0)) {
       // handles non-adjacent moves
       setTimeout(() => {
@@ -134,8 +134,7 @@ class Game {
     }
   }
 
-  ////////////////////////////////////////////////
-  // update the player's score
+  // score
   updateScore(matches) {
     const multiplier = matches.length;
     const gems = [].concat.apply([], matches);
@@ -152,30 +151,6 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
     $(this).triggerHandler("scoreUpdate");
-  }
-
-  drawGameboard() {
-    // draw grid container
-    this.context.clearRect(0, 0, 600, 600);
-    this.context.strokeStyle = "white";
-    // iterate through grid squares
-    for (let row = 0; row < this.gridSize; row++) {
-      for (let col = 0; col < this.gridSize; col++) {
-        const x = col * this.squareWidth;
-        const y = row * this.squareWidth;
-        const width = this.squareWidth;
-        const height = this.squareHeight;
-        // draw square outline
-        this.context.strokeRect(x, y, width, height);
-        // draw gem, if it exists
-        const gem = this.gameboard.gem(col, row);
-        if (gem) {
-          const themeValue = this.theme[gem.value];
-          const image = document.getElementById(themeValue);
-          this.context.drawImage(image, x, y, width, height);
-        }
-      }
-    }
   }
 
   ////////////////////////////////////////////////
@@ -433,7 +408,7 @@ class Game {
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
         const gem1 = this.gameboard.gem(col, row);
-        const gem1Adjacent = this.gameboard.adjacent(gem1);
+        const gem1Adjacent = this.gameboard.adjacentGems(gem1);
         for (let i = 0; i < gem1Adjacent.length; i++) {
           const gem2 = gem1Adjacent[i];
           const matchesMade = this.findMatchesMade(gem1, gem2);
@@ -548,7 +523,32 @@ class Game {
   }
 
   ////////////////////////////////////////////////
-  // GEM ANIMATIONS
+  // CANVAS
+
+  drawGameboard() {
+    // draw grid container
+    this.context.clearRect(0, 0, 600, 600);
+    this.context.strokeStyle = "white";
+    // iterate through grid squares
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        const x = col * this.squareWidth;
+        const y = row * this.squareWidth;
+        const width = this.squareWidth;
+        const height = this.squareHeight;
+        // draw square outline
+        this.context.strokeRect(x, y, width, height);
+        // draw gem, if it exists
+        const gem = this.gameboard.gem(col, row);
+        if (gem) {
+          const themeValue = this.theme[gem.value];
+          const image = document.getElementById(themeValue);
+          this.context.drawImage(image, x, y, width, height);
+        }
+      }
+    }
+  }
+
   highlight(gem) {
     this.context.save();
     this.context.globalAlpha = 0.3;
