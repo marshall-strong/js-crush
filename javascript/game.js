@@ -54,7 +54,8 @@ class Game {
     this.checkForMoves();
   }
 
-  // Triggered by user mouseEvents, triggers `checkMouseEvent()`.
+  // Triggered by user mouseEvents,
+  // triggers `checkMouseEvent()`.
   setMouseEventGem(mouseEvent) {
     // finds mouseEvent coordinates relative to application viewport
     const xViewport = mouseEvent.clientX;
@@ -101,43 +102,36 @@ class Game {
     }
   }
 
-  ////////////////////////////////////////////////
-  // trigger the appropriate animation for a move
+  // Triggered by checkMouseEvent,
+  // triggers the appropriate animations.
   checkMove(gem1, gem2) {
     const gem1Adjacent = this.gameboard.adjacent(gem1);
     if (!(gem1Adjacent.indexOf(gem2) >= 0)) {
-      this.handleNonAdjacentMove(gem1, gem2);
+      // handles non-adjacent moves
+      setTimeout(() => {
+        this.shake(gem1, gem2);
+        this.drawGameboard();
+      }, 550);
     } else {
       const matchesMade = this.findMatchesMade(gem1, gem2);
       if (matchesMade.length > 0) {
-        this.handleMatchingMove(gem1, gem2);
-        this.matchesExist = true;
-        this.removeMatchesUntilStable();
+        // handles adjacent, matching moves
+        setTimeout(() => {
+          this.swap(gem1, gem2);
+          this.matchesExist = true;
+          this.removeMatchesUntilStable();
+        }, 300);
       } else {
-        this.handleNonMatchingMove(gem1, gem2);
+        // handles adjacent, non-matching moves
+        setTimeout(() => {
+          this.swap(gem1, gem2);
+          setTimeout(() => {
+            this.shake(gem1, gem2);
+            this.swap(gem2, gem1);
+          }, 550);
+        }, 300);
       }
     }
-  }
-
-  handleNonAdjacentMove(gem1, gem2) {
-    setTimeout(() => {
-      this.shake(gem1, gem2);
-      this.drawGameboard();
-    }, 550);
-  }
-
-  handleNonMatchingMove(gem1, gem2) {
-    setTimeout(() => {
-      this.swap(gem1, gem2);
-      setTimeout(() => {
-        this.shake(gem1, gem2);
-        this.swap(gem2, gem1);
-      }, 550);
-    }, 550);
-  }
-
-  handleMatchingMove(gem1, gem2) {
-    setTimeout(() => this.swap(gem1, gem2), 550);
   }
 
   ////////////////////////////////////////////////
@@ -532,9 +526,11 @@ class Game {
     const i = Math.floor(this.matchingMoves.length * Math.random());
     const move = this.matchingMoves[i];
     const { gem1, gem2 } = move;
-    this.handleMatchingMove(gem1, gem2);
-    this.matchesExist = true;
-    this.removeMatchesUntilStable();
+    setTimeout(() => {
+      this.swap(gem1, gem2);
+      this.matchesExist = true;
+      this.removeMatchesUntilStable();
+    }, 300);
   }
 
   // Continually checks for matches until the gameboard reaches a stable state.

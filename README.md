@@ -57,12 +57,6 @@ html javascript css gem crush game
 
 `checkMove(gem1, gem2)`
 
-`handleNonAdjacentMove(gem1, gem2)`
-
-`handleNonMatchingMove(gem1, gem2)`
-
-`handleMatchingMove(gem1, gem2)`
-
 ### update score
 
 `updateScore(matches)`
