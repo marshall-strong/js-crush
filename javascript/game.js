@@ -28,7 +28,8 @@ class Game {
     this.theme = themes.animals;
   }
 
-  reset() {
+  // Called at setup, and when "New Game" is clicked.
+  resetGame() {
     $("#mainColumn").html(this.drawGameboard());
     this.gameboard = new Board(this.gridSize);
     let emptySquares = true;
@@ -53,54 +54,50 @@ class Game {
     this.checkForMoves();
   }
 
-  ////////////////////////////////////////////////
-  // get a move from the player
-  getMouseEventGem(mouseEvent) {
-    const canvas = document.getElementById("gameCanvas");
-    const canvasRect = canvas.getBoundingClientRect();
-    // mouseEvent coordinates relative to application viewport
+  // Triggered by user mouseEvents, triggers `checkMouseEvent()`.
+  setMouseEventGem(mouseEvent) {
+    // finds mouseEvent coordinates relative to application viewport
     const xViewport = mouseEvent.clientX;
     const yViewport = mouseEvent.clientY;
-    // mouseEvent coordinates relative to gameCanvas
+    // finds mouseEvent coordinates relative to game.canvas
+    const canvasRect = this.canvas.getBoundingClientRect();
     const xCanvas = xViewport - canvasRect.left;
     const yCanvas = yViewport - canvasRect.top;
-    // get the indexes of the gameboard col and row at (xCanvas, yCanvas)
-    const colIndex = Math.floor(xCanvas / this.squareWidth);
-    const rowIndex = Math.floor(yCanvas / this.squareHeight);
-    // get the gem
-    const gem = this.gameboard.gem(colIndex, rowIndex);
-    return gem;
+    // finds the gem at the mouseEvent's canvas coordinates
+    const col = Math.floor(xCanvas / this.squareWidth);
+    const row = Math.floor(yCanvas / this.squareHeight);
+    const gem = this.gameboard.gem(col, row);
+    // update this.mousedownGem/this.mouseupGem, then check the mouseEvent
+    if (mouseEvent.type === "mousedown") {
+      this.mousedownGem = gem;
+    } else if (mouseEvent.type === "mouseup") {
+      this.mouseupGem = gem;
+      this.checkMouseEvent();
+    }
   }
 
+  // Triggered by `setMouseEventGem(mouseup)`,
+  // triggers `highlight(gem)` and `checkMove(mousedownGem, mouseupGem).
   checkMouseEvent() {
     // only checks mouse events if there are gems on the board
     if (this.mousedownGem && this.mouseupGem) {
-      // determines if the mouseEvent was a click or a drag
       if (this.mousedownGem === this.mouseupGem) {
-        this.handleClick();
+        // handles clicks
+        if (!this.firstGem) {
+          this.firstGem = this.mousedownGem;
+          this.highlight(this.firstGem);
+        } else {
+          const firstGem = this.firstGem;
+          this.firstGem = null;
+          const secondGem = this.mousedownGem;
+          this.highlight(secondGem);
+          this.checkMove(firstGem, secondGem);
+        }
       } else {
-        this.handleDrag();
+        // handles drags
+        this.firstGem = null;
+        this.checkMove(this.mousedownGem, this.mouseupGem);
       }
-    }
-  }
-
-  handleClick() {
-    if (!this.firstGem) {
-      this.firstGem = this.mousedownGem;
-      this.highlight(this.firstGem);
-    } else {
-      const firstGem = this.firstGem;
-      this.firstGem = null;
-      const secondGem = this.mousedownGem;
-      this.highlight(secondGem);
-      this.checkMove(firstGem, secondGem);
-    }
-  }
-
-  handleDrag() {
-    if (this.mousedownGem && this.mouseupGem) {
-      this.firstGem = null;
-      this.checkMove(this.mousedownGem, this.mouseupGem);
     }
   }
 

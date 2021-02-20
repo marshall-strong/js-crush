@@ -31,19 +31,17 @@ window.addEventListener("DOMContentLoaded", () => {
     $("#totalPoints").html(game.totalPoints);
   });
 
-  $(document).on("click", "#newGame", () => game.reset());
+  $(document).on("click", "#newGame", () => game.resetGame());
   $(document).on("click", "#getHint", () => game.showRandomMove());
   $(document).on("click", "#autoMove", () => game.makeRandomMove());
   $(document).on("click", "#shuffleBoard", () => game.shuffle());
 
-  $(document).on("mousedown", "#gameCanvas", (mousedown) => {
-    game.mousedownGem = game.getMouseEventGem(mousedown);
-  });
+  $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
+  $(document).on("mouseup", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
 
-  $(document).on("mouseup", "#gameCanvas", (mouseup) => {
-    game.mouseupGem = game.getMouseEventGem(mouseup);
-    game.checkMouseEvent();
-  });
-
-  setTimeout(() => game.reset(), 30);
+  setTimeout(() => game.resetGame(), 30);
 });
