@@ -11,10 +11,10 @@
     />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.2/seedrandom.js"></script>
-    <script src="js/gem.js"></script>
-    <script src="js/board.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/index.js"></script>
+    <script src="javascript/gem.js"></script>
+    <script src="javascript/board.js"></script>
+    <script src="javascript/game.js"></script>
+    <script src="javascript/index.js"></script>
   </head>
 
   <body>
@@ -28,8 +28,11 @@
       <!-- <button id="getHint">Get Hint</button> -->
       <button id="autoMove">I'm Lazy!</button>
       <!-- <button id="shuffleBoard">Shuffle</button> -->
-      <div>
-        <div id="score" />
+      <div id="score">
+        <span class="label">( points earned )</span>
+        <span id="pointsEarned">replace with `pointsEarned`</span>
+        <span class="label">( total points )</span>
+        <span id="totalPoints">replace with `game.totalPoints`</span>
       </div>
       <br />
       <canvas id="gameCanvas" class="" width="600" height="600">
