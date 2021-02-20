@@ -20,8 +20,8 @@ class Game {
     this.mouseupGem = null;
     this.firstGem = null;
 
-    this.keepScore = false;
-    this.points = 0;
+    this.pointsEarned = 0;
+    this.totalPoints = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
@@ -31,7 +31,6 @@ class Game {
   reset() {
     $("#mainColumn").html(this.drawGameboard());
     this.gameboard = new Board(this.gridSize);
-    this.keepScore = false;
     let emptySquares = true;
     while (emptySquares) {
       for (let row = 0; row < this.gridSize; row++) {
@@ -149,15 +148,19 @@ class Game {
   updateScore(matches) {
     const multiplier = matches.length;
     const gems = [].concat.apply([], matches);
-    this.points = this.points + multiplier * gems.length;
-    this.totalGemsRemoved = totalGemsRemoved + gems.length;
+    this.pointsEarned = gems.length * multiplier * 40;
+    this.totalPoints = this.totalPoints + this.pointsEarned;
+    this.totalGemsRemoved = this.totalGemsRemoved + gems.length;
     this.lastGemValue = gems[0].value;
+    $(this).triggerHandler("scoreUpdate");
   }
 
   clearScore() {
-    this.points = 0;
+    this.pointsEarned = 0;
+    this.totalPoints = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
+    $(this).triggerHandler("scoreUpdate");
   }
 
   drawGameboard() {
@@ -358,6 +361,7 @@ class Game {
       if (counter <= 0) {
         clearInterval(fade);
         this.context.restore();
+        this.updateScore(matches);
         this.removeMatches(matches);
       }
     }, 50);
