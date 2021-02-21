@@ -78,7 +78,7 @@ class Game {
   }
 
   // Triggered by `setMouseEventGem(mouseup)`,
-  // triggers `highlight(gem)` and `checkMove(mousedownGem, mouseupGem).
+  // triggers `highlightGem(gem)` and `checkMove(mousedownGem, mouseupGem).
   checkMouseEvent() {
     // only checks mouse events if there are gems on the board
     if (this.mousedownGem && this.mouseupGem) {
@@ -86,12 +86,12 @@ class Game {
         // handles clicks
         if (!this.firstGem) {
           this.firstGem = this.mousedownGem;
-          this.highlight(this.firstGem);
+          this.highlightGem(this.firstGem);
         } else {
           const firstGem = this.firstGem;
           this.firstGem = null;
           const secondGem = this.mousedownGem;
-          this.highlight(secondGem);
+          this.highlightGem(secondGem);
           this.checkMove(firstGem, secondGem);
         }
       } else {
@@ -109,7 +109,7 @@ class Game {
     if (!(gem1Adjacent.indexOf(gem2) >= 0)) {
       // handles non-adjacent moves
       setTimeout(() => {
-        this.shake(gem1, gem2);
+        this.shakeGameboard(gem1, gem2);
         this.drawGameboard();
       }, 550);
     } else {
@@ -117,17 +117,17 @@ class Game {
       if (matchesMade.length > 0) {
         // handles adjacent, matching moves
         setTimeout(() => {
-          this.swap(gem1, gem2);
+          this.swapGems(gem1, gem2);
           this.matchesExist = true;
           this.removeMatchesUntilStable();
         }, 300);
       } else {
         // handles adjacent, non-matching moves
         setTimeout(() => {
-          this.swap(gem1, gem2);
+          this.swapGems(gem1, gem2);
           setTimeout(() => {
-            this.shake(gem1, gem2);
-            this.swap(gem2, gem1);
+            this.shakeGameboard(gem1, gem2);
+            this.swapGems(gem2, gem1);
           }, 550);
         }, 300);
       }
@@ -153,50 +153,17 @@ class Game {
     $(this).triggerHandler("scoreUpdate");
   }
 
-  // Duplicates `this.gameboard`, exchanges the two gems, then finds matches.
+  // Duplicates `this.gameboard`, exchanges the two gems to create `newBoard`, then calls `newBoard.getMatches()`
   findMatchesMade(gem1, gem2) {
-    const newGameboard = new Board(this.gridSize);
+    const newBoard = new Board(this.gridSize);
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
         const gem = this.gameboard.gem(col, row);
-        newGameboard.updateGem(gem, col, row);
+        newBoard.updateGem(gem, col, row);
       }
     }
-    newGameboard.swapGems(gem1, gem2);
-    return newGameboard.getMatches();
-  }
-
-  fadeOutMatches(matches) {
-    const gems = [].concat.apply([], matches);
-
-    this.context.save();
-    let counter = 10;
-
-    const fade = setInterval(() => {
-      // every time the counter decreases, we increase the gems' transparency
-      counter--;
-      this.context.globalAlpha = counter / 10;
-      // draw each gem
-      for (let i = 0; i < gems.length; i++) {
-        const gem = gems[i];
-        const x = gem.col() * this.squareWidth;
-        const y = gem.row() * this.squareHeight;
-        const width = this.squareWidth;
-        const height = this.squareHeight;
-        // erase the current image
-        this.context.clearRect(x, y, width, height);
-        const gemTheme = this.theme[gem.value];
-        const gemImage = document.getElementById(gemTheme);
-        // draw the new image @ +10% transparency
-        this.context.drawImage(gemImage, x, y, width, height);
-      }
-      if (counter <= 0) {
-        clearInterval(fade);
-        this.context.restore();
-        this.updateScore(matches);
-        this.removeMatches(matches);
-      }
-    }, 50);
+    newBoard.swapGems(gem1, gem2);
+    return newBoard.getMatches();
   }
 
   // Removes gems in `matches` from `this.gameboard` and updates score.
@@ -252,7 +219,7 @@ class Game {
   }
 
   // Gets called at the very end of the game logic cycle.
-  // Triggers `game.shuffle()` if no more matches can be made.
+  // Triggers `game.shuffleGameboard()` if no more matches can be made.
   checkForMoves() {
     const matchingMoves = this.getAllMatchingMoves();
     if (matchingMoves.length > 0) {
@@ -262,7 +229,7 @@ class Game {
     } else {
       this.matchingMoves = [];
       console.log("no remaining moves -- shuffling!");
-      this.shuffle();
+      this.shuffleGameboard();
     }
   }
 
@@ -368,7 +335,7 @@ class Game {
     const move = this.matchingMoves[i];
     const { gem1, gem2 } = move;
     setTimeout(() => {
-      this.swap(gem1, gem2);
+      this.swapGems(gem1, gem2);
       this.matchesExist = true;
       this.removeMatchesUntilStable();
     }, 300);
@@ -391,6 +358,7 @@ class Game {
   ////////////////////////////////////////////////
   // CANVAS
 
+  // Canvas -- Board
   drawGameboard() {
     // draw grid container
     this.context.clearRect(0, 0, 600, 600);
@@ -415,7 +383,20 @@ class Game {
     }
   }
 
-  highlight(gem) {
+  shakeGameboard() {
+    $(gameCanvas).addClass("shake");
+    console.log("shake");
+    setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
+  }
+
+  shuffleGameboard() {
+    this.gameboard.randomize();
+    $("#mainColumn").html(this.drawGameboard());
+    this.checkForMoves();
+  }
+
+  // Canvas -- Gem or Gems
+  highlightGem(gem) {
     this.context.save();
     this.context.globalAlpha = 0.3;
     this.context.fillStyle = "yellow";
@@ -430,42 +411,16 @@ class Game {
     this.context.restore();
   }
 
-  swap(gem1, gem2) {
+  swapGems(gem1, gem2) {
     const gem1Movement = this.gameboard.relativePosition(gem1, gem2);
     if (gem1Movement === "right" || gem1Movement === "left") {
-      this.horizontalSwap(gem1, gem2, gem1Movement);
+      this.hSwapGems(gem1, gem2, gem1Movement);
     } else if (gem1Movement === "down" || gem1Movement === "up") {
-      this.verticalSwap(gem1, gem2, gem1Movement);
+      this.vSwapGems(gem1, gem2, gem1Movement);
     }
   }
 
-  clearHorizontal(gem1, gem2, gem1Movement) {
-    let left;
-    const top = gem1.row() * this.squareHeight;
-    const width = 2 * this.squareWidth;
-    const height = this.squareHeight;
-    if (gem1Movement === "right") {
-      left = gem1.col() * this.squareWidth;
-    } else if (gem1Movement === "left") {
-      left = gem2.col() * this.squareWidth;
-    }
-    this.context.clearRect(left, top, width, height);
-  }
-
-  clearVertical(gem1, gem2, gem1Movement) {
-    const left = gem1.col() * this.squareWidth;
-    let top;
-    const width = this.squareWidth;
-    const height = 2 * this.squareHeight;
-    if (gem1Movement === "down") {
-      top = gem1.row() * this.squareHeight;
-    } else if (gem1Movement === "up") {
-      top = gem2.row() * this.squareHeight;
-    }
-    this.context.clearRect(left, top, width, height);
-  }
-
-  horizontalSwap(gem1, gem2, gem1Movement) {
+  hSwapGems(gem1, gem2, gem1Movement) {
     const width = this.squareWidth;
     const height = this.squareHeight;
 
@@ -481,10 +436,23 @@ class Game {
     const gem2LeftInitial = gem2.col() * width;
     const gem2Top = gem2.row() * height;
 
+    const clearHorizontal = (gem1, gem2, gem1Movement) => {
+      let left;
+      const top = gem1.row() * this.squareHeight;
+      const width = 2 * this.squareWidth;
+      const height = this.squareHeight;
+      if (gem1Movement === "right") {
+        left = gem1.col() * this.squareWidth;
+      } else if (gem1Movement === "left") {
+        left = gem2.col() * this.squareWidth;
+      }
+      this.context.clearRect(left, top, width, height);
+    };
+
     // swap animation
     let timer = 0;
     const hSwap = setInterval(() => {
-      this.clearHorizontal(gem1, gem2, gem1Movement);
+      clearHorizontal(gem1, gem2, gem1Movement);
 
       const leftOffset = (++timer * width) / 20;
       const gem1Left = gem1LeftInitial + leftOffset * gem1Dir;
@@ -501,7 +469,7 @@ class Game {
     }, 10);
   }
 
-  verticalSwap(gem1, gem2, gem1Movement) {
+  vSwapGems(gem1, gem2, gem1Movement) {
     const width = this.squareWidth;
     const height = this.squareHeight;
 
@@ -517,10 +485,23 @@ class Game {
     const gem2Left = gem2.col() * width;
     const gem2TopInitial = gem2.row() * this.squareHeight;
 
+    const clearVertical = (gem1, gem2, gem1Movement) => {
+      const left = gem1.col() * this.squareWidth;
+      let top;
+      const width = this.squareWidth;
+      const height = 2 * this.squareHeight;
+      if (gem1Movement === "down") {
+        top = gem1.row() * this.squareHeight;
+      } else if (gem1Movement === "up") {
+        top = gem2.row() * this.squareHeight;
+      }
+      this.context.clearRect(left, top, width, height);
+    };
+
     // swap animation
     let timer = 0;
     const vSwap = setInterval(() => {
-      this.clearVertical(gem1, gem2, gem1Movement);
+      clearVertical(gem1, gem2, gem1Movement);
 
       const topOffset = (++timer * height) / 20;
       const gem1Top = gem1TopInitial + topOffset * gem1Dir;
@@ -537,15 +518,36 @@ class Game {
     }, 10);
   }
 
-  shake() {
-    $(gameCanvas).addClass("shake");
-    console.log("shake");
-    setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
-  }
+  fadeOutMatches(matches) {
+    const gems = [].concat.apply([], matches);
 
-  shuffle() {
-    this.gameboard.randomize();
-    $("#mainColumn").html(this.drawGameboard());
-    this.checkForMoves();
+    this.context.save();
+    let counter = 10;
+
+    const fade = setInterval(() => {
+      // every time the counter decreases, we increase the gems' transparency
+      counter--;
+      this.context.globalAlpha = counter / 10;
+      // draw each gem
+      for (let i = 0; i < gems.length; i++) {
+        const gem = gems[i];
+        const x = gem.col() * this.squareWidth;
+        const y = gem.row() * this.squareHeight;
+        const width = this.squareWidth;
+        const height = this.squareHeight;
+        // erase the current image
+        this.context.clearRect(x, y, width, height);
+        const gemTheme = this.theme[gem.value];
+        const gemImage = document.getElementById(gemTheme);
+        // draw the new image @ +10% transparency
+        this.context.drawImage(gemImage, x, y, width, height);
+      }
+      if (counter <= 0) {
+        clearInterval(fade);
+        this.context.restore();
+        this.updateScore(matches);
+        this.removeMatches(matches);
+      }
+    }, 50);
   }
 }

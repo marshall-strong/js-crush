@@ -101,23 +101,19 @@ getMatches
 
 `drawGameboard()`
 
-`shake()`
+`shakeGameboard()`
 
-`shuffle()`
+`shuffleGameboard()`
 
 ### game canvas - gems
 
-`highlight(gem)`
+`highlightGem(gem)`
 
-`swap(gem1, gem2)`
+`swapGems(gem1, gem2)`
 
-`clearHorizontal(gem1, gem2, gem1Movement)`
+`hSwapGems(gem1, gem2, gem1Movement)`
 
-`clearVertical(gem1, gem2, gem1Movement)`
-
-`horizontalSwap(gem1, gem2, gem1Movement)`
-
-`verticalSwap(gem1, gem2, gem1Movement)`
+`vSwapGems(gem1, gem2, gem1Movement)`
 
 `fadeOutMatches(matches)`
 

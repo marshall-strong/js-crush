@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", () => {
   $(document).on("click", "#newGame", () => game.resetGame());
   $(document).on("click", "#getHint", () => game.showRandomMove());
   $(document).on("click", "#autoMove", () => game.makeRandomMove());
-  $(document).on("click", "#shuffleBoard", () => game.shuffle());
+  $(document).on("click", "#shuffleBoard", () => game.shuffleGameboard());
 
   $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
     game.setMouseEventGem(mouseEvent)
