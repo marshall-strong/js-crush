@@ -25,5 +25,10 @@ window.addEventListener("DOMContentLoaded", () => {
     game.setMouseEventGem(mouseEvent)
   );
 
+  $(document).on("click", "#animalsTheme", () => game.setTheme(themes.animals));
+  $(document).on("click", "#foodTheme", () => game.setTheme(themes.food));
+  $(document).on("click", "#jsTheme", () => game.setTheme(themes.js));
+  $(document).on("click", "#oceanTheme", () => game.setTheme(themes.ocean));
+
   setTimeout(() => game.resetGame(), 30);
 });

@@ -30,6 +30,11 @@ class Game {
     this.theme = themes.animals;
   }
 
+  setTheme(newTheme) {
+    this.theme = newTheme;
+    $("#mainColumn").html(this.drawGameboard());
+  }
+
   // Called at setup, and when "New Game" is clicked.
   resetGame() {
     this.setStatus("resetting");
