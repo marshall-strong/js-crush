@@ -127,8 +127,8 @@ class Game {
 
   //
   //
-  // Duplicates `this.gameboard`, exchanges the two gems to create `newBoard`, then calls `newBoard.getMatches()`
-  findMatchesMade(gem1, gem2) {
+  // Returns a copy of `this.gameboard`, used when finding matches
+  gameboardCopy() {
     const newBoard = new Board(this.gridSize);
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
@@ -136,6 +136,12 @@ class Game {
         newBoard.updateGem(gem, col, row);
       }
     }
+    return newBoard;
+  }
+
+  // Swaps `gem1` and `gem2` in a copy of `this.gameboard`, then calls `getMatches` on the copy.
+  findMatchesMade(gem1, gem2) {
+    const newBoard = this.gameboardCopy();
     newBoard.swapGems(gem1, gem2);
     return newBoard.getMatches();
   }
