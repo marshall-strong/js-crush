@@ -172,32 +172,30 @@ class Game {
     const gems = [].concat.apply([], matches);
     this.gameboard.removeGems(gems);
     $("#mainColumn").html(this.drawGameboard());
-    this.gravity();
+    this.shiftGemsDown();
   }
 
-  // Shifts all gems above the specified square down one row.
-  shiftColDown(col, rowInitial) {
-    for (let row = rowInitial; row > 0; row--) {
-      const gem = this.gameboard.gem(col, row - 1);
-      console.log(`in col ${col}, move gem at row ${row - 1} to row ${row}.`);
-      console.log(gem);
-      console.log("---");
-      this.gameboard.updateGem(gem, col, row);
-    }
-  }
+  shiftGemsDown() {
+    // helper function -- shifts all gems above (gemCol, gemRow) down one row.
+    const shiftColDown = (gemCol, gemRow) => {
+      const col = gemCol;
+      for (let row = gemRow; row > 0; row--) {
+        const gem = this.gameboard.gem(col, row - 1);
+        this.gameboard.updateGem(gem, col, row);
+      }
+    };
 
-  // Iterates through gameboard rows, starting with the top row
-  // If a gap is found, all gems above it are shifted downward,
-  // a new gem is added to the top row, and the game pauses before redrawing,
-  // making the gems appear to fall downward.
-  gravity() {
+    // Iterates through gameboard rows, starting with the top row
+    // If a gap is found, all gems above it are shifted downward,
+    // a new gem is added to the top row, and the game pauses before redrawing,
+    // making the gems appear to fall downward.
     for (let row = 0; row < this.gridSize; row++) {
       let gapFound = false;
       for (let col = 0; col < this.gridSize; col++) {
         if (this.gameboard.gem(col, row)) {
           continue;
         } else {
-          this.shiftColDown(col, row);
+          shiftColDown(col, row);
           this.gameboard.addNewGem(col, 0);
           gapFound = true;
         }
@@ -358,7 +356,6 @@ class Game {
   ////////////////////////////////////////////////
   // CANVAS
 
-  // Canvas -- Board
   drawGameboard() {
     // draw grid container
     this.context.clearRect(0, 0, 600, 600);
@@ -395,7 +392,6 @@ class Game {
     this.checkForMoves();
   }
 
-  // Canvas -- Gem or Gems
   highlightGem(gem) {
     this.context.save();
     this.context.globalAlpha = 0.3;

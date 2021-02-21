@@ -79,9 +79,7 @@ getMatches
 
 `removeMatches(matches)`
 
-`shiftColDown(col, rowInitial)`
-
-`gravity()`
+`shiftGemsDown()`
 
 `checkForMatches()`
 
