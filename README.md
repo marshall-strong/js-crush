@@ -9,47 +9,37 @@ html javascript css gem crush game
 
 ## gem.js
 
-`constructor(gemId, getCol, getRow)`
-
-`col()`
-
-`row()`
+- `constructor(gemId, getCol, getRow)`
+- `col()`
+- `row()`
 
 ## board.js
 
-`constructor(gridSize)`
+- `constructor(gridSize)`
 
-`getCol(gemId)`
+- `getCol(gemId)`
+- `getRow(gemId)`
+- `gem(col, row)`
 
-`getRow(gemId)`
+- `addNewGem(col, row)`
 
-`gem(col, row)`
+- `updateGem(gem, newCol, newRow)`
 
-`addNewGem(col, row)`
+- `swapGems(gem1, gem2)`
 
-`updateGem(gem, newCol, newRow)`
+- `relativePosition(gem1, gem2)`
 
-`swapGems(gem1, gem2)`
+- `removeGem(gem)`
+- `removeGems(gems)`
 
-`relativePosition(gem1, gem2)`
+- `adjacentGems(gem)`
 
-`removeGem(gem)`
+- `randomize()`
 
-`removeGems(gems)`
-
-`adjacentGems(gem)`
-
-`randomize()`
-
-getMatches
-
-`horizontalStreaks()`
-
-`verticalStreaks()`
-
-`findMatches()`
-
-`getMatches()`
+- `horizontalStreaks()`
+- `verticalStreaks()`
+- `findMatches()`
+- `getMatches()`
 
 ## game.js
 

@@ -10,8 +10,7 @@ class Game {
     this.squareWidth = this.canvasWidth / this.gridSize;
     this.squareHeight = this.canvasHeight / this.gridSize;
 
-    // initializing, running, ready
-    this.status = "initializing";
+    this.status = "resetting";
 
     this.matchesExist = false;
     this.matchingMoves = [];
@@ -30,8 +29,9 @@ class Game {
 
   // Called at setup, and when "New Game" is clicked.
   resetGame() {
-    $("#mainColumn").html(this.drawGameboard());
+    this.setStatus("resetting");
     this.gameboard = new Board(this.gridSize);
+    $("#mainColumn").html(this.drawGameboard());
     let emptySquares = true;
     while (emptySquares) {
       for (let row = 0; row < this.gridSize; row++) {
@@ -104,6 +104,20 @@ class Game {
 
   //
   //
+  setStatus(status) {
+    if (status === "resetting") {
+      this.status = "resetting";
+    }
+    if (status === "running") {
+      this.status = "running";
+    }
+    if (status === "ready") {
+      this.status = "ready";
+    }
+  }
+
+  //
+  //
   // Duplicates `this.gameboard`, exchanges the two gems to create `newBoard`, then calls `newBoard.getMatches()`
   findMatchesMade(gem1, gem2) {
     const newBoard = new Board(this.gridSize);
@@ -120,12 +134,14 @@ class Game {
   // Triggered by checkMouseEvent,
   // triggers the appropriate animations.
   checkMove(gem1, gem2) {
+    this.setStatus("running");
     const gem1Adjacent = this.gameboard.adjacentGems(gem1);
     if (!(gem1Adjacent.indexOf(gem2) >= 0)) {
       // handles non-adjacent moves
       setTimeout(() => {
         this.shakeGameboard(gem1, gem2);
         this.drawGameboard();
+        this.setStatus("ready");
       }, 550);
     } else {
       const matchesMade = this.findMatchesMade(gem1, gem2);
@@ -143,6 +159,7 @@ class Game {
           setTimeout(() => {
             this.shakeGameboard(gem1, gem2);
             this.swapGems(gem2, gem1);
+            this.setStatus("ready");
           }, 550);
         }, 300);
       }
@@ -243,7 +260,7 @@ class Game {
     const matchingMoves = this.getMatchingMoves();
     if (matchingMoves.length > 0) {
       this.matchingMoves = matchingMoves;
-      this.status = "ready";
+      this.setStatus("ready");
       console.log("ready for next move");
     } else {
       this.matchingMoves = [];
@@ -355,6 +372,7 @@ class Game {
 
   // used by the "I'm Lazy" button
   makeRandomMove() {
+    this.setStatus("running");
     const i = Math.floor(this.matchingMoves.length * Math.random());
     const move = this.matchingMoves[i];
     const { gem1, gem2 } = move;
