@@ -25,23 +25,23 @@ Math.seedrandom(0);
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
-  game.reset();
+
   $(game).on("scoreUpdate", () => {
     $("#pointsEarned").html(game.pointsEarned);
     $("#totalPoints").html(game.totalPoints);
   });
 
-  $(document).on("click", "#newGame", () => game.reset());
+  $(document).on("click", "#newGame", () => game.resetGame());
   $(document).on("click", "#getHint", () => game.showRandomMove());
   $(document).on("click", "#autoMove", () => game.makeRandomMove());
-  $(document).on("click", "#shuffleBoard", () => game.shuffle());
+  $(document).on("click", "#shuffleBoard", () => game.shuffleGameboard());
 
-  $(document).on("mousedown", "#gameCanvas", (mousedown) => {
-    game.mousedownGem = game.getMouseEventGem(mousedown);
-  });
+  $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
+  $(document).on("mouseup", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
 
-  $(document).on("mouseup", "#gameCanvas", (mouseup) => {
-    game.mouseupGem = game.getMouseEventGem(mouseup);
-    game.checkMouseEvent();
-  });
+  setTimeout(() => game.resetGame(), 30);
 });
