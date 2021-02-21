@@ -107,12 +107,21 @@ class Game {
   setStatus(status) {
     if (status === "resetting") {
       this.status = "resetting";
+      $("#newGame").prop("disabled", true);
+      $("#getHint").prop("disabled", true);
+      $("#autoMove").prop("disabled", true);
     }
     if (status === "running") {
       this.status = "running";
+      $("#newGame").prop("disabled", true);
+      $("#getHint").prop("disabled", true);
+      $("#autoMove").prop("disabled", true);
     }
     if (status === "ready") {
       this.status = "ready";
+      $("#newGame").prop("disabled", false);
+      $("#getHint").prop("disabled", false);
+      $("#autoMove").prop("disabled", false);
     }
   }
 
