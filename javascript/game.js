@@ -51,7 +51,7 @@ class Game {
 
     this.clearScore();
     $("#mainColumn").html(this.drawGameboard());
-    this.checkForMoves();
+    this.ensureMatchingMovesExist();
   }
 
   // Triggered by user mouseEvents,
@@ -102,6 +102,21 @@ class Game {
     }
   }
 
+  //
+  //
+  // Duplicates `this.gameboard`, exchanges the two gems to create `newBoard`, then calls `newBoard.getMatches()`
+  findMatchesMade(gem1, gem2) {
+    const newBoard = new Board(this.gridSize);
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        const gem = this.gameboard.gem(col, row);
+        newBoard.updateGem(gem, col, row);
+      }
+    }
+    newBoard.swapGems(gem1, gem2);
+    return newBoard.getMatches();
+  }
+
   // Triggered by checkMouseEvent,
   // triggers the appropriate animations.
   checkMove(gem1, gem2) {
@@ -119,7 +134,7 @@ class Game {
         setTimeout(() => {
           this.swapGems(gem1, gem2);
           this.matchesExist = true;
-          this.removeMatchesUntilStable();
+          this.removeMatchesTilBoardIsStable();
         }, 300);
       } else {
         // handles adjacent, non-matching moves
@@ -134,38 +149,8 @@ class Game {
     }
   }
 
-  // score
-  updateScore(matches) {
-    const multiplier = matches.length;
-    const gems = [].concat.apply([], matches);
-    this.pointsEarned = gems.length * multiplier * 40;
-    this.totalPoints = this.totalPoints + this.pointsEarned;
-    this.totalGemsRemoved = this.totalGemsRemoved + gems.length;
-    this.lastGemValue = gems[0].value;
-    $(this).triggerHandler("scoreUpdate");
-  }
-
-  clearScore() {
-    this.pointsEarned = 0;
-    this.totalPoints = 0;
-    this.totalGemsRemoved = 0;
-    this.lastGemValue = null;
-    $(this).triggerHandler("scoreUpdate");
-  }
-
-  // Duplicates `this.gameboard`, exchanges the two gems to create `newBoard`, then calls `newBoard.getMatches()`
-  findMatchesMade(gem1, gem2) {
-    const newBoard = new Board(this.gridSize);
-    for (let row = 0; row < this.gridSize; row++) {
-      for (let col = 0; col < this.gridSize; col++) {
-        const gem = this.gameboard.gem(col, row);
-        newBoard.updateGem(gem, col, row);
-      }
-    }
-    newBoard.swapGems(gem1, gem2);
-    return newBoard.getMatches();
-  }
-
+  //
+  //
   // Removes gems in `matches` from `this.gameboard` and updates score.
   // Does not replace removed gems or move remaining gems down.
   removeMatches(matches) {
@@ -203,38 +188,37 @@ class Game {
       const delay = gapFound ? 500 : null;
       setTimeout(() => $("#mainColumn").html(this.drawGameboard()), delay);
     }
-    this.checkForMatches();
+    this.checkBoardForMatches();
   }
 
-  checkForMatches() {
+  checkBoardForMatches() {
     const matches = this.gameboard.getMatches();
     if (matches.length > 0) {
       this.matchesExist = true;
     } else {
       this.matchesExist = false;
-      this.checkForMoves();
+      this.ensureMatchingMovesExist();
     }
   }
 
-  // Gets called at the very end of the game logic cycle.
-  // Triggers `game.shuffleGameboard()` if no more matches can be made.
-  checkForMoves() {
-    const matchingMoves = this.getAllMatchingMoves();
-    if (matchingMoves.length > 0) {
-      this.matchingMoves = matchingMoves;
-      this.status = "ready";
-      console.log("ready for next move");
-    } else {
-      this.matchingMoves = [];
-      console.log("no remaining moves -- shuffling!");
-      this.shuffleGameboard();
-    }
+  // Continually checks for matches until the gameboard reaches a stable state.
+  removeMatchesTilBoardIsStable() {
+    const keepChecking = setInterval(() => {
+      if (this.matchesExist) {
+        const matches = this.gameboard.getMatches();
+        // cascades all the other actions as well
+        this.fadeOutMatches(matches);
+        // culminates with `checkBoardForMatches()`, which sets `this.matchesExist`
+      } else {
+        clearInterval(keepChecking);
+      }
+    }, 1000);
   }
 
   // Iterates through every gameboard square and checks each direction.
   // Returns an array of all matching moves that can be made.
   // Each move is represented as an object: move = { gem1, gem2 }
-  getAllMatchingMoves() {
+  getMatchingMoves() {
     const matchingMoves = [];
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
@@ -253,6 +237,48 @@ class Game {
     return matchingMoves;
   }
 
+  // Gets called at the very end of the game logic cycle.
+  // Triggers `game.shuffleGameboard()` if no more matches can be made.
+  ensureMatchingMovesExist() {
+    const matchingMoves = this.getMatchingMoves();
+    if (matchingMoves.length > 0) {
+      this.matchingMoves = matchingMoves;
+      this.status = "ready";
+      console.log("ready for next move");
+    } else {
+      this.matchingMoves = [];
+      console.log("no remaining moves -- shuffling!");
+      this.shuffleGameboard();
+    }
+  }
+
+  shuffleGameboard() {
+    this.gameboard.randomize();
+    $("#mainColumn").html(this.drawGameboard());
+    this.ensureMatchingMovesExist();
+  }
+
+  //
+  //
+  updateScore(matches) {
+    const multiplier = matches.length;
+    const gems = [].concat.apply([], matches);
+    this.pointsEarned = gems.length * multiplier * 40;
+    this.totalPoints = this.totalPoints + this.pointsEarned;
+    this.totalGemsRemoved = this.totalGemsRemoved + gems.length;
+    this.lastGemValue = gems[0].value;
+    $(this).triggerHandler("scoreUpdate");
+  }
+
+  clearScore() {
+    this.pointsEarned = 0;
+    this.totalPoints = 0;
+    this.totalGemsRemoved = 0;
+    this.lastGemValue = null;
+    $(this).triggerHandler("scoreUpdate");
+  }
+
+  //
   // used by the "Get Hint" button
   showRandomMove() {
     this.context.clearRect(0, 0, 600, 600);
@@ -335,27 +361,12 @@ class Game {
     setTimeout(() => {
       this.swapGems(gem1, gem2);
       this.matchesExist = true;
-      this.removeMatchesUntilStable();
+      this.removeMatchesTilBoardIsStable();
     }, 300);
   }
 
-  // Continually checks for matches until the gameboard reaches a stable state.
-  removeMatchesUntilStable() {
-    const keepChecking = setInterval(() => {
-      if (this.matchesExist) {
-        const matches = this.gameboard.getMatches();
-        // cascades all the other actions as well
-        this.fadeOutMatches(matches);
-        // culminates with `checkForMatches()`, which sets `this.matchesExist`
-      } else {
-        clearInterval(keepChecking);
-      }
-    }, 1000);
-  }
-
-  ////////////////////////////////////////////////
-  // CANVAS
-
+  //
+  //
   drawGameboard() {
     // draw grid container
     this.context.clearRect(0, 0, 600, 600);
@@ -384,12 +395,6 @@ class Game {
     $(gameCanvas).addClass("shake");
     console.log("shake");
     setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
-  }
-
-  shuffleGameboard() {
-    this.gameboard.randomize();
-    $("#mainColumn").html(this.drawGameboard());
-    this.checkForMoves();
   }
 
   highlightGem(gem) {

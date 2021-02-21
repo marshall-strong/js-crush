@@ -53,67 +53,37 @@ getMatches
 
 ## game.js
 
-`constructor(gameCanvas)`
+- `constructor(gameCanvas)`
 
-`resetGame()`
+- `resetGame()`
 
-### get move from player
+- `setMouseEventGem(mouseEvent)`
+- `checkMouseEvent()`
 
-`setMouseEventGem(mouseEvent)`
+- `findMatchesMade(gem1, gem2)`
+- `checkMove(gem1, gem2)`
 
-`checkMouseEvent()`
+- `removeMatches(matches)`
+- `shiftGemsDown()`
+- `checkBoardForMatches()`
+- `removeMatchesTilBoardIsStable()`
+- `getMatchingMoves()`
+- `ensureMatchingMovesExist()`
+- `shuffleGameboard()`
 
-### handle move
+- `updateScore(matches)`
+- `clearScore()`
 
-`checkMove(gem1, gem2)`
+- `showRandomMove()`
+- `makeRandomMove()`
 
-### update score
-
-`updateScore(matches)`
-
-`clearScore()`
-
-###
-
-`findMatchesMade(gem1, gem2)`
-
-`removeMatches(matches)`
-
-`shiftGemsDown()`
-
-`checkForMatches()`
-
-`removeMatchesUntilStable()`
-
-`checkForMoves()`
-
-`getAllMatchingMoves()`
-
-### hint / autoMove
-
-`showRandomMove()`
-
-`makeRandomMove()`
-
-### game canvas - board
-
-`drawGameboard()`
-
-`shakeGameboard()`
-
-`shuffleGameboard()`
-
-### game canvas - gems
-
-`highlightGem(gem)`
-
-`swapGems(gem1, gem2)`
-
-`hSwapGems(gem1, gem2, gem1Movement)`
-
-`vSwapGems(gem1, gem2, gem1Movement)`
-
-`fadeOutMatches(matches)`
+- `drawGameboard()`
+- `shakeGameboard()`
+- `highlightGem(gem)`
+- `swapGems(gem1, gem2)`
+- `hSwapGems(gem1, gem2, gem1Movement)`
+- `vSwapGems(gem1, gem2, gem1Movement)`
+- `fadeOutMatches(matches)`
 
 ## index.js
 
