@@ -40,7 +40,7 @@ class Game {
         }
       }
       $("#mainColumn").html(this.drawGameboard());
-      const matches = this.findMatches(this.gameboard);
+      const matches = this.gameboard.getMatches();
       if (matches.length > 0) {
         const gems = [].concat.apply([], matches);
         this.gameboard.removeGems(gems);
@@ -153,140 +153,6 @@ class Game {
     $(this).triggerHandler("scoreUpdate");
   }
 
-  ////////////////////////////////////////////////
-  // GAME LOGIC
-
-  // A match occurs when 3 or more consecutive gems in a row or col have the same value.
-  // Matches are returned as arrays, where each element is a gem in the match.
-  // Overlapping horizontal and vertical matches for the same gem value are joined.
-
-  // `findMatches` accepts a `gameboard` to search for matches
-  // `findMatches` returns all matches on the `gameboard` as an array of arrays.
-
-  // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
-  // Implementation of the classic union-find algorithm (unoptimized).
-  // Allows any string keys to be unioned into a set of disjoint sets.
-  // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
-
-  findMatches(gameboard) {
-    let unioned = {};
-    let setSizes = {};
-    let col, row;
-    const horizontalStreaks = [];
-    const verticalStreaks = [];
-
-    // Finds the set representative for the set that this key is a member of.
-    function find(key) {
-      let parent = unioned[key];
-      if (parent == null) return key;
-      parent = find(parent);
-      unioned[key] = parent; // path compression
-      return parent;
-    }
-
-    // Returns the size of the set represented by `found` -- assumes 1 if not stored.
-    function setSize(found) {
-      return setSizes[found] || 1;
-    }
-
-    // Ensures that both keys are in the same set, joining the sets if needed.
-    // http://stackoverflow.com/a/2326676/265298
-    function union(key1, key2) {
-      let parent1 = find(key1);
-      let parent2 = find(key2);
-      if (parent1 == parent2) {
-        return parent1;
-      } else {
-        unioned[parent2] = parent1;
-        setSizes[parent1] = setSize(parent1) + setSize(parent2);
-        delete setSizes[parent2];
-      }
-    }
-
-    // Iterates through each `gameboard` row and adds streaks of 3+ gems to `horizontalStreaks`.
-    for (let row = 0; row < this.gridSize; row++) {
-      for (let col = 0; col < this.gridSize; col++) {
-        const gem = gameboard.gem(col, row);
-        if (!gem) {
-          continue;
-        } else {
-          let streak = [gem];
-          let nextCol = col + 1;
-          while (nextCol < this.gridSize) {
-            const nextGem = gameboard.gem(nextCol, row);
-            if (!nextGem || nextGem.value != gem.value) {
-              break;
-            } else {
-              streak.push(nextGem);
-              nextCol++;
-            }
-          }
-          if (streak.length >= 3) horizontalStreaks.push(streak);
-        }
-      }
-    }
-
-    // Iterates through each `gameboard` col and adds streaks of 2+ gems to `verticalStreaks`.
-    for (let col = 0; col < this.gridSize; col++) {
-      for (let row = 0; row < this.gridSize; row++) {
-        const gem = gameboard.gem(col, row);
-        if (!gem) {
-          continue;
-        } else {
-          const streak = [gem];
-          let nextRow = row + 1;
-          while (nextRow < this.gridSize) {
-            const nextGem = gameboard.gem(col, nextRow);
-            if (!nextGem || nextGem.value != gem.value) {
-              break;
-            } else {
-              streak.push(nextGem);
-              nextRow++;
-            }
-          }
-          if (streak.length >= 2) verticalStreaks.push(streak);
-        }
-      }
-    }
-
-    // Executes a union of the horizontal and vertical streaks, joining any that overlap.
-    const streaks = horizontalStreaks.concat(verticalStreaks);
-    for (let i = 0; i < streaks.length; i++) {
-      const streak = streaks[i];
-      for (let j = 1; j < streak.length; j++) {
-        const gem1 = streak[0];
-        const gem2 = streak[j];
-        union(gem1.id, gem2.id);
-      }
-    }
-
-    // Lists out post-union matches (streaks that are >= 3)
-    // In the future, this step could handle "special candies"
-    let matchesObj = {};
-    for (row = 0; row < this.gridSize; row++) {
-      for (col = 0; col < this.gridSize; col++) {
-        const gem = gameboard.gem(col, row);
-        if (gem) {
-          const streak = find(gem.id);
-          if (setSize(streak) >= 3) {
-            if (streak in matchesObj) {
-              matchesObj[streak].push(gem);
-            } else {
-              matchesObj[streak] = [gem];
-            }
-          }
-        }
-      }
-    }
-
-    // Returns `matches` as an array of arrays of gems.
-    const matches = [];
-    for (const key in matchesObj) {
-      matches.push(matchesObj[key]);
-    }
-    return matches;
-  }
-
   // Duplicates `this.gameboard`, exchanges the two gems, then finds matches.
   findMatchesMade(gem1, gem2) {
     const newGameboard = new Board(this.gridSize);
@@ -297,7 +163,7 @@ class Game {
       }
     }
     newGameboard.swapGems(gem1, gem2);
-    return this.findMatches(newGameboard);
+    return newGameboard.getMatches();
   }
 
   fadeOutMatches(matches) {
@@ -376,7 +242,7 @@ class Game {
   }
 
   checkForMatches() {
-    const matches = this.findMatches(this.gameboard);
+    const matches = this.gameboard.getMatches();
     if (matches.length > 0) {
       this.matchesExist = true;
     } else {
@@ -512,7 +378,7 @@ class Game {
   removeMatchesUntilStable() {
     const keepChecking = setInterval(() => {
       if (this.matchesExist) {
-        const matches = this.findMatches(this.gameboard);
+        const matches = this.gameboard.getMatches();
         // cascades all the other actions as well
         this.fadeOutMatches(matches);
         // culminates with `checkForMatches()`, which sets `this.matchesExist`

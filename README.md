@@ -41,6 +41,16 @@ html javascript css gem crush game
 
 `randomize()`
 
+getMatches
+
+`horizontalStreaks()`
+
+`verticalStreaks()`
+
+`findMatches()`
+
+`getMatches()`
+
 ## game.js
 
 `constructor(gameCanvas)`
@@ -64,8 +74,6 @@ html javascript css gem crush game
 `clearScore()`
 
 ###
-
-`findMatches(gameboard)` - used to find all matches on the board passed to it
 
 `findMatchesMade(gem1, gem2)`
 

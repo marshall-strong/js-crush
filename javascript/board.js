@@ -2,6 +2,7 @@ class Board {
   constructor(gridSize) {
     this.gridSize = gridSize;
     this.nextGemId = 0;
+
     this.grid = new Array(this.gridSize);
     for (let row = 0; row < this.gridSize; row++) {
       this.grid[row] = new Array(this.gridSize);
@@ -9,6 +10,10 @@ class Board {
         this.grid[row][col] = null;
       }
     }
+
+    this.unioned = {};
+    this.setSizes = {};
+    this.matchesObj = {};
   }
 
   getCol(gemId) {
@@ -131,29 +136,88 @@ class Board {
     }
   }
 
-  findMatches() {
-    // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
-    // Implementation of the classic union-find algorithm (unoptimized).
-    // Allows any string keys to be unioned into a set of disjoint sets.
-    // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+  // A match occurs when 3 or more consecutive gems in a row or col have the same value.
+  // Matches are returned as arrays, where each element is a gem in the match.
+  // Overlapping horizontal and vertical matches for the same gem value are joined.
 
-    let unioned = {};
-    let setSizes = {};
+  // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
+  // Implementation of the classic union-find algorithm (unoptimized).
+  // Allows any string keys to be unioned into a set of disjoint sets.
+  // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
+  //////////////////////////////////////////////////////////////////////
+  // Iterates through each row and adds streaks of 3+ gems to `hStreaks`.
+  horizontalStreaks() {
+    const hStreaks = [];
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        const gem = this.gem(col, row);
+        if (gem) {
+          const streak = [gem];
+          let nextCol = col + 1;
+          while (nextCol < this.gridSize) {
+            const nextGem = this.gem(nextCol, row);
+            if (nextGem && nextGem.value === gem.value) {
+              streak.push(nextGem);
+              nextCol++;
+            } else {
+              break;
+            }
+          }
+          if (streak.length >= 3) hStreaks.push(streak);
+        } else {
+          continue;
+        }
+      }
+    }
+    return hStreaks;
+  }
+
+  // Iterates through each col and adds streaks of 3+ gems to `vStreaks`.
+  verticalStreaks() {
+    const vStreaks = [];
+    for (let col = 0; col < this.gridSize; col++) {
+      for (let row = 0; row < this.gridSize; row++) {
+        const gem = this.gem(col, row);
+        if (gem) {
+          const streak = [gem];
+          let nextRow = row + 1;
+          while (nextRow < this.gridSize) {
+            const nextGem = this.gem(col, nextRow);
+            if (nextGem && nextGem.value === gem.value) {
+              streak.push(nextGem);
+              nextRow++;
+            } else {
+              break;
+            }
+          }
+          if (streak.length >= 3) vStreaks.push(streak);
+        } else {
+          continue;
+        }
+      }
+    }
+    return vStreaks;
+  }
+
+  // updates `this.matchesObj`
+  findMatches() {
+    // Helper functions:
 
     // Finds the set representative for the set that this key is a member of.
     const findSet = (key) => {
-      let parent = unioned[key];
+      let parent = this.unioned[key];
       if (parent == null) {
         return key;
       } else {
         parent = findSet(parent);
-        unioned[key] = parent; // path compression
+        this.unioned[key] = parent; // path compression
         return parent;
       }
     };
 
     // Returns the size of the set represented by `found` -- assumes 1 if not stored.
-    const setSize = (set) => setSizes[set] || 1;
+    const setSize = (set) => this.setSizes[set] || 1;
 
     // Ensures that both keys are in the same set, joining the sets if needed.
     // http://stackoverflow.com/a/2326676/265298
@@ -163,100 +227,57 @@ class Board {
       if (parent1 == parent2) {
         return parent1;
       } else {
-        unioned[parent2] = parent1;
-        setSizes[parent1] = setSize(parent1) + setSize(parent2);
-        delete setSizes[parent2];
+        this.unioned[parent2] = parent1;
+        this.setSizes[parent1] = setSize(parent1) + setSize(parent2);
+        delete this.setSizes[parent2];
       }
     };
 
-    // Iterates through each row and adds streaks of 3+ gems to `hStreaks`.
-    const horizontalStreaks = () => {
-      const hStreaks = [];
-      for (let row = 0; row < this.gridSize; row++) {
-        for (let col = 0; col < this.gridSize; col++) {
-          const gem = this.gem(col, row);
-          if (gem) {
-            const streak = [gem];
-            let nextCol = col + 1;
-            while (nextCol < this.gridSize) {
-              const nextGem = this.gem(nextCol, row);
-              if (nextGem && nextGem.value === gem.value) {
-                streak.push(nextGem);
-                nextCol++;
-              } else {
-                break;
-              }
-            }
-            if (streak.length >= 3) hStreaks.push(streak);
-          } else {
-            continue;
-          }
-        }
-      }
-      return hStreaks;
-    };
+    //////////////////////////////////////////////////////////////////////
 
-    // Iterates through each col and adds streaks of 3+ gems to `vStreaks`.
-    const verticalStreaks = () => {
-      const vStreaks = [];
-      for (let col = 0; col < this.gridSize; col++) {
-        for (let row = 0; row < this.gridSize; row++) {
-          const gem = this.gem(col, row);
-          if (gem) {
-            const streak = [gem];
-            let nextRow = row + 1;
-            while (nextRow < this.gridSize) {
-              const nextGem = this.gem(col, nextRow);
-              if (nextGem && nextGem.value === gem.value) {
-                streak.push(nextGem);
-                nextRow++;
-              } else {
-                break;
-              }
-            }
-            if (streak.length >= 3) vStreaks.push(streak);
-          } else {
-            continue;
-          }
-        }
-      }
-      return vStreaks;
-    };
+    this.unioned = {};
+    this.setSizes = {};
+    this.matchesObj = {};
 
-    // Executes a union of hStreaks and vStreaks, joining any that overlap.
-    const streaks = horizontalStreaks().concat(verticalStreaks());
+    const hStreaks = this.horizontalStreaks();
+    const vStreaks = this.verticalStreaks();
+
+    // Executes a union of hStreaks and vStreaks.
+    const streaks = hStreaks.concat(vStreaks);
     for (let i = 0; i < streaks.length; i++) {
       const streak = streaks[i];
+      const gem1 = streak[0];
       for (let j = 1; j < streak.length; j++) {
-        const gem1 = streak[0];
         const gem2 = streak[j];
         union(gem1.id, gem2.id);
       }
     }
 
     // Lists out post-union matches (streaks that are >= 3).
-    // In the future, this step could handle "special candies".
-    let matchesObj = {};
-    for (row = 0; row < this.gridSize; row++) {
-      for (col = 0; col < this.gridSize; col++) {
+    // (in the future, handle special candies here)
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
         const gem = this.gem(col, row);
         if (gem) {
           const streak = findSet(gem.id);
           if (setSize(streak) >= 3) {
-            if (streak in matchesObj) {
-              matchesObj[streak].push(gem);
+            if (streak in this.matchesObj) {
+              this.matchesObj[streak].push(gem);
             } else {
-              matchesObj[streak] = [gem];
+              this.matchesObj[streak] = [gem];
             }
           }
         }
       }
     }
+  }
 
-    // Returns `matches` as an array of arrays of gems.
+  // Calls `findMatches()`, then formats the results as an array of arrays of gems.
+  getMatches() {
+    this.findMatches();
     const matches = [];
-    for (const key in matchesObj) {
-      matches.push(matchesObj[key]);
+    for (const key in this.matchesObj) {
+      matches.push(this.matchesObj[key]);
     }
     return matches;
   }
