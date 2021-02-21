@@ -1,3 +1,5 @@
+// const Gem = require('./gem');
+
 class Board {
   constructor(gridSize) {
     this.gridSize = gridSize;
@@ -282,3 +284,5 @@ class Board {
     return matches;
   }
 }
+
+// module.exports = Board;

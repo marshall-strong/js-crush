@@ -16,3 +16,5 @@ class Gem {
     return this.getRow(this.id);
   }
 }
+
+// module.exports = Game;

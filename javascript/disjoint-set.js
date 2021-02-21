@@ -26,7 +26,7 @@
 // returns an object with two properties: `rank` and `parent`
 // add other properties during implementation
 // is `node` the root of a tree? `node.parent === node`
-export const makeSet = () => {
+const makeSet = () => {
   const node = { rank: 0 };
   node.parent = node;
   return node;
@@ -34,7 +34,7 @@ export const makeSet = () => {
 
 // returns the root of the tree containing `node`
 // are `node1` and `node2` in the same tree? `find(node1) === find(node2)`
-export const find = (node) => {
+const find = (node) => {
   if (node.parent !== node) {
     node.parent = find(node.parent);
   }
@@ -43,7 +43,7 @@ export const find = (node) => {
 
 // merges the sets containing `node1` and `node2`
 // returns undefined
-export const union = (node1, node2) => {
+const union = (node1, node2) => {
   const root1 = find(node1);
   const root2 = find(node2);
   if (root1 !== root2) {
@@ -56,39 +56,6 @@ export const union = (node1, node2) => {
   }
 };
 
-class Forest {
-  constructor() {
-    this.unioned = {};
-    this.setSizes = {};
-  }
-
-  // Finds the set representative for the set that this key is a member of.
-  find(key) {
-    let parent = this.unioned[key];
-    if (parent === null) {
-      return key;
-    } else {
-      parent = this.find(parent);
-      this.unioned[key] = parent; // path compression
-      return parent;
-    }
-  }
-
-  // Returns the size of `set` (assumes 1 if not stored)
-  setSize(set) {
-    return this.setSizes[set] || 1;
-  }
-
-  union(key1, key2) {
-    let parent1 = this.find(key1);
-    let parent2 = this.find(key2);
-    if (parent1 === parent2) {
-      // the two keys are in the same set
-      return parent1;
-    } else {
-      this.unioned[parent2] = parent1;
-      this.setSizes[parent1] = setSize(parent1) + this.setSize(parent2);
-      delete this.setSizes[parent2];
-    }
-  }
-}
+// exports.makeSet = makeSet;
+// exports.find = find;
+// exports.union = union;
