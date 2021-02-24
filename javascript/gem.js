@@ -1,4 +1,4 @@
-const values = ["gemA", "gemB", "gemC", "gemD", "gemE", "gemF"];
+const values = [1, 2, 3, 4, 5, 6];
 
 class Gem {
   constructor(gemId, getCol, getRow) {
@@ -16,3 +16,5 @@ class Gem {
     return this.getRow(this.id);
   }
 }
+
+// module.exports = Game;

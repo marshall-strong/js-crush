@@ -14,49 +14,149 @@
     <script src="javascript/gem.js"></script>
     <script src="javascript/board.js"></script>
     <script src="javascript/game.js"></script>
+    <script src="javascript/themes.js"></script>
     <script src="javascript/index.js"></script>
   </head>
 
   <body>
-    <b>JS Gem Crush</b>
-    Click or drag two adjacent gems to swap.
-    <br />
-    Remove gems by getting 3 or more in a row.
-
-    <div id="mainColumn">
-      <button id="newGame">New Game</button>
-      <!-- <button id="getHint">Get Hint</button> -->
-      <button id="autoMove">I'm Lazy!</button>
-      <!-- <button id="shuffleBoard">Shuffle</button> -->
-      <div id="score">
-        <span class="label">( points earned )</span>
-        <span id="pointsEarned">replace with `pointsEarned`</span>
-        <span class="label">( total points )</span>
-        <span id="totalPoints">replace with `game.totalPoints`</span>
+    <header>
+      <div class="navbar">
+        <span class="columns-thirds left-third">
+          <div class="contact">
+            <div class="icon_container">
+              <a
+                href="http://www.marshallstrong.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/headshot-512.png"
+                  class="icon"
+                  alt="portfolio"
+                />
+              </a>
+            </div>
+            <div class="icon_container">
+              <a
+                href="https://github.com/marstrong/js-crush"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/github-512.png"
+                  class="icon"
+                  alt="GitHub repository"
+                />
+              </a>
+            </div>
+            <div class="icon_container">
+              <a
+                href="https://www.linkedin.com/in/marshall-strong/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/linkedin-512.png"
+                  class="icon"
+                  alt="LinkedIn profile"
+                />
+              </a>
+            </div>
+          </div>
+        </span>
+        <span class="columns-thirds center-third">
+          <h1>jsCrush</h1>
+          <div class="directions">
+            <p>
+              Click or drag two adjacent gems to swap.
+              <br />
+              Remove gems by getting 3 or more in a row.
+              <br />
+            </p>
+          </div>
+        </span>
+        <span class="columns-thirds right-third">
+          <div class="themes">
+            <p>select a theme:</p>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="animalsTheme"
+                src="assets/gems/animals-1-goose.svg"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="oceanTheme"
+                src="assets/gems/ocean-1-octopus.svg"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="jsTheme"
+                src="assets/gems/js-1-node.png"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="foodTheme"
+                src="assets/gems/food-1-donut.svg"
+              />
+            </div>
+          </div>
+        </span>
       </div>
-      <br />
-      <canvas id="gameCanvas" class="" width="600" height="600">
+
+      <div class="scorebar">
+        <button id="newGame">New Game</button>
+        <div id="score">
+          <span class="label">( points earned )</span>
+          <span id="pointsEarned">loading</span>
+          <span class="label">score</span>
+          <span id="totalPoints">replace with `game.totalPoints`</span>
+        </div>
+        <button id="autoMove">I'm Lazy!</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <canvas id="gameCanvas">
         <!-- error message for older browsers -->
         Sorry, your browser does not support Canvas. Try using Chrome!
-        <!-- gem images -- `jsGems` theme -->
-        <img id="github" src="assets/gems/github.png" />
-        <img id="react" src="assets/gems/react.png" />
-        <img id="javascript" src="assets/gems/javascript.png" />
-        <img id="nodejs" src="assets/gems/nodejs.png" />
-        <img id="webpack" src="assets/gems/webpack.png" />
-        <img id="jquery" src="assets/gems/jquery.png" />
         <!-- gem images -- `animals` theme -->
-        <img id="11-goose" src="assets/gems/11-goose.svg" />
-        <img id="12-giraffe" src="assets/gems/12-giraffe.svg" />
-        <img id="13-goat" src="assets/gems/13-goat.svg" />
-        <img id="14-unicorn" src="assets/gems/14-unicorn.svg" />
-        <img id="15-curly_horn" src="assets/gems/15-curly_horn.svg" />
-        <img id="16-blue_bull" src="assets/gems/16-blue_bull.svg" />
+        <img id="animals-1-goose" src="assets/gems/animals-1-goose.svg" />
+        <img id="animals-2-cow" src="assets/gems/animals-2-cow.svg" />
+        <img id="animals-3-bear" src="assets/gems/animals-3-bear.svg" />
+        <img id="animals-4-cat" src="assets/gems/animals-4-cat.svg" />
+        <img id="animals-5-cheetah" src="assets/gems/animals-5-cheetah.svg" />
+        <img id="animals-6-snake" src="assets/gems/animals-6-snake.svg" />
+        <!-- gem images -- `food` theme -->
+        <img id="food-1-donut" src="assets/gems/food-1-donut.svg" />
+        <img id="food-2-burger" src="assets/gems/food-2-burger.svg" />
+        <img id="food-3-taco" src="assets/gems/food-3-taco.svg" />
+        <img id="food-4-muffin" src="assets/gems/food-4-muffin.svg" />
+        <img id="food-5-hotdog" src="assets/gems/food-5-hotdog.svg" />
+        <img id="food-6-croissant" src="assets/gems/food-6-croissant.svg" />
+        <!-- gem images -- `js` theme -->
+        <img id="js-1-node" src="assets/gems/js-1-node.png" />
+        <img id="js-2-react" src="assets/gems/js-2-react.png" />
+        <img id="js-3-webpack" src="assets/gems/js-3-webpack.png" />
+        <img id="js-4-github" src="assets/gems/js-4-github.png" />
+        <img id="js-5-javascript" src="assets/gems/js-5-javascript.png" />
+        <img id="js-6-jquery" src="assets/gems/js-6-jquery.png" />
+        <!-- gem images -- `ocean` theme -->
+        <img id="ocean-1-octopus" src="assets/gems/ocean-1-octopus.svg" />
+        <img id="ocean-2-turtle" src="assets/gems/ocean-2-turtle.svg" />
+        <img id="ocean-3-school" src="assets/gems/ocean-3-school.svg" />
+        <img id="ocean-4-fish" src="assets/gems/ocean-4-fish.svg" />
+        <img id="ocean-5-crab" src="assets/gems/ocean-5-crab.svg" />
+        <img id="ocean-6-pufferfish" src="assets/gems/ocean-6-pufferfish.svg" />
       </canvas>
-    </div>
+    </main>
 
-    <a href="https://github.com/marshall-strong/js-crush">
-      GitHub repository
-    </a>
+    <footer></footer>
   </body>
 </html>

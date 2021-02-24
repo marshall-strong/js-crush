@@ -26,6 +26,114 @@ code {
     monospace;
 }
 
+header {
+  background-color: black;
+  width: 100%;
+}
+
+h1 {
+  font-size: larger;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  color: black;
+
+  /* align-items: center;
+  box-sizing: border-box;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  position: relative; */
+}
+.scorebar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: orange;
+}
+
+.columns-thirds {
+  width: 33.33%;
+  display: flex;
+  flex-direction: row;
+}
+
+.left-third {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: red;
+}
+
+.center-third {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: yellow;
+}
+
+.right-third {
+  justify-content: flex-end;
+  background-color: green;
+}
+
+.contact {
+  display: flex;
+  flex-direction: row;
+}
+
+.icon_container {
+  width: 45px;
+  height: 45px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+}
+
+.themes {
+  display: flex;
+  flex-direction: row;
+  font-size: small;
+}
+
+.gem-icon-box {
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gem-icon {
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+}
+
+.selected_theme {
+  background-color: black;
+}
+
+.directions {
+  font-size: small;
+}
+
+main {
+  /* background-color: black; */
+}
+
+footer {
+  background-color: yellowgreen;
+  width: 100%;
+}
+
 .jiggle:hover {
   -webkit-animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

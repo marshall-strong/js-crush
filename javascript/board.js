@@ -1,3 +1,5 @@
+// const Gem = require('./gem');
+
 class Board {
   constructor(gridSize) {
     this.gridSize = gridSize;
@@ -136,16 +138,6 @@ class Board {
     }
   }
 
-  // A match occurs when 3 or more consecutive gems in a row or col have the same value.
-  // Matches are returned as arrays, where each element is a gem in the match.
-  // Overlapping horizontal and vertical matches for the same gem value are joined.
-
-  // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
-  // Implementation of the classic union-find algorithm (unoptimized).
-  // Allows any string keys to be unioned into a set of disjoint sets.
-  // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
-
-  //////////////////////////////////////////////////////////////////////
   // Iterates through each row and adds streaks of 3+ gems to `hStreaks`.
   horizontalStreaks() {
     const hStreaks = [];
@@ -200,9 +192,19 @@ class Board {
     return vStreaks;
   }
 
-  // updates `this.matchesObj`
+  // A match occurs when 3 or more consecutive gems in a row or col have the same value.
+  // Matches are returned as arrays, where each element is a gem in the match.
+  // Overlapping horizontal and vertical matches for the same gem value are joined.
+
+  // Implemented with a (not fully optimized) Tarjan's union-find algorithm.
+  // Implementation of the classic union-find algorithm (unoptimized).
+  // Allows any string keys to be unioned into a set of disjoint sets.
+  // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
+
   findMatches() {
-    // Helper functions:
+    // this.unioned = {};
+    // this.setSizes = {};
+    // this.matchesObj = {};
 
     // Finds the set representative for the set that this key is a member of.
     const findSet = (key) => {
@@ -282,3 +284,5 @@ class Board {
     return matches;
   }
 }
+
+// module.exports = Board;
