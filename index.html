@@ -19,24 +19,111 @@
   </head>
 
   <body>
-    <b>JS Gem Crush</b>
-    Click or drag two adjacent gems to swap.
-    <br />
-    Remove gems by getting 3 or more in a row.
-
-    <div id="mainColumn">
-      <button id="newGame">New Game</button>
-      <!-- <button id="getHint">Get Hint</button> -->
-      <button id="autoMove">I'm Lazy!</button>
-      <!-- <button id="shuffleBoard">Shuffle</button> -->
-      <div id="score">
-        <span class="label">( points earned )</span>
-        <span id="pointsEarned">replace with `pointsEarned`</span>
-        <span class="label">( total points )</span>
-        <span id="totalPoints">replace with `game.totalPoints`</span>
+    <header>
+      <div class="navbar">
+        <span class="columns-thirds left-third">
+          <div class="contact">
+            <div class="icon_container">
+              <a
+                href="http://www.marshallstrong.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/headshot-512.png"
+                  class="icon"
+                  alt="portfolio"
+                />
+              </a>
+            </div>
+            <div class="icon_container">
+              <a
+                href="https://github.com/marstrong/yenius"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/github-512.png"
+                  class="icon"
+                  alt="GitHub repository"
+                />
+              </a>
+            </div>
+            <div class="icon_container">
+              <a
+                href="https://www.linkedin.com/in/marshall-strong/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="assets/icons/linkedin-512.png"
+                  class="icon"
+                  alt="LinkedIn profile"
+                />
+              </a>
+            </div>
+          </div>
+        </span>
+        <span class="columns-thirds center-third">
+          <h1>jsCrush</h1>
+          <div class="directions">
+            <p>
+              Click or drag two adjacent gems to swap.
+              <br />
+              Remove gems by getting 3 or more in a row.
+              <br />
+            </p>
+          </div>
+        </span>
+        <span class="columns-thirds right-third">
+          <div class="themes">
+            <p>select a theme:</p>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="animalsTheme"
+                src="assets/gems/animals-1-goose.svg"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="oceanTheme"
+                src="assets/gems/ocean-1-octopus.svg"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="jsTheme"
+                src="assets/gems/js-1-node.png"
+              />
+            </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="foodTheme"
+                src="assets/gems/food-1-donut.svg"
+              />
+            </div>
+          </div>
+        </span>
       </div>
-      <br />
-      <canvas id="gameCanvas" class="" width="600" height="600">
+
+      <div class="scorebar">
+        <button id="newGame">New Game</button>
+        <div id="score">
+          <span class="label">( points earned )</span>
+          <span id="pointsEarned">loading</span>
+          <span class="label">score</span>
+          <span id="totalPoints">replace with `game.totalPoints`</span>
+        </div>
+        <button id="autoMove">I'm Lazy!</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <canvas id="gameCanvas">
         <!-- error message for older browsers -->
         Sorry, your browser does not support Canvas. Try using Chrome!
         <!-- gem images -- `animals` theme -->
@@ -68,20 +155,8 @@
         <img id="ocean-5-crab" src="assets/gems/ocean-5-crab.svg" />
         <img id="ocean-6-pufferfish" src="assets/gems/ocean-6-pufferfish.svg" />
       </canvas>
-    </div>
+    </main>
 
-    <div>
-      <div>pick a theme</div>
-      <div>
-        <button id="animalsTheme">animals</button>
-        <button id="foodTheme">food</button>
-        <button id="jsTheme">javascript</button>
-        <button id="oceanTheme">ocean</button>
-      </div>
-    </div>
-
-    <a href="https://github.com/marshall-strong/js-crush">
-      GitHub repository
-    </a>
+    <footer></footer>
   </body>
 </html>

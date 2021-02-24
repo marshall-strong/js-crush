@@ -5,13 +5,13 @@ class Game {
   constructor(gameCanvas) {
     this.canvas = gameCanvas;
     this.context = this.canvas.getContext("2d");
-    this.canvasWidth = 600;
-    this.canvasHeight = 600;
+    this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
+    this.canvas.height = this.canvas.width;
 
     this.gridSize = 8;
     this.gameboard = new Board(this.gridSize);
-    this.squareWidth = this.canvasWidth / this.gridSize;
-    this.squareHeight = this.canvasHeight / this.gridSize;
+    this.squareWidth = this.canvas.width / this.gridSize;
+    this.squareHeight = this.canvas.height / this.gridSize;
 
     this.status = "resetting";
 
@@ -32,14 +32,14 @@ class Game {
 
   setTheme(newTheme) {
     this.theme = newTheme;
-    $("#mainColumn").html(this.drawGameboard());
+    $("#main").html(this.drawGameboard());
   }
 
   // Called at setup, and when "New Game" is clicked.
   resetGame() {
     this.setStatus("resetting");
     this.gameboard = new Board(this.gridSize);
-    $("#mainColumn").html(this.drawGameboard());
+    $("#main").html(this.drawGameboard());
     let emptySquares = true;
     while (emptySquares) {
       for (let row = 0; row < this.gridSize; row++) {
@@ -47,7 +47,7 @@ class Game {
           if (!this.gameboard.gem(col, row)) this.gameboard.addNewGem(col, row);
         }
       }
-      $("#mainColumn").html(this.drawGameboard());
+      $("#main").html(this.drawGameboard());
       const matches = this.gameboard.getMatches();
       if (matches.length > 0) {
         const gems = [].concat.apply([], matches);
@@ -58,7 +58,7 @@ class Game {
     }
 
     this.clearScore();
-    $("#mainColumn").html(this.drawGameboard());
+    $("#main").html(this.drawGameboard());
     this.ensureMatchingMovesExist();
   }
 
@@ -196,7 +196,7 @@ class Game {
   removeMatches(matches) {
     const gems = [].concat.apply([], matches);
     this.gameboard.removeGems(gems);
-    $("#mainColumn").html(this.drawGameboard());
+    $("#main").html(this.drawGameboard());
     this.shiftGemsDown();
   }
 
@@ -226,7 +226,7 @@ class Game {
         }
       }
       const delay = gapFound ? 500 : null;
-      setTimeout(() => $("#mainColumn").html(this.drawGameboard()), delay);
+      setTimeout(() => $("#main").html(this.drawGameboard()), delay);
     }
     this.checkBoardForMatches();
   }
@@ -294,7 +294,7 @@ class Game {
 
   shuffleGameboard() {
     this.gameboard.randomize();
-    $("#mainColumn").html(this.drawGameboard());
+    $("#main").html(this.drawGameboard());
     this.ensureMatchingMovesExist();
   }
 
@@ -321,8 +321,8 @@ class Game {
   //
   // used by the "Get Hint" button
   showRandomMove() {
-    this.context.clearRect(0, 0, 600, 600);
-    $("#mainColumn").html(this.drawGameboard());
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    $("#main").html(this.drawGameboard());
 
     const i = Math.floor(this.matchingMoves.length * Math.random());
     const move = this.matchingMoves[i];
@@ -338,8 +338,8 @@ class Game {
 
     this.context.save();
 
-    this.context.clearRect(0, 0, 600, 600);
-    $("#mainColumn").html(this.drawGameboard());
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    $("#main").html(this.drawGameboard());
 
     this.context.strokeStyle = "black";
     const moveDir = this.gameboard.relativePosition(gem1, gem2);
@@ -409,8 +409,10 @@ class Game {
   //
   //
   drawGameboard() {
+    this.context.width = window.innerWidth;
+    this.context.height = window.innerHeight;
     // draw grid container
-    this.context.clearRect(0, 0, 600, 600);
+    this.context.clearRect(0, 0, this.context.width, this.context.height);
     this.context.strokeStyle = "white";
     // iterate through grid squares
     for (let row = 0; row < this.gridSize; row++) {
@@ -506,7 +508,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(hSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#mainColumn").html(this.drawGameboard());
+        $("#main").html(this.drawGameboard());
       }
     }, 10);
   }
@@ -555,7 +557,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(vSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#mainColumn").html(this.drawGameboard());
+        $("#main").html(this.drawGameboard());
       }
     }, 10);
   }
