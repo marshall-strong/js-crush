@@ -33,8 +33,8 @@ window.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", () => game.makeRandomMove());
 
   $(game).on("scoreUpdate", () => {
-    $("#pointsEarned").html(game.pointsEarned);
-    $("#totalPoints").html(game.totalPoints);
+    document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
+    document.getElementById("totalPoints").innerHTML = game.totalPoints;
   });
 
   $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>

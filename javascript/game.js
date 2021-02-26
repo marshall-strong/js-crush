@@ -226,7 +226,7 @@ class Game {
         }
       }
       const delay = gapFound ? 500 : null;
-      setTimeout(() => $("#main").html(this.drawGameboard()), delay);
+      setTimeout(() => this.drawGameboard(), delay);
     }
     this.checkBoardForMatches();
   }
