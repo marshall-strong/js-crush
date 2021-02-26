@@ -27,10 +27,21 @@ window.addEventListener("DOMContentLoaded", () => {
     game.setMouseEventGem(mouseEvent)
   );
 
-  $(document).on("click", "#animalsTheme", () => game.setTheme(themes.animals));
-  $(document).on("click", "#foodTheme", () => game.setTheme(themes.food));
-  $(document).on("click", "#jsTheme", () => game.setTheme(themes.js));
-  $(document).on("click", "#oceanTheme", () => game.setTheme(themes.ocean));
+  document
+    .getElementById("animalsTheme")
+    .addEventListener("click", () => game.setTheme(themes.animals));
+
+  document
+    .getElementById("oceanTheme")
+    .addEventListener("click", () => game.setTheme(themes.ocean));
+
+  document
+    .getElementById("jsTheme")
+    .addEventListener("click", () => game.setTheme(themes.js));
+
+  document
+    .getElementById("foodTheme")
+    .addEventListener("click", () => game.setTheme(themes.food));
 
   setTimeout(() => game.resetGame(), 30);
 });
