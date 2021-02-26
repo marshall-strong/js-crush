@@ -307,7 +307,7 @@ class Game {
     this.totalPoints = this.totalPoints + this.pointsEarned;
     this.totalGemsRemoved = this.totalGemsRemoved + gems.length;
     this.lastGemValue = gems[0].value;
-    $(this).triggerHandler("scoreUpdate");
+    document.dispatchEvent(new Event("updateScore"));
   }
 
   clearScore() {
@@ -315,7 +315,7 @@ class Game {
     this.totalPoints = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
-    $(this).triggerHandler("scoreUpdate");
+    document.dispatchEvent(new Event("updateScore"));
   }
 
   //

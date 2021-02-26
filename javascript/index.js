@@ -32,18 +32,18 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("autoMove")
     .addEventListener("click", () => game.makeRandomMove());
 
-  $(game).on("scoreUpdate", () => {
+  document.addEventListener("updateScore", () => {
     document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
     document.getElementById("totalPoints").innerHTML = game.totalPoints;
   });
 
-  $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
-    game.setMouseEventGem(mouseEvent)
-  );
+  document
+    .getElementById("gameCanvas")
+    .addEventListener("mousedown", (e) => game.setMouseEventGem(e));
 
-  $(document).on("mouseup", "#gameCanvas", (mouseEvent) =>
-    game.setMouseEventGem(mouseEvent)
-  );
+  document
+    .getElementById("gameCanvas")
+    .addEventListener("mouseup", (e) => game.setMouseEventGem(e));
 
   setTimeout(() => game.resetGame(), 30);
 });
