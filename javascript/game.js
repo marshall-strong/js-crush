@@ -32,14 +32,14 @@ class Game {
 
   setTheme(newTheme) {
     this.theme = newTheme;
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
   }
 
   // Called at setup, and when "New Game" is clicked.
   resetGame() {
     this.setStatus("resetting");
     this.gameboard = new Board(this.gridSize);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     let emptySquares = true;
     while (emptySquares) {
       for (let row = 0; row < this.gridSize; row++) {
@@ -47,7 +47,7 @@ class Game {
           if (!this.gameboard.gem(col, row)) this.gameboard.addNewGem(col, row);
         }
       }
-      $("#main").html(this.drawGameboard());
+      this.drawGameboard();
       const matches = this.gameboard.getMatches();
       if (matches.length > 0) {
         const gems = [].concat.apply([], matches);
@@ -58,7 +58,7 @@ class Game {
     }
 
     this.clearScore();
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.ensureMatchingMovesExist();
   }
 
@@ -196,7 +196,7 @@ class Game {
   removeMatches(matches) {
     const gems = [].concat.apply([], matches);
     this.gameboard.removeGems(gems);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.shiftGemsDown();
   }
 
@@ -294,7 +294,7 @@ class Game {
 
   shuffleGameboard() {
     this.gameboard.randomize();
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.ensureMatchingMovesExist();
   }
 
@@ -322,7 +322,7 @@ class Game {
   // used by the "Get Hint" button
   showRandomMove() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
 
     const i = Math.floor(this.matchingMoves.length * Math.random());
     const move = this.matchingMoves[i];
@@ -339,7 +339,7 @@ class Game {
     this.context.save();
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
 
     this.context.strokeStyle = "black";
     const moveDir = this.gameboard.relativePosition(gem1, gem2);
@@ -508,7 +508,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(hSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#main").html(this.drawGameboard());
+        this.drawGameboard();
       }
     }, 10);
   }
@@ -557,7 +557,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(vSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#main").html(this.drawGameboard());
+        this.drawGameboard();
       }
     }, 10);
   }

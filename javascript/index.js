@@ -8,25 +8,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
 
-  $(game).on("scoreUpdate", () => {
-    $("#pointsEarned").html(game.pointsEarned);
-    $("#totalPoints").html(game.totalPoints);
-  });
-
-  document
-    .getElementById("newGame")
-    .addEventListener("click", () => game.resetGame());
-  document
-    .getElementById("autoMove")
-    .addEventListener("click", () => game.makeRandomMove());
-
-  $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
-    game.setMouseEventGem(mouseEvent)
-  );
-  $(document).on("mouseup", "#gameCanvas", (mouseEvent) =>
-    game.setMouseEventGem(mouseEvent)
-  );
-
   document
     .getElementById("animalsTheme")
     .addEventListener("click", () => game.setTheme(themes.animals));
@@ -42,6 +23,27 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("foodTheme")
     .addEventListener("click", () => game.setTheme(themes.food));
+
+  document
+    .getElementById("newGame")
+    .addEventListener("click", () => game.resetGame());
+
+  document
+    .getElementById("autoMove")
+    .addEventListener("click", () => game.makeRandomMove());
+
+  $(game).on("scoreUpdate", () => {
+    $("#pointsEarned").html(game.pointsEarned);
+    $("#totalPoints").html(game.totalPoints);
+  });
+
+  $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
+
+  $(document).on("mouseup", "#gameCanvas", (mouseEvent) =>
+    game.setMouseEventGem(mouseEvent)
+  );
 
   setTimeout(() => game.resetGame(), 30);
 });
