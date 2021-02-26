@@ -18,15 +18,19 @@ body {
 
 .animalsTheme {
   background-image: url("assets/backgrounds/animals.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .oceanTheme {
   background-image: url("assets/backgrounds/ocean.png");
 }
 .javascriptTheme {
   background-image: url("assets/backgrounds/javascript.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .foodTheme {
-  background-image: url("assets/backgrounds/food.jpg");
+  background-image: url("assets/backgrounds/food3.jpg");
 }
 
 button {
