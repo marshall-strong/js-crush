@@ -34,45 +34,20 @@ class Game {
     this.theme = theme;
     const body = document.getElementById("application");
     if (this.theme.name === "animals") {
-      body.classList.add("animalsTheme");
-      body.classList.remove(
-        "candyTheme",
-        "codeTheme",
-        "foodTheme",
-        "oceanTheme"
-      );
+      body.classList.add("animalsBG");
+      body.classList.remove("candyBG", "codeBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "candy") {
-      body.classList.add("candyTheme");
-      body.classList.remove(
-        "animalsTheme",
-        "codeTheme",
-        "foodTheme",
-        "oceanTheme"
-      );
+      body.classList.add("candyBG");
+      body.classList.remove("animalsBG", "codeBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "code") {
-      body.classList.add("codeTheme");
-      body.classList.remove(
-        "animalsTheme",
-        "candyTheme",
-        "foodTheme",
-        "oceanTheme"
-      );
+      body.classList.add("codeBG");
+      body.classList.remove("animalsBG", "candyBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "food") {
-      body.classList.add("foodTheme");
-      body.classList.remove(
-        "animalsTheme",
-        "candyTheme",
-        "codeTheme",
-        "oceanTheme"
-      );
+      body.classList.add("foodBG");
+      body.classList.remove("animalsBG", "candyBG", "codeBG", "oceanBG");
     } else if (this.theme.name === "ocean") {
-      body.classList.add("oceanTheme");
-      body.classList.remove(
-        "animalsTheme",
-        "candyTheme",
-        "codeTheme",
-        "foodTheme"
-      );
+      body.classList.add("oceanBG");
+      body.classList.remove("animalsBG", "candyBG", "codeBG", "foodBG");
     }
     this.drawGameboard();
   }

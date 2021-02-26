@@ -16,34 +16,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.animalsTheme {
+.animalsBG {
   background-image: url("assets/backgrounds/animals.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
-.oceanTheme {
-  background-image: url("assets/backgrounds/ocean.png");
+
+.candyBG {
+  background-image: url("assets/backgrounds/candy.jpg");
 }
-.codeTheme {
+
+.codeBG {
   background-image: url("assets/backgrounds/code.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
-.foodTheme {
+
+.foodBG {
   background-image: url("assets/backgrounds/food3.jpg");
 }
-.candyTheme {
-  background-image: url("assets/backgrounds/candy.jpg");
-}
 
-button {
-  font-family: inherit;
-  font: inherit;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.oceanBG {
+  background-image: url("assets/backgrounds/ocean.png");
 }
 
 header {
@@ -51,27 +45,12 @@ header {
   width: 100%;
 }
 
-h1 {
-  font-size: larger;
-}
-
 .navbar {
   width: 100%;
   display: flex;
   color: black;
-
-  /* align-items: center;
-  box-sizing: border-box;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  position: relative; */
-}
-.scorebar {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: orange;
+  position: fixed;
+  top: 0;
 }
 
 .columns-thirds {
@@ -99,28 +78,46 @@ h1 {
   background-color: green;
 }
 
+/* left-third */
 .contact {
   display: flex;
   flex-direction: row;
 }
 
-.icon_container {
+.contact-icon-box {
   width: 45px;
   height: 45px;
   flex-direction: column;
   align-items: center;
 }
 
-.icon {
+.contact-icon-img {
   width: 35px;
   height: 35px;
   margin: 5px;
 }
 
+/* center-third */
+.directions p {
+  font-size: small;
+}
+
+.theme-label {
+  font-size: small;
+}
+
 .themes {
   display: flex;
   flex-direction: row;
-  font-size: small;
+  justify-content: center;
+}
+
+.scorebar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: orange;
 }
 
 .gem-icon-box {
@@ -139,10 +136,6 @@ h1 {
 
 .selected_theme {
   background-color: black;
-}
-
-.directions {
-  font-size: small;
 }
 
 main {
