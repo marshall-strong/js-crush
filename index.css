@@ -98,7 +98,11 @@ header {
 }
 
 /* center-third */
-.directions p {
+.title {
+  font-size: larger;
+}
+
+.directions {
   font-size: small;
 }
 
@@ -110,14 +114,6 @@ header {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.scorebar {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: orange;
 }
 
 .gem-icon-box {
@@ -134,8 +130,12 @@ header {
   margin: 5px;
 }
 
-.selected_theme {
-  background-color: black;
+.scorebar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: orange;
 }
 
 main {
