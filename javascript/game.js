@@ -27,11 +27,25 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
-    this.theme = themes.animals;
+    this.setTheme(themes.animals);
   }
 
-  setTheme(newTheme) {
-    this.theme = newTheme;
+  setTheme(theme) {
+    this.theme = theme;
+    const body = document.getElementById("application");
+    if (this.theme.name === "animals") {
+      body.classList.add("animalsTheme");
+      body.classList.remove("oceanTheme", "javascriptTheme", "foodTheme");
+    } else if (this.theme.name === "ocean") {
+      body.classList.add("oceanTheme");
+      body.classList.remove("animalsTheme", "javascriptTheme", "foodTheme");
+    } else if (this.theme.name === "javascript") {
+      body.classList.add("javascriptTheme");
+      body.classList.remove("animalsTheme", "oceanTheme", "foodTheme");
+    } else if (this.theme.name === "food") {
+      body.classList.add("foodTheme");
+      body.classList.remove("animalsTheme", "oceanTheme", "javascriptTheme");
+    }
     this.drawGameboard();
   }
 

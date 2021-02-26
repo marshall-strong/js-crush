@@ -16,6 +16,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.animalsTheme {
+  background-image: url("assets/backgrounds/animals.jpg");
+}
+.oceanTheme {
+  background-image: url("assets/backgrounds/ocean.png");
+}
+.javascriptTheme {
+  background-image: url("assets/backgrounds/javascript.jpg");
+}
+.foodTheme {
+  background-image: url("assets/backgrounds/food.jpg");
+}
+
 button {
   font-family: inherit;
   font: inherit;

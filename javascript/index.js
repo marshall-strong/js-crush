@@ -16,7 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document
     .getElementById("jsTheme")
-    .addEventListener("click", () => game.setTheme(themes.js));
+    .addEventListener("click", () => game.setTheme(themes.javascript));
 
   document
     .getElementById("foodTheme")
