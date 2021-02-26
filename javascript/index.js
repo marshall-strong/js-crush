@@ -13,10 +13,12 @@ window.addEventListener("DOMContentLoaded", () => {
     $("#totalPoints").html(game.totalPoints);
   });
 
-  $(document).on("click", "#newGame", () => game.resetGame());
-  $(document).on("click", "#getHint", () => game.showRandomMove());
-  $(document).on("click", "#autoMove", () => game.makeRandomMove());
-  $(document).on("click", "#shuffleBoard", () => game.shuffleGameboard());
+  document
+    .getElementById("newGame")
+    .addEventListener("click", () => game.resetGame());
+  document
+    .getElementById("autoMove")
+    .addEventListener("click", () => game.makeRandomMove());
 
   $(document).on("mousedown", "#gameCanvas", (mouseEvent) =>
     game.setMouseEventGem(mouseEvent)
