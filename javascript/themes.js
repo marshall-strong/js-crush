@@ -33,5 +33,3 @@ const themes = {
     6: "ocean-6-pufferfish",
   },
 };
-
-// module.exports = themes;

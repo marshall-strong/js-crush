@@ -1,6 +1,3 @@
-// const Board = require('./board');
-// const themes = require("./themes");
-
 class Game {
   constructor(gameCanvas) {
     this.canvas = gameCanvas;
@@ -598,5 +595,3 @@ class Game {
     }, 50);
   }
 }
-
-// module.exports = Game;

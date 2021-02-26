@@ -1,9 +1,5 @@
-// const Game = require('./game');
-
-// ensures I get the same gems every reset (nice during development)
 Math.seedrandom(0);
 
-// waits for the canvas element to load before creating a new game
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
@@ -32,11 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("autoMove")
     .addEventListener("click", () => game.makeRandomMove());
 
-  document.addEventListener("updateScore", () => {
-    document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
-    document.getElementById("totalPoints").innerHTML = game.totalPoints;
-  });
-
   document
     .getElementById("gameCanvas")
     .addEventListener("mousedown", (e) => game.setMouseEventGem(e));
@@ -44,6 +35,11 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("gameCanvas")
     .addEventListener("mouseup", (e) => game.setMouseEventGem(e));
+
+  document.addEventListener("updateScore", () => {
+    document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
+    document.getElementById("totalPoints").innerHTML = game.totalPoints;
+  });
 
   setTimeout(() => game.resetGame(), 30);
 });
