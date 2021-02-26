@@ -24,13 +24,16 @@ body {
 .oceanTheme {
   background-image: url("assets/backgrounds/ocean.png");
 }
-.javascriptTheme {
-  background-image: url("assets/backgrounds/javascript.jpg");
+.codeTheme {
+  background-image: url("assets/backgrounds/code.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }
 .foodTheme {
   background-image: url("assets/backgrounds/food3.jpg");
+}
+.candyTheme {
+  background-image: url("assets/backgrounds/candy.jpg");
 }
 
 button {

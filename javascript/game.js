@@ -35,16 +35,44 @@ class Game {
     const body = document.getElementById("application");
     if (this.theme.name === "animals") {
       body.classList.add("animalsTheme");
-      body.classList.remove("oceanTheme", "javascriptTheme", "foodTheme");
-    } else if (this.theme.name === "ocean") {
-      body.classList.add("oceanTheme");
-      body.classList.remove("animalsTheme", "javascriptTheme", "foodTheme");
-    } else if (this.theme.name === "javascript") {
-      body.classList.add("javascriptTheme");
-      body.classList.remove("animalsTheme", "oceanTheme", "foodTheme");
+      body.classList.remove(
+        "candyTheme",
+        "codeTheme",
+        "foodTheme",
+        "oceanTheme"
+      );
+    } else if (this.theme.name === "candy") {
+      body.classList.add("candyTheme");
+      body.classList.remove(
+        "animalsTheme",
+        "codeTheme",
+        "foodTheme",
+        "oceanTheme"
+      );
+    } else if (this.theme.name === "code") {
+      body.classList.add("codeTheme");
+      body.classList.remove(
+        "animalsTheme",
+        "candyTheme",
+        "foodTheme",
+        "oceanTheme"
+      );
     } else if (this.theme.name === "food") {
       body.classList.add("foodTheme");
-      body.classList.remove("animalsTheme", "oceanTheme", "javascriptTheme");
+      body.classList.remove(
+        "animalsTheme",
+        "candyTheme",
+        "codeTheme",
+        "oceanTheme"
+      );
+    } else if (this.theme.name === "ocean") {
+      body.classList.add("oceanTheme");
+      body.classList.remove(
+        "animalsTheme",
+        "candyTheme",
+        "codeTheme",
+        "foodTheme"
+      );
     }
     this.drawGameboard();
   }
@@ -145,7 +173,7 @@ class Game {
       document.getElementById("autoMove").disabled = true;
       document.getElementById("animalsTheme").disabled = true;
       document.getElementById("oceanTheme").disabled = true;
-      document.getElementById("jsTheme").disabled = true;
+      document.getElementById("codeTheme").disabled = true;
       document.getElementById("foodTheme").disabled = true;
     }
     if (status === "ready") {
@@ -154,7 +182,7 @@ class Game {
       document.getElementById("autoMove").disabled = false;
       document.getElementById("animalsTheme").disabled = false;
       document.getElementById("oceanTheme").disabled = false;
-      document.getElementById("jsTheme").disabled = false;
+      document.getElementById("codeTheme").disabled = false;
       document.getElementById("foodTheme").disabled = false;
     }
   }
