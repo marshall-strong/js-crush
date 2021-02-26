@@ -113,25 +113,23 @@ class Game {
   //
   //
   setStatus(status) {
-    if (status === "resetting" || status === "running") {
-      this.status = "resetting";
-      $("#newGame").prop("disabled", true);
-      $("#getHint").prop("disabled", true);
-      $("#autoMove").prop("disabled", true);
-      $("#animalsTheme").prop("disabled", true);
-      $("#oceanTheme").prop("disabled", true);
-      $("#jsTheme").prop("disabled", true);
-      $("#foodTheme").prop("disabled", true);
+    if (status === "running") {
+      this.status = "running";
+      document.getElementById("newGame").disabled = true;
+      document.getElementById("autoMove").disabled = true;
+      document.getElementById("animalsTheme").disabled = true;
+      document.getElementById("oceanTheme").disabled = true;
+      document.getElementById("jsTheme").disabled = true;
+      document.getElementById("foodTheme").disabled = true;
     }
     if (status === "ready") {
       this.status = "ready";
-      $("#newGame").prop("disabled", false);
-      $("#getHint").prop("disabled", false);
-      $("#autoMove").prop("disabled", false);
-      $("#animalsTheme").prop("disabled", false);
-      $("#oceanTheme").prop("disabled", false);
-      $("#jsTheme").prop("disabled", false);
-      $("#foodTheme").prop("disabled", false);
+      document.getElementById("newGame").disabled = false;
+      document.getElementById("autoMove").disabled = false;
+      document.getElementById("animalsTheme").disabled = false;
+      document.getElementById("oceanTheme").disabled = false;
+      document.getElementById("jsTheme").disabled = false;
+      document.getElementById("foodTheme").disabled = false;
     }
   }
 
