@@ -435,9 +435,12 @@ class Game {
   }
 
   shakeGameboard() {
-    $(gameCanvas).addClass("shake");
+    document.getElementById("gameCanvas").classList.add("shake");
     console.log("shake");
-    setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
+    setTimeout(
+      () => document.getElementById("gameCanvas").classList.remove("shake"),
+      300
+    );
   }
 
   highlightGem(gem) {
