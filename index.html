@@ -18,12 +18,12 @@
     <script src="javascript/index.js"></script>
   </head>
 
-  <body>
+  <body id="application">
     <header>
       <div class="navbar">
         <span class="columns-thirds left-third">
           <div class="contact">
-            <div class="icon_container">
+            <div class="contact-icon-box">
               <a
                 href="http://www.marshallstrong.com"
                 target="_blank"
@@ -31,12 +31,12 @@
               >
                 <img
                   src="assets/icons/headshot-512.png"
-                  class="icon"
+                  class="contact-icon-img"
                   alt="portfolio"
                 />
               </a>
             </div>
-            <div class="icon_container">
+            <div class="contact-icon-box">
               <a
                 href="https://github.com/marstrong/js-crush"
                 target="_blank"
@@ -44,12 +44,12 @@
               >
                 <img
                   src="assets/icons/github-512.png"
-                  class="icon"
+                  class="contact-icon-img"
                   alt="GitHub repository"
                 />
               </a>
             </div>
-            <div class="icon_container">
+            <div class="contact-icon-box">
               <a
                 href="https://www.linkedin.com/in/marshall-strong/"
                 target="_blank"
@@ -57,7 +57,7 @@
               >
                 <img
                   src="assets/icons/linkedin-512.png"
-                  class="icon"
+                  class="contact-icon-img"
                   alt="LinkedIn profile"
                 />
               </a>
@@ -65,19 +65,10 @@
           </div>
         </span>
         <span class="columns-thirds center-third">
-          <h1>jsCrush</h1>
-          <div class="directions">
-            <p>
-              Click or drag two adjacent gems to swap.
-              <br />
-              Remove gems by getting 3 or more in a row.
-              <br />
-            </p>
-          </div>
-        </span>
-        <span class="columns-thirds right-third">
+          <div class="title">jsCrush</div>
+
+          <div class="theme-label">select a theme:</div>
           <div class="themes">
-            <p>select a theme:</p>
             <div class="gem-icon-box">
               <img
                 class="gem-icon"
@@ -88,15 +79,15 @@
             <div class="gem-icon-box">
               <img
                 class="gem-icon"
-                id="oceanTheme"
-                src="assets/gems/ocean-1-octopus.svg"
+                id="candyTheme"
+                src="assets/gems/candy-1-red-95.png"
               />
             </div>
             <div class="gem-icon-box">
               <img
                 class="gem-icon"
-                id="jsTheme"
-                src="assets/gems/js-1-node.png"
+                id="codeTheme"
+                src="assets/gems/code-1-node.png"
               />
             </div>
             <div class="gem-icon-box">
@@ -106,6 +97,21 @@
                 src="assets/gems/food-1-donut.svg"
               />
             </div>
+            <div class="gem-icon-box">
+              <img
+                class="gem-icon"
+                id="oceanTheme"
+                src="assets/gems/ocean-1-octopus.svg"
+              />
+            </div>
+          </div>
+        </span>
+        <span class="columns-thirds right-third">
+          <div class="directions">
+            Click or drag two adjacent gems to swap.
+            <br />
+            Remove gems by getting 3 or more in a row.
+            <br />
           </div>
         </span>
       </div>
@@ -120,6 +126,7 @@
         </div>
         <button id="autoMove">I'm Lazy!</button>
       </div>
+      <br />
     </header>
 
     <main id="main">
@@ -133,6 +140,20 @@
         <img id="animals-4-cat" src="assets/gems/animals-4-cat.svg" />
         <img id="animals-5-cheetah" src="assets/gems/animals-5-cheetah.svg" />
         <img id="animals-6-snake" src="assets/gems/animals-6-snake.svg" />
+        <!-- gem images -- `candy` theme -->
+        <img id="candy-1-red" src="assets/gems/candy-1-red-95.png" />
+        <img id="candy-2-orange" src="assets/gems/candy-2-orange-95.png" />
+        <img id="candy-3-yellow" src="assets/gems/candy-3-yellow-95.png" />
+        <img id="candy-4-green" src="assets/gems/candy-4-green-95.png" />
+        <img id="candy-5-blue" src="assets/gems/candy-5-blue-95.png" />
+        <img id="candy-6-purple" src="assets/gems/candy-6-purple-95.png" />
+        <!-- gem images -- `code` theme -->
+        <img id="code-1-node" src="assets/gems/code-1-node.png" />
+        <img id="code-2-react" src="assets/gems/code-2-react.png" />
+        <img id="code-3-webpack" src="assets/gems/code-3-webpack.png" />
+        <img id="code-4-github" src="assets/gems/code-4-github.png" />
+        <img id="code-5-javascript" src="assets/gems/code-5-javascript.png" />
+        <img id="code-6-jquery" src="assets/gems/code-6-jquery.png" />
         <!-- gem images -- `food` theme -->
         <img id="food-1-donut" src="assets/gems/food-1-donut.svg" />
         <img id="food-2-burger" src="assets/gems/food-2-burger.svg" />
@@ -140,13 +161,6 @@
         <img id="food-4-muffin" src="assets/gems/food-4-muffin.svg" />
         <img id="food-5-hotdog" src="assets/gems/food-5-hotdog.svg" />
         <img id="food-6-croissant" src="assets/gems/food-6-croissant.svg" />
-        <!-- gem images -- `js` theme -->
-        <img id="js-1-node" src="assets/gems/js-1-node.png" />
-        <img id="js-2-react" src="assets/gems/js-2-react.png" />
-        <img id="js-3-webpack" src="assets/gems/js-3-webpack.png" />
-        <img id="js-4-github" src="assets/gems/js-4-github.png" />
-        <img id="js-5-javascript" src="assets/gems/js-5-javascript.png" />
-        <img id="js-6-jquery" src="assets/gems/js-6-jquery.png" />
         <!-- gem images -- `ocean` theme -->
         <img id="ocean-1-octopus" src="assets/gems/ocean-1-octopus.svg" />
         <img id="ocean-2-turtle" src="assets/gems/ocean-2-turtle.svg" />

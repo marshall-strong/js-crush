@@ -16,42 +16,40 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button {
-  font-family: inherit;
-  font: inherit;
+.animalsBG {
+  background-image: url("assets/backgrounds/animals.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.candyBG {
+  background-image: url("assets/backgrounds/candy.jpg");
+}
+
+.codeBG {
+  background-image: url("assets/backgrounds/code.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.foodBG {
+  background-image: url("assets/backgrounds/food3.jpg");
+}
+
+.oceanBG {
+  background-image: url("assets/backgrounds/ocean.png");
 }
 
 header {
-  background-color: black;
   width: 100%;
-}
-
-h1 {
-  font-size: larger;
 }
 
 .navbar {
   width: 100%;
   display: flex;
   color: black;
-
-  /* align-items: center;
-  box-sizing: border-box;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  position: relative; */
-}
-.scorebar {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: orange;
+  position: fixed;
+  top: 0;
 }
 
 .columns-thirds {
@@ -79,28 +77,38 @@ h1 {
   background-color: green;
 }
 
+/* left-third */
 .contact {
   display: flex;
   flex-direction: row;
 }
 
-.icon_container {
+.contact-icon-box {
   width: 45px;
   height: 45px;
   flex-direction: column;
   align-items: center;
 }
 
-.icon {
+.contact-icon-img {
   width: 35px;
   height: 35px;
   margin: 5px;
 }
 
+/* center-third */
+.title {
+  font-size: larger;
+}
+
+.theme-label {
+  font-size: small;
+}
+
 .themes {
   display: flex;
   flex-direction: row;
-  font-size: small;
+  justify-content: center;
 }
 
 .gem-icon-box {
@@ -117,12 +125,18 @@ h1 {
   margin: 5px;
 }
 
-.selected_theme {
-  background-color: black;
-}
-
+/* right third */
 .directions {
   font-size: small;
+}
+
+.scorebar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: black;
+  /* background-color: orange; */
 }
 
 main {

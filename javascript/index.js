@@ -11,16 +11,20 @@ window.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", () => game.setTheme(themes.animals));
 
   document
-    .getElementById("oceanTheme")
-    .addEventListener("click", () => game.setTheme(themes.ocean));
+    .getElementById("candyTheme")
+    .addEventListener("click", () => game.setTheme(themes.candy));
 
   document
-    .getElementById("jsTheme")
-    .addEventListener("click", () => game.setTheme(themes.js));
+    .getElementById("codeTheme")
+    .addEventListener("click", () => game.setTheme(themes.code));
 
   document
     .getElementById("foodTheme")
     .addEventListener("click", () => game.setTheme(themes.food));
+
+  document
+    .getElementById("oceanTheme")
+    .addEventListener("click", () => game.setTheme(themes.ocean));
 
   document
     .getElementById("newGame")

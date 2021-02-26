@@ -27,11 +27,28 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
-    this.theme = themes.animals;
+    this.setTheme(themes.animals);
   }
 
-  setTheme(newTheme) {
-    this.theme = newTheme;
+  setTheme(theme) {
+    this.theme = theme;
+    const body = document.getElementById("application");
+    if (this.theme.name === "animals") {
+      body.classList.add("animalsBG");
+      body.classList.remove("candyBG", "codeBG", "foodBG", "oceanBG");
+    } else if (this.theme.name === "candy") {
+      body.classList.add("candyBG");
+      body.classList.remove("animalsBG", "codeBG", "foodBG", "oceanBG");
+    } else if (this.theme.name === "code") {
+      body.classList.add("codeBG");
+      body.classList.remove("animalsBG", "candyBG", "foodBG", "oceanBG");
+    } else if (this.theme.name === "food") {
+      body.classList.add("foodBG");
+      body.classList.remove("animalsBG", "candyBG", "codeBG", "oceanBG");
+    } else if (this.theme.name === "ocean") {
+      body.classList.add("oceanBG");
+      body.classList.remove("animalsBG", "candyBG", "codeBG", "foodBG");
+    }
     this.drawGameboard();
   }
 
@@ -131,7 +148,7 @@ class Game {
       document.getElementById("autoMove").disabled = true;
       document.getElementById("animalsTheme").disabled = true;
       document.getElementById("oceanTheme").disabled = true;
-      document.getElementById("jsTheme").disabled = true;
+      document.getElementById("codeTheme").disabled = true;
       document.getElementById("foodTheme").disabled = true;
     }
     if (status === "ready") {
@@ -140,7 +157,7 @@ class Game {
       document.getElementById("autoMove").disabled = false;
       document.getElementById("animalsTheme").disabled = false;
       document.getElementById("oceanTheme").disabled = false;
-      document.getElementById("jsTheme").disabled = false;
+      document.getElementById("codeTheme").disabled = false;
       document.getElementById("foodTheme").disabled = false;
     }
   }
