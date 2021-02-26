@@ -4,6 +4,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("gameCanvas");
   const game = new Game(canvas);
 
+  window.addEventListener("resize", () => game.setCanvasSize());
+
   document
     .getElementById("animalsTheme")
     .addEventListener("click", () => game.setTheme(themes.animals));

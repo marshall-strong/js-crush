@@ -2,13 +2,16 @@ class Game {
   constructor(gameCanvas) {
     this.canvas = gameCanvas;
     this.context = this.canvas.getContext("2d");
-    this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
-    this.canvas.height = this.canvas.width;
 
     this.gridSize = 8;
     this.gameboard = new Board(this.gridSize);
-    this.squareWidth = this.canvas.width / this.gridSize;
-    this.squareHeight = this.canvas.height / this.gridSize;
+    this.setCanvasSize();
+
+    // this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
+    // this.canvas.height = this.canvas.width;
+
+    // this.squareWidth = this.canvas.width / this.gridSize;
+    // this.squareHeight = this.canvas.height / this.gridSize;
 
     this.status = "resetting";
 
@@ -29,6 +32,18 @@ class Game {
 
   setTheme(newTheme) {
     this.theme = newTheme;
+    this.drawGameboard();
+  }
+
+  setCanvasSize() {
+    if (window.innerWidth > 600) {
+      this.canvas.width = 600;
+    } else {
+      this.canvas.width = 0.9 * window.innerWidth;
+    }
+    this.canvas.height = this.canvas.width;
+    this.squareWidth = this.canvas.width / this.gridSize;
+    this.squareHeight = this.canvas.height / this.gridSize;
     this.drawGameboard();
   }
 
