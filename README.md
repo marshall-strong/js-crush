@@ -80,14 +80,3 @@ html javascript css gem crush game
 `themes`
 
 `Math.seedrandom(0)`
-
-```
-  window.addEventListener("DOMContentLoaded", () => {
-    $(document).on("click", #newGame)
-    $(document).on("click", #getHint)
-    $(document).on("click", #autoMove)
-    $(document).on("click", #shuffleBoard)
-    $(document).on("mousedown", #gameCanvas)
-    $(document).on("mouseup", #gameCanvas)
-  })
-```

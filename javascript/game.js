@@ -1,17 +1,17 @@
-// const Board = require('./board');
-// const themes = require("./themes");
-
 class Game {
   constructor(gameCanvas) {
     this.canvas = gameCanvas;
     this.context = this.canvas.getContext("2d");
-    this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
-    this.canvas.height = this.canvas.width;
 
     this.gridSize = 8;
     this.gameboard = new Board(this.gridSize);
-    this.squareWidth = this.canvas.width / this.gridSize;
-    this.squareHeight = this.canvas.height / this.gridSize;
+    this.setCanvasSize();
+
+    // this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
+    // this.canvas.height = this.canvas.width;
+
+    // this.squareWidth = this.canvas.width / this.gridSize;
+    // this.squareHeight = this.canvas.height / this.gridSize;
 
     this.status = "resetting";
 
@@ -32,14 +32,26 @@ class Game {
 
   setTheme(newTheme) {
     this.theme = newTheme;
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
+  }
+
+  setCanvasSize() {
+    if (window.innerWidth > 600) {
+      this.canvas.width = 600;
+    } else {
+      this.canvas.width = 0.9 * window.innerWidth;
+    }
+    this.canvas.height = this.canvas.width;
+    this.squareWidth = this.canvas.width / this.gridSize;
+    this.squareHeight = this.canvas.height / this.gridSize;
+    this.drawGameboard();
   }
 
   // Called at setup, and when "New Game" is clicked.
   resetGame() {
     this.setStatus("resetting");
     this.gameboard = new Board(this.gridSize);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     let emptySquares = true;
     while (emptySquares) {
       for (let row = 0; row < this.gridSize; row++) {
@@ -47,7 +59,7 @@ class Game {
           if (!this.gameboard.gem(col, row)) this.gameboard.addNewGem(col, row);
         }
       }
-      $("#main").html(this.drawGameboard());
+      this.drawGameboard();
       const matches = this.gameboard.getMatches();
       if (matches.length > 0) {
         const gems = [].concat.apply([], matches);
@@ -58,7 +70,7 @@ class Game {
     }
 
     this.clearScore();
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.ensureMatchingMovesExist();
   }
 
@@ -113,23 +125,23 @@ class Game {
   //
   //
   setStatus(status) {
-    if (status === "resetting") {
-      this.status = "resetting";
-      $("#newGame").prop("disabled", true);
-      $("#getHint").prop("disabled", true);
-      $("#autoMove").prop("disabled", true);
-    }
     if (status === "running") {
       this.status = "running";
-      $("#newGame").prop("disabled", true);
-      $("#getHint").prop("disabled", true);
-      $("#autoMove").prop("disabled", true);
+      document.getElementById("newGame").disabled = true;
+      document.getElementById("autoMove").disabled = true;
+      document.getElementById("animalsTheme").disabled = true;
+      document.getElementById("oceanTheme").disabled = true;
+      document.getElementById("jsTheme").disabled = true;
+      document.getElementById("foodTheme").disabled = true;
     }
     if (status === "ready") {
       this.status = "ready";
-      $("#newGame").prop("disabled", false);
-      $("#getHint").prop("disabled", false);
-      $("#autoMove").prop("disabled", false);
+      document.getElementById("newGame").disabled = false;
+      document.getElementById("autoMove").disabled = false;
+      document.getElementById("animalsTheme").disabled = false;
+      document.getElementById("oceanTheme").disabled = false;
+      document.getElementById("jsTheme").disabled = false;
+      document.getElementById("foodTheme").disabled = false;
     }
   }
 
@@ -196,7 +208,7 @@ class Game {
   removeMatches(matches) {
     const gems = [].concat.apply([], matches);
     this.gameboard.removeGems(gems);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.shiftGemsDown();
   }
 
@@ -226,7 +238,7 @@ class Game {
         }
       }
       const delay = gapFound ? 500 : null;
-      setTimeout(() => $("#main").html(this.drawGameboard()), delay);
+      setTimeout(() => this.drawGameboard(), delay);
     }
     this.checkBoardForMatches();
   }
@@ -294,7 +306,7 @@ class Game {
 
   shuffleGameboard() {
     this.gameboard.randomize();
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
     this.ensureMatchingMovesExist();
   }
 
@@ -307,7 +319,7 @@ class Game {
     this.totalPoints = this.totalPoints + this.pointsEarned;
     this.totalGemsRemoved = this.totalGemsRemoved + gems.length;
     this.lastGemValue = gems[0].value;
-    $(this).triggerHandler("scoreUpdate");
+    document.dispatchEvent(new Event("updateScore"));
   }
 
   clearScore() {
@@ -315,14 +327,14 @@ class Game {
     this.totalPoints = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
-    $(this).triggerHandler("scoreUpdate");
+    document.dispatchEvent(new Event("updateScore"));
   }
 
   //
   // used by the "Get Hint" button
   showRandomMove() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
 
     const i = Math.floor(this.matchingMoves.length * Math.random());
     const move = this.matchingMoves[i];
@@ -339,7 +351,7 @@ class Game {
     this.context.save();
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    $("#main").html(this.drawGameboard());
+    this.drawGameboard();
 
     this.context.strokeStyle = "black";
     const moveDir = this.gameboard.relativePosition(gem1, gem2);
@@ -435,9 +447,12 @@ class Game {
   }
 
   shakeGameboard() {
-    $(gameCanvas).addClass("shake");
+    document.getElementById("gameCanvas").classList.add("shake");
     console.log("shake");
-    setTimeout(() => $(gameCanvas).removeClass("shake"), 300);
+    setTimeout(
+      () => document.getElementById("gameCanvas").classList.remove("shake"),
+      300
+    );
   }
 
   highlightGem(gem) {
@@ -508,7 +523,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(hSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#main").html(this.drawGameboard());
+        this.drawGameboard();
       }
     }, 10);
   }
@@ -557,7 +572,7 @@ class Game {
       if (timer >= 20) {
         clearInterval(vSwap);
         this.gameboard.swapGems(gem1, gem2);
-        $("#main").html(this.drawGameboard());
+        this.drawGameboard();
       }
     }, 10);
   }
@@ -595,5 +610,3 @@ class Game {
     }, 50);
   }
 }
-
-// module.exports = Game;
