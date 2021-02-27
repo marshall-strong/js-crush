@@ -13,6 +13,8 @@ class Game {
     // this.squareWidth = this.canvas.width / this.gridSize;
     // this.squareHeight = this.canvas.height / this.gridSize;
 
+    this.autoMove = false;
+
     this.status = "resetting";
 
     this.matchesExist = false;
@@ -29,6 +31,8 @@ class Game {
 
     this.setTheme(themes.animals);
   }
+
+  toggleAutoMove() {}
 
   setTheme(theme) {
     this.theme = theme;
