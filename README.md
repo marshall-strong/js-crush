@@ -20,6 +20,10 @@ Features:
 Challenges:
 
 Todos:
+https://boxy-svg.com/
+https://devicon.dev/
+https://www.svgbackgrounds.com/#tortoise-shell
+https://www.svgbackgrounds.com/#flat-mountains
 
 # code
 
