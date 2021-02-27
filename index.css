@@ -77,7 +77,6 @@ header {
 .navbar {
   width: 100%;
   display: flex;
-  color: black;
   position: fixed;
   top: 0;
 }
@@ -92,19 +91,19 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.288);
 }
 
 .center-third {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: yellow;
+  background-color: rgba(255, 255, 0, 0.267);
 }
 
 .right-third {
   justify-content: flex-end;
-  background-color: green;
+  background-color: rgba(0, 128, 0, 0.39);
 }
 
 /* left-third */
@@ -159,27 +158,23 @@ header {
   margin: 5px;
 }
 
-/* right third */
+.scorebar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: black;
+}
 
-/* .wrapper {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	width: 400px;
-	margin: 50vh auto 0;
-	-ms-flex-wrap: wrap;
-	    flex-wrap: wrap;
-	-webkit-transform: translateY(-50%);
-	        transform: translateY(-50%);
-} */
+/* right third */
 
 .switch_box {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  max-width: 200px;
-  min-width: 200px;
-  height: 200px;
+  max-width: 100px;
+  min-width: 100px;
+  height: 100px;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -240,24 +235,6 @@ input[type="checkbox"].switch_1:checked:after {
 /* Switch 1 Specific Style End */
 
 /* END header */
-
-.scorebar {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  color: black;
-  /* background-color: orange; */
-}
-
-main {
-  /* background-color: black; */
-}
-
-footer {
-  background-color: yellowgreen;
-  width: 100%;
-}
 
 .jiggle:hover {
   -webkit-animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

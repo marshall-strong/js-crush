@@ -29,7 +29,7 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
-    this.setTheme(themes.animals);
+    this.setTheme(themes.web);
   }
 
   toggleAutoMove() {}
