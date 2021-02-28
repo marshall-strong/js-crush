@@ -20,6 +20,10 @@
 
   <body id="application">
     <header>
+      <br />
+    </header>
+
+    <main id="main">
       <div class="navbar">
         <span class="columns-thirds left-third">
           <div class="contact">
@@ -142,72 +146,87 @@
               <span id="totalPoints">replace with `game.totalPoints`</span> -->
             <!-- </div> -->
           </div>
-        </span>
-        <span class="columns-thirds right-third"> </span>
-      </div>
-      <br />
-    </header>
 
-    <main id="main">
-      <canvas id="gameCanvas">
-        <!-- error message for older browsers -->
-        Sorry, your browser does not support Canvas. Try using Chrome!
+          <canvas id="gameCanvas">
+            <!-- error message for older browsers -->
+            Sorry, your browser does not support Canvas. Try using Chrome!
 
-        <!-- gem images -- `animals` theme -->
-        <img id="animals-1-goose" src="assets/gems/animals-1-goose.svg" />
-        <img id="animals-2-cow" src="assets/gems/animals-2-cow.svg" />
-        <img id="animals-3-bear" src="assets/gems/animals-3-bear.svg" />
-        <img id="animals-4-cat" src="assets/gems/animals-4-cat.svg" />
-        <img id="animals-5-cheetah" src="assets/gems/animals-5-cheetah.svg" />
-        <img id="animals-6-snake" src="assets/gems/animals-6-snake.svg" />
+            <!-- gem images -- `animals` theme -->
+            <img id="animals-1-goose" src="assets/gems/animals-1-goose.svg" />
+            <img id="animals-2-cow" src="assets/gems/animals-2-cow.svg" />
+            <img id="animals-3-bear" src="assets/gems/animals-3-bear.svg" />
+            <img id="animals-4-cat" src="assets/gems/animals-4-cat.svg" />
+            <img
+              id="animals-5-cheetah"
+              src="assets/gems/animals-5-cheetah.svg"
+            />
+            <img id="animals-6-snake" src="assets/gems/animals-6-snake.svg" />
 
-        <!-- gem images -- `candy` theme -->
-        <img id="candy-1-red" src="assets/gems/candy-1-red-95.png" />
-        <img id="candy-2-orange" src="assets/gems/candy-2-orange-95.png" />
-        <img id="candy-3-yellow" src="assets/gems/candy-3-yellow-95.png" />
-        <img id="candy-4-green" src="assets/gems/candy-4-green-95.png" />
-        <img id="candy-5-blue" src="assets/gems/candy-5-blue-95.png" />
-        <img id="candy-6-purple" src="assets/gems/candy-6-purple-95.png" />
+            <!-- gem images -- `candy` theme -->
+            <img id="candy-1-red" src="assets/gems/candy-1-red-95.png" />
+            <img id="candy-2-orange" src="assets/gems/candy-2-orange-95.png" />
+            <img id="candy-3-yellow" src="assets/gems/candy-3-yellow-95.png" />
+            <img id="candy-4-green" src="assets/gems/candy-4-green-95.png" />
+            <img id="candy-5-blue" src="assets/gems/candy-5-blue-95.png" />
+            <img id="candy-6-purple" src="assets/gems/candy-6-purple-95.png" />
 
-        <!-- gem images -- `code` theme -->
+            <!-- gem images -- `code` theme -->
 
-        <!-- <img id="code-1-node" src="assets/gems/web-1-js-shield-1.svg" />
+            <!-- <img id="code-1-node" src="assets/gems/web-1-js-shield-1.svg" />
         <img id="code-2-react" src="assets/gems/web-2-html5-shield-1.svg" />
         <img id="code-3-webpack" src="assets/gems/web-3-css3-shield-1.svg" />
         <img id="code-4-github" src="assets/gems/web-4-chrome-circle-1.svg" />
         <img id="code-5-javascript" src="assets/gems/web-5-yarn-circle-1.svg" />
         <img id="code-6-jquery" src="assets/gems/web-6-ubuntu-circle-1.svg" /> -->
 
-        <img id="code-1-node" src="assets/gems/web-1-js-shield-2.svg" />
-        <img id="code-2-react" src="assets/gems/web-2-html5-shield-2.svg" />
-        <img id="code-3-webpack" src="assets/gems/web-3-css3-shield-2.svg" />
-        <img id="code-4-github" src="assets/gems/web-4-chrome-circle-2.svg" />
-        <img id="code-5-javascript" src="assets/gems/web-5-yarn-circle-2.svg" />
-        <img id="code-6-jquery" src="assets/gems/web-6-ubuntu-circle-2.svg" />
+            <img id="code-1-node" src="assets/gems/web-1-js-shield-2.svg" />
+            <img id="code-2-react" src="assets/gems/web-2-html5-shield-2.svg" />
+            <img
+              id="code-3-webpack"
+              src="assets/gems/web-3-css3-shield-2.svg"
+            />
+            <img
+              id="code-4-github"
+              src="assets/gems/web-4-chrome-circle-2.svg"
+            />
+            <img
+              id="code-5-javascript"
+              src="assets/gems/web-5-yarn-circle-2.svg"
+            />
+            <img
+              id="code-6-jquery"
+              src="assets/gems/web-6-ubuntu-circle-2.svg"
+            />
 
-        <!-- <img id="code-1-node" src="assets/gems/code-1-node.png" />
+            <!-- <img id="code-1-node" src="assets/gems/code-1-node.png" />
         <img id="code-2-react" src="assets/gems/code-2-react.png" />
         <img id="code-3-webpack" src="assets/gems/code-3-webpack.svg" />
         <img id="code-4-github" src="assets/gems/code-4-github.png" />
         <img id="code-5-javascript" src="assets/gems/code-5-javascript.png" />
         <img id="code-6-jquery" src="assets/gems/code-6-jquery.png" /> -->
 
-        <!-- gem images -- `food` theme -->
-        <img id="food-1-donut" src="assets/gems/food-1-donut.svg" />
-        <img id="food-2-burger" src="assets/gems/food-2-burger.svg" />
-        <img id="food-3-taco" src="assets/gems/food-3-taco.svg" />
-        <img id="food-4-muffin" src="assets/gems/food-4-muffin.svg" />
-        <img id="food-5-hotdog" src="assets/gems/food-5-hotdog.svg" />
-        <img id="food-6-croissant" src="assets/gems/food-6-croissant.svg" />
+            <!-- gem images -- `food` theme -->
+            <img id="food-1-donut" src="assets/gems/food-1-donut.svg" />
+            <img id="food-2-burger" src="assets/gems/food-2-burger.svg" />
+            <img id="food-3-taco" src="assets/gems/food-3-taco.svg" />
+            <img id="food-4-muffin" src="assets/gems/food-4-muffin.svg" />
+            <img id="food-5-hotdog" src="assets/gems/food-5-hotdog.svg" />
+            <img id="food-6-croissant" src="assets/gems/food-6-croissant.svg" />
 
-        <!-- gem images -- `ocean` theme -->
-        <img id="ocean-1-octopus" src="assets/gems/ocean-1-octopus.svg" />
-        <img id="ocean-2-turtle" src="assets/gems/ocean-2-turtle.svg" />
-        <img id="ocean-3-school" src="assets/gems/ocean-3-school.svg" />
-        <img id="ocean-4-fish" src="assets/gems/ocean-4-fish.svg" />
-        <img id="ocean-5-crab" src="assets/gems/ocean-5-crab.svg" />
-        <img id="ocean-6-pufferfish" src="assets/gems/ocean-6-pufferfish.svg" />
-      </canvas>
+            <!-- gem images -- `ocean` theme -->
+            <img id="ocean-1-octopus" src="assets/gems/ocean-1-octopus.svg" />
+            <img id="ocean-2-turtle" src="assets/gems/ocean-2-turtle.svg" />
+            <img id="ocean-3-school" src="assets/gems/ocean-3-school.svg" />
+            <img id="ocean-4-fish" src="assets/gems/ocean-4-fish.svg" />
+            <img id="ocean-5-crab" src="assets/gems/ocean-5-crab.svg" />
+            <img
+              id="ocean-6-pufferfish"
+              src="assets/gems/ocean-6-pufferfish.svg"
+            />
+          </canvas>
+        </span>
+        <span class="columns-thirds right-third"> </span>
+      </div>
     </main>
 
     <footer></footer>

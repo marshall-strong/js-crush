@@ -49,6 +49,13 @@ header {
   top: 0;
 }
 
+main {
+  width: 100%;
+  display: flex;
+  position: fixed;
+  top: 0;
+}
+
 .navbar {
   width: 100%;
   display: flex;
@@ -236,10 +243,6 @@ input[type="checkbox"].switch_1:checked:after {
 /* END header */
 
 /* canvas */
-
-main {
-  display: flex;
-}
 
 #gameCanvas {
   border-color: white;
