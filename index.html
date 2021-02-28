@@ -72,6 +72,7 @@
         </span>
         <span class="columns-thirds center-third">
           <div class="title">jsCrush</div>
+
           <div class="buttons">
             <button id="newGame">New Game</button>
             <button id="autoMove">I'm Lazy!</button>
@@ -80,6 +81,14 @@
                 <input type="checkbox" class="switch_1" id="switch_1" />
               </div>
             </div> -->
+          </div>
+
+          <div class="directions">
+            Click or drag two adjacent gems to swap.
+            <br />
+            Remove gems by getting 3 or more in a row.
+            <br />
+            <br />
           </div>
 
           <div class="theme-label">select a theme:</div>
@@ -120,13 +129,18 @@
               />
             </div>
           </div>
-          <div class="scorebar">
-            <div id="score">
-              <span class="label">( points earned )</span>
+          <div class="scoring">
+            <!-- <div id="score"> -->
+            <span class="columns-thirds left-third"> SCORE </span>
+            <span class="columns-thirds center-third" id="gemsRemoved">
+              gemsRemoved
+            </span>
+            <span class="columns-thirds right-third"> gems removed </span>
+            <!-- <span class="label">( points earned )</span>
               <span id="pointsEarned">loading</span>
               <span class="label">score</span>
-              <span id="totalPoints">replace with `game.totalPoints`</span>
-            </div>
+              <span id="totalPoints">replace with `game.totalPoints`</span> -->
+            <!-- </div> -->
           </div>
         </span>
         <span class="columns-thirds right-third"> </span>
