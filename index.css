@@ -52,16 +52,36 @@ header {
 main {
   width: 100%;
   display: flex;
+  flex-direction: column;
   position: fixed;
   top: 0;
+  height: 100%;
 }
 
-.navbar {
+.rows-thirds {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.top-row {
+  width: 100%;
+  display: flex;
+}
+.middle-row {
+  width: 100%;
+  display: flex;
+}
+.bottom-row {
+  width: 100%;
+  display: flex;
+}
+
+/* .navbar {
   width: 100%;
   display: flex;
   position: fixed;
   top: 0;
-}
+} */
 
 .columns-thirds {
   width: 33.33%;
@@ -69,27 +89,27 @@ main {
   flex-direction: row;
 }
 
-.navbar .left-third {
+.navbar .left-column {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   background-color: rgba(255, 0, 0, 0.288);
 }
 
-.navbar .center-third {
+.navbar .center-column {
   display: flex;
   flex-direction: column;
   justify-content: center;
   background-color: rgba(255, 255, 0, 0.267);
 }
 
-.navbar .right-third {
+.navbar .right-column {
   flex-direction: column;
   justify-content: center;
   background-color: rgba(0, 128, 0, 0.39);
 }
 
-/* left-third */
+/* left-column */
 .contact {
   display: flex;
   flex-direction: row;
@@ -112,7 +132,7 @@ main {
   font-size: small;
 }
 
-/* center-third */
+/* center-column */
 .title {
   font-size: larger;
 }
@@ -150,14 +170,14 @@ main {
   font-size: medium;
 }
 
-.scoring .left-third {
+.scoring .left-column {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   background-color: inherit;
 }
 
-.scoring .center-third {
+.scoring .center-column {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -165,7 +185,7 @@ main {
   width: 10%;
 }
 
-.scoring .right-third {
+.scoring .right-column {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
