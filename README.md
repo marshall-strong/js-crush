@@ -5,6 +5,26 @@ https://marshall-strong.github.io/js-crush/
 
 html javascript css gem crush game
 
+Description:
+jsCrush is classic match-three puzzle game, created using vanilla JavaScript.
+
+Goal:
+For this project, my goal was to create a browser game without using any additional libraries.
+
+Decisions/Implementation:
+
+Technology:
+
+Features:
+
+Challenges:
+
+Todos:
+https://boxy-svg.com/
+https://devicon.dev/
+https://www.svgbackgrounds.com/#tortoise-shell
+https://www.svgbackgrounds.com/#flat-mountains
+
 # code
 
 ## gem.js
@@ -80,3 +100,5 @@ html javascript css gem crush game
 `themes`
 
 `Math.seedrandom(0)`
+
+https://tobiasahlin.com/blog/move-from-jquery-to-vanilla-javascript/#selecting-elements

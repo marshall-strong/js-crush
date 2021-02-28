@@ -13,6 +13,8 @@ class Game {
     // this.squareWidth = this.canvas.width / this.gridSize;
     // this.squareHeight = this.canvas.height / this.gridSize;
 
+    this.autoMove = false;
+
     this.status = "resetting";
 
     this.matchesExist = false;
@@ -27,8 +29,10 @@ class Game {
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
-    this.setTheme(themes.animals);
+    this.setTheme(themes.web);
   }
+
+  toggleAutoMove() {}
 
   setTheme(theme) {
     this.theme = theme;
@@ -446,13 +450,18 @@ class Game {
     // iterate through grid squares
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
-        const x = col * this.squareWidth;
-        const y = row * this.squareWidth;
-        const width = this.squareWidth;
-        const height = this.squareHeight;
         // draw square outline
-        this.context.strokeRect(x, y, width, height);
+        this.context.strokeRect(
+          col * this.squareWidth,
+          row * this.squareHeight,
+          this.squareWidth,
+          this.squareHeight
+        );
         // draw gem, if it exists
+        const x = col * this.squareWidth + 0.1 * this.squareWidth;
+        const y = row * this.squareHeight + 0.1 * this.squareHeight;
+        const width = 0.8 * this.squareWidth;
+        const height = 0.8 * this.squareHeight;
         const gem = this.gameboard.gem(col, row);
         if (gem) {
           const themeValue = this.theme[gem.value];

@@ -45,4 +45,13 @@ const themes = {
     5: "ocean-5-crab",
     6: "ocean-6-pufferfish",
   },
+  web: {
+    name: "code",
+    1: "code-1-node",
+    2: "code-2-react",
+    3: "code-3-webpack",
+    4: "code-4-github",
+    5: "code-5-javascript",
+    6: "code-6-jquery",
+  },
 };
