@@ -78,20 +78,37 @@ main {
   justify-content: flex-start;
 }
 
-.contact {
+.contact,
+.buttons {
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 .contact-icon-box {
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   flex-direction: column;
   align-items: center;
 }
+
 .contact-icon-img {
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   margin: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.buttons .box button {
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
@@ -135,7 +152,7 @@ main {
   font-size: medium;
 }
 
-.buttons {
+/* .buttons {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -195,7 +212,7 @@ input[type="checkbox"].switch_1:after {
 }
 input[type="checkbox"].switch_1:checked:after {
   left: calc(100% - 1.5em);
-}
+} */
 
 .middle-row {
   justify-content: center;
