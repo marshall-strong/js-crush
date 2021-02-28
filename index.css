@@ -1,12 +1,7 @@
 body {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: black;
   text-align: center;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -66,28 +61,18 @@ main {
   display: flex;
 }
 
-/* .navbar {
-  width: 100%;
-  display: flex;
-  position: fixed;
-  top: 0;
-} */
-
 .columns-thirds {
   width: 33.33%;
   display: flex;
 }
-
 .top-row .left-column {
   flex-direction: column;
   justify-content: flex-start;
 }
-
 .top-row .center-column {
   flex-direction: column;
   justify-content: center;
 }
-
 .top-row .right-column {
   flex-direction: column;
   justify-content: flex-start;
@@ -97,39 +82,34 @@ main {
   display: flex;
   flex-direction: row;
 }
-
 .contact-icon-box {
   width: 45px;
   height: 45px;
   flex-direction: column;
   align-items: center;
 }
-
 .contact-icon-img {
   width: 35px;
   height: 35px;
   margin: 5px;
 }
 
-.directions {
-  font-size: small;
-}
-
-/* center-column */
 .title {
   font-size: larger;
+}
+
+.directions {
+  font-size: small;
 }
 
 .theme-label {
   font-size: small;
 }
-
 .themes {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-
 .gem-icon-box {
   cursor: pointer;
   width: 45px;
@@ -137,7 +117,6 @@ main {
   flex-direction: column;
   align-items: center;
 }
-
 .gem-icon {
   width: 35px;
   height: 35px;
@@ -147,41 +126,17 @@ main {
 .scoring {
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   color: black;
   font-size: medium;
 }
 
-.scoring .left-column {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  background-color: inherit;
-}
-
-.scoring .center-column {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: inherit;
-  width: 10%;
-}
-
-.scoring .right-column {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  background-color: inherit;
-}
-
-/* right third */
 .buttons {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-
 .switch_box {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -199,13 +154,9 @@ main {
   -ms-flex: 1;
   flex: 1;
 }
-
-/* Switch 1 Specific Styles Start */
-
 .box_1 {
   background: #eee;
 }
-
 input[type="checkbox"].switch_1 {
   font-size: 30px;
   -webkit-appearance: none;
@@ -221,11 +172,9 @@ input[type="checkbox"].switch_1 {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 input[type="checkbox"].switch_1:checked {
   background: #0ebeff;
 }
-
 input[type="checkbox"].switch_1:after {
   position: absolute;
   content: "";
@@ -241,18 +190,13 @@ input[type="checkbox"].switch_1:after {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
-
 input[type="checkbox"].switch_1:checked:after {
   left: calc(100% - 1.5em);
 }
 
-/* Switch 1 Specific Style End */
-
 .middle-row {
   justify-content: center;
 }
-
-/* canvas */
 
 #gameCanvas {
   border-color: white;
