@@ -6,7 +6,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
   text-align: center;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -41,21 +41,10 @@ body {
   background-image: url("assets/bg/ocean-bg.svg");
 }
 
-/* START header */
-header {
-  width: 100%;
-  display: flex;
-  position: fixed;
-  top: 0;
-}
-
 main {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
   position: fixed;
   top: 0;
-  height: 100%;
+  width: 100%;
 }
 
 .rows-thirds {
@@ -66,6 +55,7 @@ main {
 .top-row {
   width: 100%;
   display: flex;
+  background-color: rgba(255, 255, 0, 0.25);
 }
 .middle-row {
   width: 100%;
@@ -86,30 +76,23 @@ main {
 .columns-thirds {
   width: 33.33%;
   display: flex;
-  flex-direction: row;
 }
 
-.navbar .left-column {
-  display: flex;
+.top-row .left-column {
   flex-direction: column;
   justify-content: flex-start;
-  background-color: rgba(255, 0, 0, 0.288);
 }
 
-.navbar .center-column {
-  display: flex;
+.top-row .center-column {
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(255, 255, 0, 0.267);
 }
 
-.navbar .right-column {
+.top-row .right-column {
   flex-direction: column;
-  justify-content: center;
-  background-color: rgba(0, 128, 0, 0.39);
+  justify-content: flex-start;
 }
 
-/* left-column */
 .contact {
   display: flex;
   flex-direction: row;
@@ -193,6 +176,11 @@ main {
 }
 
 /* right third */
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
 
 .switch_box {
   display: -webkit-box;
@@ -260,7 +248,9 @@ input[type="checkbox"].switch_1:checked:after {
 
 /* Switch 1 Specific Style End */
 
-/* END header */
+.middle-row {
+  justify-content: center;
+}
 
 /* canvas */
 
