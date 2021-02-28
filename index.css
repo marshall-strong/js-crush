@@ -6,7 +6,6 @@ button {
 }
 
 body {
-  background-color: #282c34;
   min-height: 100vh;
   font-size: calc(10px + 2vmin);
   text-align: center;
@@ -92,14 +91,16 @@ main {
   flex-direction: row;
   justify-content: center;
 }
-.contact-icon-box {
+.contact-icon-box,
+.gem-icon-box {
+  cursor: pointer;
   width: 55px;
   height: 55px;
   flex-direction: column;
   align-items: center;
 }
-
-.contact-icon-img {
+.contact-icon-img,
+.gem-icon {
   width: 45px;
   height: 45px;
   margin: 5px;
@@ -138,7 +139,7 @@ main {
   justify-content: center;
   margin-bottom: 10px;
 }
-.gem-icon-box {
+/* .gem-icon-box {
   cursor: pointer;
   width: 45px;
   height: 45px;
@@ -149,7 +150,7 @@ main {
   width: 35px;
   height: 35px;
   margin: 5px;
-}
+} */
 
 .scoring {
   width: 100%;
