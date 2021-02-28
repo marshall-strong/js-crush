@@ -96,19 +96,22 @@ main {
 
 .title {
   font-size: larger;
+  margin-bottom: 10px;
 }
 
 .directions {
-  font-size: small;
+  font-size: medium;
+  margin-bottom: 10px;
 }
 
 .theme-label {
-  font-size: small;
+  font-size: medium;
 }
 .themes {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin-bottom: 10px;
 }
 .gem-icon-box {
   cursor: pointer;
