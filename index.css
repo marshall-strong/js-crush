@@ -236,6 +236,14 @@ input[type="checkbox"].switch_1:checked:after {
 
 /* END header */
 
+/* canvas */
+
+#gameCanvas {
+  border-color: white;
+  border-style: solid;
+  border-width: 5px;
+}
+
 .jiggle:hover {
   -webkit-animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
