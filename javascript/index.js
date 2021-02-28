@@ -43,8 +43,9 @@ window.addEventListener("DOMContentLoaded", () => {
     .addEventListener("mouseup", (e) => game.setMouseEventGem(e));
 
   document.addEventListener("updateScore", () => {
-    document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
-    document.getElementById("totalPoints").innerHTML = game.totalPoints;
+    document.getElementById("gemsRemoved").innerHTML = game.totalGemsRemoved;
+    // document.getElementById("pointsEarned").innerHTML = game.pointsEarned;
+    // document.getElementById("totalPoints").innerHTML = game.totalPoints;
   });
 
   setTimeout(() => game.resetGame(), 30);

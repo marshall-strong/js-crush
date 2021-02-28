@@ -39,19 +39,19 @@ class Game {
     const body = document.getElementById("application");
     if (this.theme.name === "animals") {
       body.classList.add("animalsBG");
-      body.classList.remove("candyBG", "codeBG", "foodBG", "oceanBG");
+      body.classList.remove("candyBG", "webBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "candy") {
       body.classList.add("candyBG");
-      body.classList.remove("animalsBG", "codeBG", "foodBG", "oceanBG");
+      body.classList.remove("animalsBG", "webBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "code") {
-      body.classList.add("codeBG");
+      body.classList.add("webBG");
       body.classList.remove("animalsBG", "candyBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "food") {
       body.classList.add("foodBG");
-      body.classList.remove("animalsBG", "candyBG", "codeBG", "oceanBG");
+      body.classList.remove("animalsBG", "candyBG", "webBG", "oceanBG");
     } else if (this.theme.name === "ocean") {
       body.classList.add("oceanBG");
-      body.classList.remove("animalsBG", "candyBG", "codeBG", "foodBG");
+      body.classList.remove("animalsBG", "candyBG", "webBG", "foodBG");
     }
     this.drawGameboard();
   }
