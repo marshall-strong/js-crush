@@ -72,6 +72,15 @@
         </span>
         <span class="columns-thirds center-third">
           <div class="title">jsCrush</div>
+          <div class="buttons">
+            <button id="newGame">New Game</button>
+            <button id="autoMove">I'm Lazy!</button>
+            <div class="wrapper">
+              <div class="switch_box box_1">
+                <input type="checkbox" class="switch_1" id="switch_1" />
+              </div>
+            </div>
+          </div>
 
           <div class="theme-label">select a theme:</div>
           <div class="themes">
@@ -112,25 +121,17 @@
             </div>
           </div>
           <div class="scorebar">
-            <button id="newGame">New Game</button>
             <div id="score">
               <span class="label">( points earned )</span>
               <span id="pointsEarned">loading</span>
               <span class="label">score</span>
               <span id="totalPoints">replace with `game.totalPoints`</span>
             </div>
-            <button id="autoMove">I'm Lazy!</button>
-            <br />
           </div>
         </span>
-        <span class="columns-thirds right-third">
-          <div class="wrapper">
-            <div class="switch_box box_1">
-              <input type="checkbox" class="switch_1" id="switch_1" />
-            </div>
-          </div>
-        </span>
+        <span class="columns-thirds right-third"> </span>
       </div>
+      <br />
     </header>
 
     <main id="main">
