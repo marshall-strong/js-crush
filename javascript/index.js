@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document
     .getElementById("autoPlay")
-    .addEventListener("click", () => game.toggleAutoMove());
+    .addEventListener("click", () => game.toggleAutoPlay());
 
   document
     .getElementById("gameCanvas")

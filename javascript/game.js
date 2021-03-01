@@ -7,7 +7,7 @@ class Game {
     this.gameboard = new Board(this.gridSize);
     this.setCanvasSize();
 
-    this.autoMove = false;
+    this.autoPlay = false;
 
     this.status = "resetting";
 
@@ -26,8 +26,15 @@ class Game {
     this.setTheme(themes.web);
   }
 
-  toggleAutoMove() {
-    this.autoMove = !this.autoMove;
+  toggleAutoPlay() {
+    if (!this.autoPlay) {
+      console.log("autoPlay = true");
+      this.autoPlay = true;
+      this.makeRandomMove();
+    } else {
+      console.log("autoPlay = false");
+      this.autoPlay = false;
+    }
   }
 
   setTheme(theme) {
@@ -312,8 +319,7 @@ class Game {
     const matchingMoves = this.getMatchingMoves();
     if (matchingMoves.length > 0) {
       this.matchingMoves = matchingMoves;
-      this.setStatus("ready");
-      console.log("ready for next move");
+      this.endLogicCycle();
     } else {
       this.matchingMoves = [];
       console.log("no remaining moves -- shuffling!");
@@ -325,6 +331,17 @@ class Game {
     this.gameboard.randomize();
     this.drawGameboard();
     this.ensureMatchingMovesExist();
+  }
+
+  endLogicCycle() {
+    this.setStatus("ready");
+
+    if (this.autoPlay) {
+      console.log("autoPlay will make next move");
+      this.makeRandomMove();
+    } else {
+      console.log("ready for next move");
+    }
   }
 
   //
