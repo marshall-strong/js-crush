@@ -35,6 +35,10 @@ window.addEventListener("DOMContentLoaded", () => {
     .addEventListener("click", () => game.makeRandomMove());
 
   document
+    .getElementById("autoPlay")
+    .addEventListener("click", () => game.toggleAutoMove());
+
+  document
     .getElementById("gameCanvas")
     .addEventListener("mousedown", (e) => game.setMouseEventGem(e));
 

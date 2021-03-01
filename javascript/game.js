@@ -7,12 +7,6 @@ class Game {
     this.gameboard = new Board(this.gridSize);
     this.setCanvasSize();
 
-    // this.canvas.width = window.innerWidth > 600 ? 600 : window.innerWidth * 0.9;
-    // this.canvas.height = this.canvas.width;
-
-    // this.squareWidth = this.canvas.width / this.gridSize;
-    // this.squareHeight = this.canvas.height / this.gridSize;
-
     this.autoMove = false;
 
     this.status = "resetting";
@@ -32,7 +26,9 @@ class Game {
     this.setTheme(themes.web);
   }
 
-  toggleAutoMove() {}
+  toggleAutoMove() {
+    this.autoMove = !this.autoMove;
+  }
 
   setTheme(theme) {
     this.theme = theme;
