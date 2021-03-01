@@ -1,5 +1,6 @@
 body,
 button {
+  color: white;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -58,7 +59,7 @@ main {
 .top-row {
   width: 100%;
   display: flex;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .middle-row {
   width: 100%;
@@ -120,6 +121,16 @@ main {
   justify-content: center;
 }
 
+.inDevelopment {
+  display: flex;
+  font-size: small;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 160px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 .title {
   font-size: larger;
   margin-bottom: 10px;
@@ -157,7 +168,6 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: black;
   font-size: medium;
 }
 
