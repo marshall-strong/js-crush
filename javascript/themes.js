@@ -1,13 +1,13 @@
 // The selected theme determines which images to use when drawing the gems.
 const themes = {
-  animals: {
-    name: "animals",
-    1: "animal-1",
-    2: "animal-2",
-    3: "animal-3",
-    4: "animal-4",
-    5: "animal-5",
-    6: "animal-6",
+  farm: {
+    name: "farm",
+    1: "farm-1",
+    2: "farm-2",
+    3: "farm-3",
+    4: "farm-4",
+    5: "farm-5",
+    6: "farm-6",
   },
   candy: {
     name: "candy",
@@ -18,6 +18,15 @@ const themes = {
     5: "candy-5",
     6: "candy-6",
   },
+  web: {
+    name: "web",
+    1: "web-1",
+    2: "web-2",
+    3: "web-3",
+    4: "web-4",
+    5: "web-5",
+    6: "web-6",
+  },
   food: {
     name: "food",
     1: "food-1",
@@ -27,15 +36,6 @@ const themes = {
     5: "food-5",
     6: "food-6",
   },
-  code: {
-    name: "code",
-    1: "code-1",
-    2: "code-2",
-    3: "code-3",
-    4: "code-4",
-    5: "code-5",
-    6: "code-6",
-  },
   ocean: {
     name: "ocean",
     1: "ocean-1",
@@ -44,14 +44,5 @@ const themes = {
     4: "ocean-4",
     5: "ocean-5",
     6: "ocean-6",
-  },
-  web: {
-    name: "code",
-    1: "code-1",
-    2: "code-2",
-    3: "code-3",
-    4: "code-4",
-    5: "code-5",
-    6: "code-6",
   },
 };

@@ -7,23 +7,23 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", () => game.setCanvasSize());
 
   document
-    .getElementById("animalsTheme")
-    .addEventListener("click", () => game.setTheme(themes.animals));
+    .getElementById("farm")
+    .addEventListener("click", () => game.setTheme(themes.farm));
 
   document
-    .getElementById("candyTheme")
+    .getElementById("candy")
     .addEventListener("click", () => game.setTheme(themes.candy));
 
   document
-    .getElementById("codeTheme")
-    .addEventListener("click", () => game.setTheme(themes.code));
+    .getElementById("web")
+    .addEventListener("click", () => game.setTheme(themes.web));
 
   document
-    .getElementById("foodTheme")
+    .getElementById("food")
     .addEventListener("click", () => game.setTheme(themes.food));
 
   document
-    .getElementById("oceanTheme")
+    .getElementById("ocean")
     .addEventListener("click", () => game.setTheme(themes.ocean));
 
   document
