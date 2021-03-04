@@ -46,7 +46,7 @@ class Game {
     } else if (this.theme.name === "candy") {
       body.classList.add("candyBG");
       body.classList.remove("animalsBG", "webBG", "foodBG", "oceanBG");
-    } else if (this.theme.name === "code") {
+    } else if (this.theme.name === "web") {
       body.classList.add("webBG");
       body.classList.remove("animalsBG", "candyBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "food") {
@@ -154,18 +154,20 @@ class Game {
       document.getElementById("newGame").disabled = true;
       document.getElementById("autoMove").disabled = true;
       document.getElementById("animalsTheme").disabled = true;
-      document.getElementById("oceanTheme").disabled = true;
-      document.getElementById("codeTheme").disabled = true;
+      document.getElementById("candyTheme").disabled = true;
+      document.getElementById("webTheme").disabled = true;
       document.getElementById("foodTheme").disabled = true;
+      document.getElementById("oceanTheme").disabled = true;
     }
     if (status === "ready") {
       this.status = "ready";
       document.getElementById("newGame").disabled = false;
       document.getElementById("autoMove").disabled = false;
       document.getElementById("animalsTheme").disabled = false;
-      document.getElementById("oceanTheme").disabled = false;
-      document.getElementById("codeTheme").disabled = false;
+      document.getElementById("candyTheme").disabled = false;
+      document.getElementById("webTheme").disabled = false;
       document.getElementById("foodTheme").disabled = false;
+      document.getElementById("oceanTheme").disabled = false;
     }
   }
 
