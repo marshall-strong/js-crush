@@ -1,13 +1,13 @@
 // The selected theme determines which images to use when drawing the gems.
 const themes = {
-  animals: {
-    name: "animals",
-    1: "animals-1",
-    2: "animals-2",
-    3: "animals-3",
-    4: "animals-4",
-    5: "animals-5",
-    6: "animals-6",
+  farm: {
+    name: "farm",
+    1: "farm-1",
+    2: "farm-2",
+    3: "farm-3",
+    4: "farm-4",
+    5: "farm-5",
+    6: "farm-6",
   },
   candy: {
     name: "candy",

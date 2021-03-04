@@ -40,21 +40,21 @@ class Game {
   setTheme(theme) {
     this.theme = theme;
     const body = document.getElementById("application");
-    if (this.theme.name === "animals") {
-      body.classList.add("animalsBG");
+    if (this.theme.name === "farm") {
+      body.classList.add("farmBG");
       body.classList.remove("candyBG", "webBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "candy") {
       body.classList.add("candyBG");
-      body.classList.remove("animalsBG", "webBG", "foodBG", "oceanBG");
+      body.classList.remove("farmBG", "webBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "web") {
       body.classList.add("webBG");
-      body.classList.remove("animalsBG", "candyBG", "foodBG", "oceanBG");
+      body.classList.remove("farmBG", "candyBG", "foodBG", "oceanBG");
     } else if (this.theme.name === "food") {
       body.classList.add("foodBG");
-      body.classList.remove("animalsBG", "candyBG", "webBG", "oceanBG");
+      body.classList.remove("farmBG", "candyBG", "webBG", "oceanBG");
     } else if (this.theme.name === "ocean") {
       body.classList.add("oceanBG");
-      body.classList.remove("animalsBG", "candyBG", "webBG", "foodBG");
+      body.classList.remove("farmBG", "candyBG", "webBG", "foodBG");
     }
     this.drawGameboard();
   }
@@ -153,21 +153,21 @@ class Game {
       this.status = "running";
       document.getElementById("newGame").disabled = true;
       document.getElementById("autoMove").disabled = true;
-      document.getElementById("animalsTheme").disabled = true;
-      document.getElementById("candyTheme").disabled = true;
-      document.getElementById("webTheme").disabled = true;
-      document.getElementById("foodTheme").disabled = true;
-      document.getElementById("oceanTheme").disabled = true;
+      document.getElementById("farm").disabled = true;
+      document.getElementById("candy").disabled = true;
+      document.getElementById("web").disabled = true;
+      document.getElementById("food").disabled = true;
+      document.getElementById("ocean").disabled = true;
     }
     if (status === "ready") {
       this.status = "ready";
       document.getElementById("newGame").disabled = false;
       document.getElementById("autoMove").disabled = false;
-      document.getElementById("animalsTheme").disabled = false;
-      document.getElementById("candyTheme").disabled = false;
-      document.getElementById("webTheme").disabled = false;
-      document.getElementById("foodTheme").disabled = false;
-      document.getElementById("oceanTheme").disabled = false;
+      document.getElementById("farm").disabled = false;
+      document.getElementById("candy").disabled = false;
+      document.getElementById("web").disabled = false;
+      document.getElementById("food").disabled = false;
+      document.getElementById("ocean").disabled = false;
     }
   }
 
