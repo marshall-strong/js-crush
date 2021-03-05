@@ -7,7 +7,7 @@ button {
 }
 
 body {
-  min-height: 100vh;
+  height: 100vh;
   font-size: calc(10px + 2vmin);
   text-align: center;
   margin: 0;
@@ -49,6 +49,7 @@ main {
   position: fixed;
   top: 0;
   width: 100%;
+  height: 100%;
 }
 
 .rows-thirds {
@@ -56,17 +57,15 @@ main {
   display: flex;
   flex-direction: row;
 }
-.top-row {
+.top-third {
   width: 100%;
+  height: 33.33vh;
   display: flex;
   background-color: rgba(0, 0, 0, 0.4);
 }
-.middle-row {
+.bottom-two-thirds {
   width: 100%;
-  display: flex;
-}
-.bottom-row {
-  width: 100%;
+  height: 66.66vh;
   display: flex;
 }
 
@@ -74,15 +73,15 @@ main {
   width: 33.33%;
   display: flex;
 }
-.top-row .left-column {
+.top-third .left-column {
   flex-direction: column;
   justify-content: flex-start;
 }
-.top-row .center-column {
+.top-third .center-column {
   flex-direction: column;
   justify-content: center;
 }
-.top-row .right-column {
+.top-third .right-column {
   flex-direction: column;
   justify-content: flex-start;
 }
@@ -232,7 +231,7 @@ input[type="checkbox"].switch_1:checked:after {
   left: calc(100% - 1.5em);
 } */
 
-.middle-row {
+.bottom-two-thirds {
   justify-content: center;
 }
 
