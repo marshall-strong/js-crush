@@ -24,6 +24,7 @@ class Game {
     this.lastGemValue = null;
 
     this.setTheme(themes.web);
+    this.drawGameboard();
   }
 
   toggleAutoPlay() {
@@ -68,7 +69,6 @@ class Game {
     this.canvas.height = this.canvas.width;
     this.squareWidth = this.canvas.width / this.gridSize;
     this.squareHeight = this.canvas.height / this.gridSize;
-    this.drawGameboard();
   }
 
   // Called at setup, and when "New Game" is clicked.
@@ -457,8 +457,10 @@ class Game {
   //
   //
   drawGameboard() {
-    this.context.width = window.innerWidth;
-    this.context.height = window.innerHeight;
+    this.setCanvasSize();
+    // this.context.width = window.innerWidth;
+    // this.context.height = window.innerHeight;
+
     // draw grid container
     this.context.clearRect(0, 0, this.context.width, this.context.height);
     this.context.strokeStyle = "white";
