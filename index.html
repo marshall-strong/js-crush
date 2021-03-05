@@ -5,8 +5,6 @@
     <title>JS Gem Crush</title>
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="index.css" />
-    <link rel="stylesheet" href="landscape.css" />
-    <link rel="stylesheet" href="portrait.css" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -22,9 +20,9 @@
 
   <body id="application">
     <main id="main">
-      <div class="rows-thirds top-third">
-        <span class="columns-thirds left-column">
-          <div class="contact">
+      <div class="row">
+        <div class="links-box">
+          <div class="links">
             <div class="icon-box">
               <a
                 href="http://www.marshallstrong.com"
@@ -65,39 +63,9 @@
               </a>
             </div>
           </div>
-        </span>
+        </div>
 
-        <span class="columns-thirds center-column">
-          <div class="title">jsCrush</div>
-          <div class="directions">
-            Click or drag two adjacent gems to swap. <br />
-            Remove gems by getting 3 or more in a row. <br />
-          </div>
-          <div class="theme-label">select a theme:</div>
-          <div class="themes">
-            <div class="icon-box">
-              <img class="icon" id="farm" src="assets/gems/farm-1.svg" />
-            </div>
-            <div class="icon-box">
-              <img class="icon" id="candy" src="assets/gems/candy-1.png" />
-            </div>
-            <div class="icon-box">
-              <img class="icon" id="web" src="assets/gems/web-1.svg" />
-            </div>
-            <div class="icon-box">
-              <img class="icon" id="food" src="assets/gems/food-1.svg" />
-            </div>
-            <div class="icon-box">
-              <img class="icon" id="ocean" src="assets/gems/ocean-1.svg" />
-            </div>
-          </div>
-          <div class="scoring">
-            <div>gems removed: <br /></div>
-            <div id="gemsRemoved">gemsRemoved</div>
-          </div>
-        </span>
-
-        <span class="columns-thirds right-column">
+        <div class="buttons-box">
           <div class="buttons">
             <button id="newGame">new game</button>
             <button id="autoMove">auto move</button>
@@ -107,49 +75,78 @@
             </div>
             <button id="howTo">?</button>
           </div>
-        </span>
+        </div>
       </div>
 
-      <div class="rows-thirds bottom-two-thirds">
-        <canvas id="gameCanvas">
-          <!-- error message for older browsers -->
-          Sorry, your browser does not support Canvas. Try using Chrome!
-          <!-- gem images -- `farm` theme -->
-          <img id="farm-1" src="assets/gems/farm-1.svg" />
-          <img id="farm-2" src="assets/gems/farm-2.svg" />
-          <img id="farm-3" src="assets/gems/farm-3.svg" />
-          <img id="farm-4" src="assets/gems/farm-4.svg" />
-          <img id="farm-5" src="assets/gems/farm-5.svg" />
-          <img id="farm-6" src="assets/gems/farm-6.svg" />
-          <!-- gem images -- `candy` theme -->
-          <img id="candy-1" src="assets/gems/candy-1.png" />
-          <img id="candy-2" src="assets/gems/candy-2.png" />
-          <img id="candy-3" src="assets/gems/candy-3.png" />
-          <img id="candy-4" src="assets/gems/candy-4.png" />
-          <img id="candy-5" src="assets/gems/candy-5.png" />
-          <img id="candy-6" src="assets/gems/candy-6.png" />
-          <!-- gem images -- `web` theme -->
-          <img id="web-1" src="assets/gems/web-1.svg" />
-          <img id="web-2" src="assets/gems/web-2.svg" />
-          <img id="web-3" src="assets/gems/web-3.svg" />
-          <img id="web-4" src="assets/gems/web-4.svg" />
-          <img id="web-5" src="assets/gems/web-5.svg" />
-          <img id="web-6" src="assets/gems/web-6.svg" />
-          <!-- gem images -- `food` theme -->
-          <img id="food-1" src="assets/gems/food-1.svg" />
-          <img id="food-2" src="assets/gems/food-2.svg" />
-          <img id="food-3" src="assets/gems/food-3.svg" />
-          <img id="food-4" src="assets/gems/food-4.svg" />
-          <img id="food-5" src="assets/gems/food-5.svg" />
-          <img id="food-6" src="assets/gems/food-6.svg" />
-          <!-- gem images -- `ocean` theme -->
-          <img id="ocean-1" src="assets/gems/ocean-1.svg" />
-          <img id="ocean-2" src="assets/gems/ocean-2.svg" />
-          <img id="ocean-3" src="assets/gems/ocean-3.svg" />
-          <img id="ocean-4" src="assets/gems/ocean-4.svg" />
-          <img id="ocean-5" src="assets/gems/ocean-5.svg" />
-          <img id="ocean-6" src="assets/gems/ocean-6.svg" />
-        </canvas>
+      <div class="score-box">
+        <div class="score">
+          <div>gems removed: <br /></div>
+          <div id="gemsRemoved">gemsRemoved</div>
+        </div>
+      </div>
+
+      <div class="canvas-box">
+        <div class="gameCanvas">
+          <canvas id="gameCanvas">
+            <!-- error message for older browsers -->
+            Sorry, your browser does not support Canvas. Try using Chrome!
+            <!-- gem images -- `farm` theme -->
+            <img id="farm-1" src="assets/gems/farm-1.svg" />
+            <img id="farm-2" src="assets/gems/farm-2.svg" />
+            <img id="farm-3" src="assets/gems/farm-3.svg" />
+            <img id="farm-4" src="assets/gems/farm-4.svg" />
+            <img id="farm-5" src="assets/gems/farm-5.svg" />
+            <img id="farm-6" src="assets/gems/farm-6.svg" />
+            <!-- gem images -- `candy` theme -->
+            <img id="candy-1" src="assets/gems/candy-1.png" />
+            <img id="candy-2" src="assets/gems/candy-2.png" />
+            <img id="candy-3" src="assets/gems/candy-3.png" />
+            <img id="candy-4" src="assets/gems/candy-4.png" />
+            <img id="candy-5" src="assets/gems/candy-5.png" />
+            <img id="candy-6" src="assets/gems/candy-6.png" />
+            <!-- gem images -- `web` theme -->
+            <img id="web-1" src="assets/gems/web-1.svg" />
+            <img id="web-2" src="assets/gems/web-2.svg" />
+            <img id="web-3" src="assets/gems/web-3.svg" />
+            <img id="web-4" src="assets/gems/web-4.svg" />
+            <img id="web-5" src="assets/gems/web-5.svg" />
+            <img id="web-6" src="assets/gems/web-6.svg" />
+            <!-- gem images -- `food` theme -->
+            <img id="food-1" src="assets/gems/food-1.svg" />
+            <img id="food-2" src="assets/gems/food-2.svg" />
+            <img id="food-3" src="assets/gems/food-3.svg" />
+            <img id="food-4" src="assets/gems/food-4.svg" />
+            <img id="food-5" src="assets/gems/food-5.svg" />
+            <img id="food-6" src="assets/gems/food-6.svg" />
+            <!-- gem images -- `ocean` theme -->
+            <img id="ocean-1" src="assets/gems/ocean-1.svg" />
+            <img id="ocean-2" src="assets/gems/ocean-2.svg" />
+            <img id="ocean-3" src="assets/gems/ocean-3.svg" />
+            <img id="ocean-4" src="assets/gems/ocean-4.svg" />
+            <img id="ocean-5" src="assets/gems/ocean-5.svg" />
+            <img id="ocean-6" src="assets/gems/ocean-6.svg" />
+          </canvas>
+        </div>
+      </div>
+
+      <div class="themes-box">
+        <div class="themes">
+          <div class="icon-box">
+            <img class="icon" id="farm" src="assets/gems/farm-1.svg" />
+          </div>
+          <div class="icon-box">
+            <img class="icon" id="candy" src="assets/gems/candy-1.png" />
+          </div>
+          <div class="icon-box">
+            <img class="icon" id="web" src="assets/gems/web-1.svg" />
+          </div>
+          <div class="icon-box">
+            <img class="icon" id="food" src="assets/gems/food-1.svg" />
+          </div>
+          <div class="icon-box">
+            <img class="icon" id="ocean" src="assets/gems/ocean-1.svg" />
+          </div>
+        </div>
       </div>
     </main>
   </body>

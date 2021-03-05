@@ -7,10 +7,12 @@ button {
 }
 
 body {
+  width: 100vw;
   height: 100vh;
   font-size: calc(10px + 2vmin);
   text-align: center;
   margin: 0;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -20,79 +22,48 @@ button {
   background-color: #11aa44;
 }
 
-.farmBG {
-  background-color: #ffffff;
-  background-image: url("assets/bg/farm-bg.svg");
-  background-attachment: fixed;
-  background-size: cover;
-}
-.candyBG {
-  background-color: #ffff00;
-  background-image: url("assets/bg/candy-bg.svg");
-  background-attachment: fixed;
-  background-size: cover;
-}
-.webBG {
-  background-color: #11aa44;
-  background-image: url("assets/bg/web-bg.svg");
-}
-.foodBG {
-  background-color: #f29e03;
-  background-image: url("assets/bg/food-bg.svg");
-}
-.oceanBG {
-  background-color: #00b7ff;
-  background-image: url("assets/bg/ocean-bg.svg");
-}
-
 main {
-  position: fixed;
-  top: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* PORTRAIT */
-
-.rows-thirds {
-  width: 100%;
+.row {
   display: flex;
   flex-direction: row;
-}
-.top-third {
   width: 100%;
-  height: 33.33vh;
-  display: flex;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.bottom-two-thirds {
-  width: 100%;
-  height: 66.66vh;
-  display: flex;
+  justify-content: space-between;
 }
 
-.columns-thirds {
-  width: 33.33%;
+.links-box {
   display: flex;
+  justify-self: flex-start;
 }
-.top-third .left-column {
-  flex-direction: column;
-  justify-content: flex-start;
+
+.buttons-box {
+  display: flex;
+  justify-content: flex-end;
 }
-.top-third .center-column {
+
+.canvas-box {
+  display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.top-third .right-column {
-  flex-direction: column;
-  justify-content: flex-start;
+  align-items: center;
 }
 
-.contact {
+.themes-box {
+  display: flex;
+}
+
+.links {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
 }
+
 .icon-box {
   cursor: pointer;
   width: 55px;
@@ -105,13 +76,15 @@ main {
   width: 45px;
   height: 45px;
   margin: 5px;
+  z-index: 1;
 }
 
 .buttons {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-end;
 }
+
 .buttons button {
   width: 45px;
   height: 45px;
@@ -131,90 +104,21 @@ main {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.title {
-  font-size: larger;
-  margin-bottom: 10px;
-}
-
-.directions {
-  font-size: medium;
-  margin-bottom: 10px;
-}
-
-.theme-label {
-  font-size: medium;
-}
 .themes {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 10px;
+  align-items: flex-end;
 }
 
-.bottom-two-thirds {
-  justify-content: center;
-}
-
-#gameCanvas {
-  border-color: white;
-  border-style: solid;
-  border-width: 5px;
-}
-
-.jiggle:hover {
-  -webkit-animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  animation: jiggle 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
-
-@-webkit-keyframes jiggle {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-@keyframes jiggle {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
+@media only screen and (orientation: landscape) {
+  body {
+    background-color: #ffff00;
   }
 }
 
 .shake {
-  /* Start the shake animation and make the animation last for 0.5 seconds */
   animation: shake 0.5s;
-
-  /* When the animation is finished, start again */
   animation-iteration-count: infinite;
 }
 
@@ -252,4 +156,31 @@ main {
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+.farmBG {
+  background-color: #ffffff;
+  background-image: url("assets/bg/farm-bg.svg");
+  background-attachment: fixed;
+  background-size: cover;
+}
+.candyBG {
+  background-color: #ffff00;
+  background-image: url("assets/bg/candy-bg.svg");
+  background-attachment: fixed;
+  background-size: cover;
+}
+.webBG {
+  background-color: #11aa44;
+  background-image: url("assets/bg/web-bg.svg");
+  background-repeat: repeat;
+  background-attachment: scroll;
+}
+.foodBG {
+  background-color: #f29e03;
+  background-image: url("assets/bg/food-bg.svg");
+}
+.oceanBG {
+  background-color: #00b7ff;
+  background-image: url("assets/bg/ocean-bg.svg");
 }

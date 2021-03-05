@@ -56,11 +56,17 @@ class Game {
       main.classList.add("portrait");
     }
 
-    if (window.innerWidth > 600) {
-      this.canvas.width = 600;
+    if (window.innerWidth > window.innerHeight) {
+      this.canvas.width = 0.7 * window.innerHeight;
     } else {
-      this.canvas.width = 0.9 * window.innerWidth;
+      this.canvas.width = 0.7 * window.innerWidth;
     }
+
+    // if (window.innerWidth > 600) {
+    //   this.canvas.width = 600;
+    // } else {
+    //   this.canvas.width = 0.9 * window.innerWidth;
+    // }
     this.canvas.height = this.canvas.width;
     this.squareWidth = this.canvas.width / this.gridSize;
     this.squareHeight = this.canvas.height / this.gridSize;
@@ -68,6 +74,7 @@ class Game {
     // DRAW GAMEBOARD
     this.context.clearRect(0, 0, this.context.width, this.context.height);
     this.context.strokeStyle = "white";
+    this.context.lineWidth = 2;
     // iterate through grid squares
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
