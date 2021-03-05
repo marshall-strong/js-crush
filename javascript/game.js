@@ -16,23 +16,9 @@ class Game {
     this.context = this.canvas.getContext("2d");
     this.gridSize = 8;
     this.gameboard = new Board(this.gridSize);
-    this.setLayout();
-    this.setCanvasSize();
+    this.layout = null; // "landscape" || "portrait"
     this.setTheme(themes.web);
     this.drawGameboard();
-  }
-
-  setLayout() {}
-
-  setCanvasSize() {
-    if (window.innerWidth > 600) {
-      this.canvas.width = 600;
-    } else {
-      this.canvas.width = 0.9 * window.innerWidth;
-    }
-    this.canvas.height = this.canvas.width;
-    this.squareWidth = this.canvas.width / this.gridSize;
-    this.squareHeight = this.canvas.height / this.gridSize;
   }
 
   setTheme(theme) {
@@ -58,11 +44,28 @@ class Game {
   }
 
   drawGameboard() {
-    this.setCanvasSize();
-    // this.context.width = window.innerWidth;
-    // this.context.height = window.innerHeight;
+    // SET LAYOUT
+    const main = document.getElementById("main");
+    main.classList.remove("landscape", "portrait");
 
-    // draw grid container
+    if (window.innerWidth > window.innerHeight) {
+      this.layout = "landscape";
+      main.classList.add("landscape");
+    } else {
+      this.layout = "portrait";
+      main.classList.add("portrait");
+    }
+
+    if (window.innerWidth > 600) {
+      this.canvas.width = 600;
+    } else {
+      this.canvas.width = 0.9 * window.innerWidth;
+    }
+    this.canvas.height = this.canvas.width;
+    this.squareWidth = this.canvas.width / this.gridSize;
+    this.squareHeight = this.canvas.height / this.gridSize;
+
+    // DRAW GAMEBOARD
     this.context.clearRect(0, 0, this.context.width, this.context.height);
     this.context.strokeStyle = "white";
     // iterate through grid squares

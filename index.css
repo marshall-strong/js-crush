@@ -52,6 +52,8 @@ main {
   height: 100%;
 }
 
+/* PORTRAIT */
+
 .rows-thirds {
   width: 100%;
   display: flex;
