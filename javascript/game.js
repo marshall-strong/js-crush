@@ -61,12 +61,6 @@ class Game {
     } else {
       this.canvas.width = 0.7 * window.innerWidth;
     }
-
-    // if (window.innerWidth > 600) {
-    //   this.canvas.width = 600;
-    // } else {
-    //   this.canvas.width = 0.9 * window.innerWidth;
-    // }
     this.canvas.height = this.canvas.width;
     this.squareWidth = this.canvas.width / this.gridSize;
     this.squareHeight = this.canvas.height / this.gridSize;
