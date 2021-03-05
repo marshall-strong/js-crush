@@ -1,40 +1,24 @@
 class Game {
   constructor(gameCanvas) {
-    this.canvas = gameCanvas;
-    this.context = this.canvas.getContext("2d");
-
-    this.gridSize = 8;
-    this.gameboard = new Board(this.gridSize);
-    this.setCanvasSize();
-
     this.autoPlay = false;
-
     this.status = "resetting";
-
-    this.matchesExist = false;
     this.matchingMoves = [];
-
+    this.matchesExist = false;
     this.mousedownGem = null;
     this.mouseupGem = null;
     this.firstGem = null;
-
     this.pointsEarned = 0;
     this.totalPoints = 0;
     this.totalGemsRemoved = 0;
     this.lastGemValue = null;
 
+    this.canvas = gameCanvas;
+    this.context = this.canvas.getContext("2d");
+    this.gridSize = 8;
+    this.gameboard = new Board(this.gridSize);
+    this.layout = null; // "landscape" || "portrait"
     this.setTheme(themes.web);
-  }
-
-  toggleAutoPlay() {
-    if (!this.autoPlay) {
-      console.log("autoPlay = true");
-      this.autoPlay = true;
-      this.makeRandomMove();
-    } else {
-      console.log("autoPlay = false");
-      this.autoPlay = false;
-    }
+    this.drawGameboard();
   }
 
   setTheme(theme) {
@@ -59,16 +43,55 @@ class Game {
     this.drawGameboard();
   }
 
-  setCanvasSize() {
-    if (window.innerWidth > 600) {
-      this.canvas.width = 600;
+  drawGameboard() {
+    // SET LAYOUT
+    const main = document.getElementById("main");
+    main.classList.remove("landscape", "portrait");
+
+    if (window.innerWidth > window.innerHeight) {
+      this.layout = "landscape";
+      main.classList.add("landscape");
     } else {
-      this.canvas.width = 0.9 * window.innerWidth;
+      this.layout = "portrait";
+      main.classList.add("portrait");
+    }
+
+    if (window.innerWidth > window.innerHeight) {
+      this.canvas.width = 0.7 * window.innerHeight;
+    } else {
+      this.canvas.width = 0.7 * window.innerWidth;
     }
     this.canvas.height = this.canvas.width;
     this.squareWidth = this.canvas.width / this.gridSize;
     this.squareHeight = this.canvas.height / this.gridSize;
-    this.drawGameboard();
+
+    // DRAW GAMEBOARD
+    this.context.clearRect(0, 0, this.context.width, this.context.height);
+    this.context.strokeStyle = "white";
+    this.context.lineWidth = 2;
+    // iterate through grid squares
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        // draw square outline
+        this.context.strokeRect(
+          col * this.squareWidth,
+          row * this.squareHeight,
+          this.squareWidth,
+          this.squareHeight
+        );
+        // draw gem, if it exists
+        const x = col * this.squareWidth + 0.1 * this.squareWidth;
+        const y = row * this.squareHeight + 0.1 * this.squareHeight;
+        const width = 0.8 * this.squareWidth;
+        const height = 0.8 * this.squareHeight;
+        const gem = this.gameboard.gem(col, row);
+        if (gem) {
+          const themeValue = this.theme[gem.value];
+          const image = document.getElementById(themeValue);
+          this.context.drawImage(image, x, y, width, height);
+        }
+      }
+    }
   }
 
   // Called at setup, and when "New Game" is clicked.
@@ -454,38 +477,19 @@ class Game {
     }, 300);
   }
 
-  //
-  //
-  drawGameboard() {
-    this.context.width = window.innerWidth;
-    this.context.height = window.innerHeight;
-    // draw grid container
-    this.context.clearRect(0, 0, this.context.width, this.context.height);
-    this.context.strokeStyle = "white";
-    // iterate through grid squares
-    for (let row = 0; row < this.gridSize; row++) {
-      for (let col = 0; col < this.gridSize; col++) {
-        // draw square outline
-        this.context.strokeRect(
-          col * this.squareWidth,
-          row * this.squareHeight,
-          this.squareWidth,
-          this.squareHeight
-        );
-        // draw gem, if it exists
-        const x = col * this.squareWidth + 0.1 * this.squareWidth;
-        const y = row * this.squareHeight + 0.1 * this.squareHeight;
-        const width = 0.8 * this.squareWidth;
-        const height = 0.8 * this.squareHeight;
-        const gem = this.gameboard.gem(col, row);
-        if (gem) {
-          const themeValue = this.theme[gem.value];
-          const image = document.getElementById(themeValue);
-          this.context.drawImage(image, x, y, width, height);
-        }
-      }
+  toggleAutoPlay() {
+    if (!this.autoPlay) {
+      console.log("autoPlay = true");
+      this.autoPlay = true;
+      this.makeRandomMove();
+    } else {
+      console.log("autoPlay = false");
+      this.autoPlay = false;
     }
   }
+
+  //
+  //
 
   shakeGameboard() {
     document.getElementById("gameCanvas").classList.add("shake");
