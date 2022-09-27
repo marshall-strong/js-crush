@@ -14,10 +14,9 @@
 <div align="center">
   <h1 align="center">JS-CRUSH</h1>
 
-  <p><b>Add Logo Here</b></p>
-  <!-- <img src="assets/icons/pexelsIcon.svg" alt="Pexels" height="80">
-  <img src="assets/icons/xIcon.svg" alt="X" height="80">
-  <img src="assets/icons/reactIcon.svg" alt="React" height="80"> -->
+  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
+  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
+  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
 
   <p align="center">
     a match-three puzzle game created with vanilla JS -- my take on the candy-crushing classic
@@ -551,21 +550,21 @@ Resources and How-Tos
 <!-- TABLE OF CONTENTS -->
 <!-- ABOUT THE PROJECT -->
 
-[project-screenshot]: ./assets/screenshots/homepage.png
+[project-screenshot]: ./assets/jsCrushScreenshot-1200-627.png
 [project-production-url]: https://marshall-strong.github.io/js-crush/
 
 <!-- Built With -->
 
-[canvasapi-shield]: https://img.shields.io/badge/Create%20React%20App-09D3AC?style=for-the-badge&logo=createreactapp&logoColor=white
-[canvasapi-url]: https://create-react-app.dev/
-[css3-shield]: https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white
-[css3-url]: https://www.netlify.com/
-[githubpages-shield]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black
-[githubpages-url]: https://reactjs.org/
-[html5-shield]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black
-[html5-url]: https://reactjs.org/
-[javascript-shield]: https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black
-[javascript-url]: https://reactjs.org/
+[canvasapi-shield]: https://img.shields.io/badge/Canvas%20API-000000?style=for-the-badge&logoColor=white&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNTEyIj48cGF0aCBkPSJNMzkyLjggMS4yYy0xNy00LjktMzQuNyA1LTM5LjYgMjJsLTEyOCA0NDhjLTQuOSAxNyA1IDM0LjcgMjIgMzkuNnMzNC43LTUgMzkuNi0yMmwxMjgtNDQ4YzQuOS0xNy01LTM0LjctMjItMzkuNnptODAuNiAxMjAuMWMtMTIuNSAxMi41LTEyLjUgMzIuOCAwIDQ1LjNMNTYyLjcgMjU2bC04OS40IDg5LjRjLTEyLjUgMTIuNS0xMi41IDMyLjggMCA0NS4zczMyLjggMTIuNSA0NS4zIDBsMTEyLTExMmMxMi41LTEyLjUgMTIuNS0zMi44IDAtNDUuM2wtMTEyLTExMmMtMTIuNS0xMi41LTMyLjgtMTIuNS00NS4zIDB6bS0zMDYuNyAwYy0xMi41LTEyLjUtMzIuOC0xMi41LTQ1LjMgMGwtMTEyIDExMmMtMTIuNSAxMi41LTEyLjUgMzIuOCAwIDQ1LjNsMTEyIDExMmMxMi41IDEyLjUgMzIuOCAxMi41IDQ1LjMgMHMxMi41LTMyLjggMC00NS4zTDc3LjMgMjU2bDg5LjQtODkuNGMxMi41LTEyLjUgMTIuNS0zMi44IDAtNDUuM3oiIGZpbGw9IndoaXRlIi8+PC9zdmc+
+[canvasapi-url]: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/
+[css3-shield]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
+[css3-url]: https://developer.mozilla.org/en-US/docs/Web/CSS
+[githubpages-shield]: https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white
+[githubpages-url]: https://pages.github.com/
+[html5-shield]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
+[html5-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
+[javascript-shield]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+[javascript-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
 
 <!-- GETTING STARTED -->
 <!-- USAGE EXAMPLES -->
