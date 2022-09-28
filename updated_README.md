@@ -110,7 +110,7 @@ Canvas API, CSS3, ESLint, GitHub, GitHub Pages, Google Chrome, HTML5, JavaScript
 
 - CSS3 description...
 
-[![GitHub Pages][githubpages-shield]][githubpages-url]
+[![GitHub Pages][github-shield]][githubpages-url]
 
 - GitHub Pages description...
 
@@ -551,6 +551,8 @@ Resources and How-Tos
 [canvasapi-url]: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/
 [css3-shield]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
 [css3-url]: https://developer.mozilla.org/en-US/docs/Web/CSS
+[github-shield]: https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white
+[github-url]: https://github.com/
 [githubpages-shield]: https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white
 [githubpages-url]: https://pages.github.com/
 [html5-shield]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
