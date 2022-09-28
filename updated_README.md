@@ -14,9 +14,9 @@
 <div align="center">
   <h1 align="center">JS-CRUSH</h1>
 
-  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
-  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
-  <img src="./assets/gems/web-1.svg" alt="jsCrush" height="80">
+  <img src="./assets/readme/javascriptGem.svg" alt="jsCrush" height="80">
+  <img src="./assets/readme/javascriptGem.svg" alt="jsCrush" height="80">
+  <img src="./assets/readme/javascriptGem.svg" alt="jsCrush" height="80">
 
   <p align="center">
     a match-three puzzle game created with vanilla JS -- my take on the candy-crushing classic
@@ -455,10 +455,10 @@ A live version of the site can be viewed [here](https://marshall-strong.github.i
 
 Plans for future development, testing, and features:
 
-- [ ] [Add Server-Side Rendering with Next.js](https://github.com/marshall-strong/js-crush/issues/65)
+<!-- - [ ] [Add Server-Side Rendering with Next.js](https://github.com/marshall-strong/js-crush/issues/65)
 - [ ] [Add Mobile Responsiveness](https://github.com/marshall-strong/js-crush/issues/66)
 - [ ] [Add more Unit Testing with Jest](https://github.com/marshall-strong/js-crush/issues/67)
-- [ ] [Add End-to-End Testing with Playwright](https://github.com/marshall-strong/js-crush/issues/68)
+- [ ] [Add End-to-End Testing with Playwright](https://github.com/marshall-strong/js-crush/issues/68) -->
 
 See the [open issues](https://github.com/marshall-strong/js-crush/issues) for a full list of proposed features (and known issues).
 
@@ -513,14 +513,6 @@ Thanks for reading!!!
 
 Resources and How-Tos
 
-- [How to Securely Access Secret API keys using Netlify Functions in a React App](https://www.freecodecamp.org/news/how-to-access-secret-api-keys-using-netlify-functions-in-a-react-app/)
-- [Netlify Blog: How to deploy React Apps in less than 30 Seconds](https://www.netlify.com/blog/2016/07/22/deploy-react-apps-in-less-than-30-seconds/)
-- [Cool grayscale hover effect](https://codepen.io/AnthonyMoss/pen/RwwyQQ)
-- [Emoji Unicode Reference](https://www.w3schools.com/charsets/ref_emoji.asp)
-- [the position property](https://www.w3schools.com/cssref/tryit.asp?filename=trycss_position2)
-- ["Cool and Fresh" color palette](https://visme.co/blog/website-color-schemes/#attachment_13239)
-- [CSS Pulse Effect](https://www.florin-pop.com/blog/2019/03/css-pulse-effect/)
-- [Adaptive Photo Layout with Flexbox](https://css-tricks.com/adaptive-photo-layout-with-flexbox/)
 - [Boxy SVG: A free, browser-based tool for editing SVG elements](https://boxy-svg.com/)
 - [The Difference Between ALT text and Title text](https://blog.spotibo.com/difference-between-alt-text-and-title-text/)
 
@@ -550,7 +542,7 @@ Resources and How-Tos
 <!-- TABLE OF CONTENTS -->
 <!-- ABOUT THE PROJECT -->
 
-[project-screenshot]: ./assets/jsCrushScreenshot-1200-627.png
+[project-screenshot]: ./assets/readme/jsCrushScreenshot-1200-627.png
 [project-production-url]: https://marshall-strong.github.io/js-crush/
 
 <!-- Built With -->
